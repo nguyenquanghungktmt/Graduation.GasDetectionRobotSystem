@@ -1,8 +1,5 @@
 import RPi.GPIO as GPIO
 import time
-
-# Define hằng số
-MIN_DISTANCE = 150
  
 class UltrasonicSensorsController(object):
 
@@ -15,6 +12,7 @@ class UltrasonicSensorsController(object):
         self.right_echo = right_echo
 
         GPIO.setmode(GPIO.BCM)
+
         GPIO.setup(self.front_trig,GPIO.OUT)  # Trigger
         GPIO.setup(self.front_echo,GPIO.IN)   # Echo
         GPIO.setup(self.left_trig,GPIO.OUT)  # Trigger
@@ -51,8 +49,8 @@ class UltrasonicSensorsController(object):
         # multiplied by the speed of sound (cm/s)
         distance = elapsed * 34300 / 2
 
-        print("Distance : %.1f" % distance)
-        return distance
+        # print("Distance : %.1f" % distance)
+        return int(distance)
     
     def get_front_distance(self):
         return self.calculate_distance(self.front_trig, self.front_echo)

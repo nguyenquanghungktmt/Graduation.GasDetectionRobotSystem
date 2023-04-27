@@ -1,7 +1,7 @@
 import RPi.GPIO as GPIO
 
 # Define hằng số
-MOVE_SPEED = 50
+MOVE_SPEED = 40
 TURN_SPEED = 60
 MIN_SPEED = 0
  
@@ -27,8 +27,10 @@ class EnginesController(object):
 
         self.PWMA = GPIO.PWM(self.left_pwm, 500)
         self.PWMB = GPIO.PWM(self.right_pwm, 500)
-        self.PWMA.start(50)
-        self.PWMB.start(50)
+        self.PWMA.start(0)
+        self.PWMB.start(0)
+
+        self.stop()
 
 
     def setPWM_left(self, value):
@@ -60,12 +62,12 @@ class EnginesController(object):
     
 
     def back_left(self, speed):
-        GPIO.output(self.left_out, GPIO.HIGHT)
+        GPIO.output(self.left_out, GPIO.HIGH)
         GPIO.output(self.left_pwm, GPIO.LOW)
 
 
     def back_right(self, speed):
-        GPIO.output(self.right_out, GPIO.HIGHT)
+        GPIO.output(self.right_out, GPIO.HIGH)
         GPIO.output(self.right_pwm, GPIO.LOW)
 
 
