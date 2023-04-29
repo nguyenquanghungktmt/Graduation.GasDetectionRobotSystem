@@ -37,7 +37,8 @@ if __name__ == '__main__':
             # time.sleep(1.5)
 
             # test cam bien khi ga
-            gar_sensor_controller.isGasDetected()
+            print(gar_sensor_controller.isGasDetected())
+            time.sleep(0.1)
 
     finally:
         print("============================")
