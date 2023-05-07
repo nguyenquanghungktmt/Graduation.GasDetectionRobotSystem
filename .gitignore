@@ -1,4 +1,5 @@
 /GasDetectionRobot-Python/__pycache__/*
 /GasDetectionRobot-Server/node_modules/*
+/GasDetectionRobot-Server/logs/*
 /Latext Images/
-latext_template.txt
+/latext_template.txt

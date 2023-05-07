@@ -19,4 +19,11 @@ router.get("/getStatusDevice", function (req, res) {
   res.json({ message: "Server busy" });
 });
 
+router.post("/sendRobotStatus", function (req, res) {
+  console.log("Client request: ", req.body)
+  logger.info(`Client request - status= ${ req.body.status}`);
+
+  res.json({ message: `Server busy - id = ${ req.body.id}` });
+});
+
 module.exports = router;
