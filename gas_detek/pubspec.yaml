@@ -16,6 +16,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   ternav_icons: ^1.0.0
   flutter_barcode_scanner: ^2.0.0
+  image_picker: ^0.8.7+5
   vibration: ^1.7.6
 
 dev_dependencies:

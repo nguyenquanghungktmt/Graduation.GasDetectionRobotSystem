@@ -1,8 +1,12 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:gas_detek/common/theme_helper.dart';
 import 'package:gas_detek/widgets/header_widget.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:vibration/vibration.dart';
 
 import 'profile_page.dart';
 
@@ -21,6 +25,19 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   bool checkboxValue = false;
 
   final TextEditingController _serialNumberController = TextEditingController();
+
+  File? _avatar;
+
+  Future getAvatarImage() async {
+    final image = await ImagePicker().pickImage(source: ImageSource.gallery);
+    if (image == null) return;
+
+    final imageTemporary = File(image.path);
+
+    setState(() {
+      _avatar = imageTemporary;
+    });
+  }
 
   @override
   void initState() {
@@ -47,6 +64,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
         _serialNumberController.text = "";
       } else {
         _serialNumberController.text = barcodeScanRes;
+        Vibration.vibrate(duration: 200);
       }
     });
   }
@@ -76,34 +94,38 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                         GestureDetector(
                           child: Stack(
                             children: [
-                              Container(
-                                padding: const EdgeInsets.all(10),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(100),
-                                  border:
-                                      Border.all(width: 5, color: Colors.white),
-                                  color: Colors.white,
-                                  boxShadow: const [
-                                    BoxShadow(
-                                      color: Colors.black12,
-                                      blurRadius: 20,
-                                      offset: Offset(5, 5),
-                                    ),
-                                  ],
-                                ),
-                                child: Icon(
-                                  Icons.person,
-                                  color: Colors.grey.shade300,
-                                  size: 80.0,
+                              Center(
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(80),
+                                    border: Border.all(width: 5, color: Colors.white),
+                                    color: Colors.white,
+                                    boxShadow: const [
+                                      BoxShadow(
+                                        color: Colors.black12,
+                                        blurRadius: 10,
+                                        offset: Offset(5, 5),
+                                      ),
+                                    ],
+                                  ),
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(40.0),
+                                    child: _avatar != null
+                                        ? Image.file(_avatar!, width: 80.0, height: 80.0, fit: BoxFit.cover)
+                                        : Icon(Icons.person, color: Colors.grey.shade300, size: 80.0,),
+                                  )
                                 ),
                               ),
                               Container(
-                                padding:
-                                    const EdgeInsets.fromLTRB(80, 80, 0, 0),
-                                child: Icon(
-                                  Icons.add_circle,
-                                  color: Colors.grey.shade700,
-                                  size: 25.0,
+                                padding: const EdgeInsets.fromLTRB(60, 55, 0, 0),
+                                alignment: Alignment.center,
+                                child: IconButton(
+                                  icon: Icon(
+                                    Icons.add_circle,
+                                    color: Colors.grey.shade700,
+                                  ),
+                                  onPressed: () => getAvatarImage(),
+                                  iconSize: 25.0,
                                 ),
                               ),
                             ],
@@ -217,8 +239,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                                   child: Text(
                                     state.errorText ?? '',
                                     textAlign: TextAlign.left,
-                                    style: TextStyle(
-                                      color: Theme.of(context).errorColor,
+                                    style: const TextStyle(
+                                      color: Colors.red,
                                       fontSize: 12,
                                     ),
                                   ),
