@@ -8,4 +8,4 @@ const kGreen = Color(0xff8AC53E);
 const kOrange = Color(0xffFF993A);
 const kYellow = Color(0xffFFD143);
 
-const kBorderSideColor = Color(0xFFA4C3A2);
+const kBorderSideColor = Color(0x88369FFF);

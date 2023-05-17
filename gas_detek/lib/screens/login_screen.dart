@@ -37,7 +37,7 @@ class _LoginScreenState extends State<LoginScreen>{
                 child: Column(
                   children: [
                     const Text(
-                      'Gas Detect',
+                      'Gas Detekt',
                       style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
                     ),
                     const Text(

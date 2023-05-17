@@ -1,24 +1,55 @@
-
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:gas_detek/common/theme_helper.dart';
 import 'package:gas_detek/widgets/header_widget.dart';
 
 import 'profile_page.dart';
 
-class RegistrationScreen extends  StatefulWidget{
+class RegistrationScreen extends StatefulWidget {
   const RegistrationScreen({super.key});
 
   @override
   State<StatefulWidget> createState() {
-     return _RegistrationScreenState();
+    return _RegistrationScreenState();
   }
 }
 
-class _RegistrationScreenState extends State<RegistrationScreen>{
-
+class _RegistrationScreenState extends State<RegistrationScreen> {
   final _formKey = GlobalKey<FormState>();
   bool checkedValue = false;
   bool checkboxValue = false;
+
+  final TextEditingController _serialNumberController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  Future<void> scanQR() async {
+    String barcodeScanRes;
+    // Platform messages may fail, so we use a try/catch PlatformException.
+    try {
+      barcodeScanRes = await FlutterBarcodeScanner.scanBarcode(
+          '#ff6666', 'Cancel', true, ScanMode.QR);
+    } on PlatformException {
+      barcodeScanRes = 'Failed to get serial number.';
+    }
+
+    // If the widget was removed from the tree while the asynchronous platform
+    // message was in flight, we want to discard the reply rather than calling
+    // setState to update our non-existent appearance.
+    if (!mounted) return;
+
+    setState(() {
+      if (barcodeScanRes == "-1") {
+        _serialNumberController.text = "";
+      } else {
+        _serialNumberController.text = barcodeScanRes;
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +60,8 @@ class _RegistrationScreenState extends State<RegistrationScreen>{
           children: [
             Container(
               height: 150,
-              child: const HeaderWidget(150, false, Icons.person_add_alt_1_rounded),
+              child: const HeaderWidget(
+                  150, false, Icons.person_add_alt_1_rounded),
             ),
             Container(
               margin: const EdgeInsets.fromLTRB(25, 50, 25, 10),
@@ -48,8 +80,8 @@ class _RegistrationScreenState extends State<RegistrationScreen>{
                                 padding: const EdgeInsets.all(10),
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(100),
-                                  border: Border.all(
-                                      width: 5, color: Colors.white),
+                                  border:
+                                      Border.all(width: 5, color: Colors.white),
                                   color: Colors.white,
                                   boxShadow: const [
                                     BoxShadow(
@@ -66,7 +98,8 @@ class _RegistrationScreenState extends State<RegistrationScreen>{
                                 ),
                               ),
                               Container(
-                                padding: const EdgeInsets.fromLTRB(80, 80, 0, 0),
+                                padding:
+                                    const EdgeInsets.fromLTRB(80, 80, 0, 0),
                                 child: Icon(
                                   Icons.add_circle,
                                   color: Colors.grey.shade700,
@@ -76,11 +109,14 @@ class _RegistrationScreenState extends State<RegistrationScreen>{
                             ],
                           ),
                         ),
-                        const SizedBox(height: 30,),
+                        const SizedBox(
+                          height: 30,
+                        ),
                         Container(
                           decoration: ThemeHelper().inputBoxDecorationShaddow(),
                           child: TextFormField(
-                            decoration: ThemeHelper().textInputDecoration('First Name', 'Enter your first name'),
+                            decoration: ThemeHelper().textInputDecoration(
+                                'First Name', 'Enter your first name'),
                             validator: (val) {
                               if (val!.isEmpty) {
                                 return "Please enter your password";
@@ -89,11 +125,14 @@ class _RegistrationScreenState extends State<RegistrationScreen>{
                             },
                           ),
                         ),
-                        const SizedBox(height: 30,),
+                        const SizedBox(
+                          height: 30,
+                        ),
                         Container(
                           decoration: ThemeHelper().inputBoxDecorationShaddow(),
                           child: TextFormField(
-                            decoration: ThemeHelper().textInputDecoration('Last Name', 'Enter your last name'),
+                            decoration: ThemeHelper().textInputDecoration(
+                                'Last Name', 'Enter your last name'),
                             validator: (val) {
                               if (val!.isEmpty) {
                                 return "Please enter your password";
@@ -106,10 +145,13 @@ class _RegistrationScreenState extends State<RegistrationScreen>{
                         Container(
                           decoration: ThemeHelper().inputBoxDecorationShaddow(),
                           child: TextFormField(
-                            decoration: ThemeHelper().textInputDecoration("E-mail address", "Enter your email"),
+                            decoration: ThemeHelper().textInputDecoration(
+                                "E-mail address", "Enter your email"),
                             keyboardType: TextInputType.emailAddress,
                             validator: (val) {
-                              if((val!.isNotEmpty) && !RegExp(r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?)*$").hasMatch(val)){
+                              if ((val!.isNotEmpty) &&
+                                  !RegExp(r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?)*$")
+                                      .hasMatch(val)) {
                                 return "Enter a valid email address";
                               }
                               return null;
@@ -120,12 +162,15 @@ class _RegistrationScreenState extends State<RegistrationScreen>{
                         Container(
                           decoration: ThemeHelper().inputBoxDecorationShaddow(),
                           child: TextFormField(
-                            decoration: ThemeHelper().textInputDecorationWithQRScan(
-                              "Robot Serial Number",
-                              "Enter your robot serial number"),
+                            controller: _serialNumberController,
+                            decoration: ThemeHelper()
+                                .textInputDecorationWithQRScan(
+                                    "Robot Serial Number*",
+                                    "XXX-XXX-XXXX",
+                                    () => scanQR()),
                             validator: (val) {
                               if (val!.isEmpty) {
-                                return "Please enter your password";
+                                return "Serial number is not match format";
                               }
                               return null;
                             },
@@ -161,7 +206,10 @@ class _RegistrationScreenState extends State<RegistrationScreen>{
                                             state.didChange(value);
                                           });
                                         }),
-                                    const Text("I accept all terms and conditions.", style: TextStyle(color: Colors.grey),),
+                                    const Text(
+                                      "I accept all terms and conditions.",
+                                      style: TextStyle(color: Colors.grey),
+                                    ),
                                   ],
                                 ),
                                 Container(
@@ -169,7 +217,10 @@ class _RegistrationScreenState extends State<RegistrationScreen>{
                                   child: Text(
                                     state.errorText ?? '',
                                     textAlign: TextAlign.left,
-                                    style: TextStyle(color: Theme.of(context).errorColor,fontSize: 12,),
+                                    style: TextStyle(
+                                      color: Theme.of(context).errorColor,
+                                      fontSize: 12,
+                                    ),
                                   ),
                                 )
                               ],
@@ -185,11 +236,13 @@ class _RegistrationScreenState extends State<RegistrationScreen>{
                         ),
                         const SizedBox(height: 20.0),
                         Container(
-                          decoration: ThemeHelper().buttonBoxDecoration(context),
+                          decoration:
+                              ThemeHelper().buttonBoxDecoration(context),
                           child: ElevatedButton(
                             style: ThemeHelper().buttonStyle(),
                             child: Padding(
-                              padding: const EdgeInsets.fromLTRB(40, 10, 40, 10),
+                              padding:
+                                  const EdgeInsets.fromLTRB(40, 10, 40, 10),
                               child: Text(
                                 "Register".toUpperCase(),
                                 style: const TextStyle(
@@ -203,15 +256,12 @@ class _RegistrationScreenState extends State<RegistrationScreen>{
                               if (_formKey.currentState!.validate()) {
                                 Navigator.of(context).pushAndRemoveUntil(
                                     MaterialPageRoute(
-                                        builder: (context) => ProfilePage()
-                                    ),
-                                        (Route<dynamic> route) => false
-                                );
+                                        builder: (context) => ProfilePage()),
+                                    (Route<dynamic> route) => false);
                               }
                             },
                           ),
                         ),
-                        
                       ],
                     ),
                   ),
@@ -223,5 +273,4 @@ class _RegistrationScreenState extends State<RegistrationScreen>{
       ),
     );
   }
-
 }

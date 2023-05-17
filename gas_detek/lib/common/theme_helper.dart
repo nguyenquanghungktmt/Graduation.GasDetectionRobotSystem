@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import '../constant.dart';
 
 class ThemeHelper {
-  InputDecoration textInputDecoration(
-      [String lableText = "", String hintText = ""]) {
+  InputDecoration textInputDecoration([String lableText = "", String hintText = ""]) {
     return InputDecoration(
       labelText: lableText,
       hintText: hintText,
+      hintStyle: TextStyle(
+        fontSize: 16.0,
+        color: Colors.grey.shade400),
       fillColor: Colors.white,
       filled: true,
       contentPadding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
@@ -25,17 +27,17 @@ class ThemeHelper {
     );
   }
 
-  InputDecoration textInputDecorationWithQRScan(
-      [String lableText = "", String hintText = ""]) {
+  InputDecoration textInputDecorationWithQRScan([String lableText = "", String hintText = "", VoidCallback? onPress]) {
     return InputDecoration(
       labelText: lableText,
       hintText: hintText,
+      hintStyle: TextStyle(
+        fontSize: 16.0,
+        color: Colors.grey.shade400),
       fillColor: Colors.white,
       filled: true,
       suffixIcon: IconButton(
-          onPressed: () {
-            print("hungnq");
-          },
+          onPressed: onPress,
           icon: const Icon(Icons.qr_code)),
       contentPadding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
       focusedBorder: OutlineInputBorder(
