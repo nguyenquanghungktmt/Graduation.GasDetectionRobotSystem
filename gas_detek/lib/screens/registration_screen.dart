@@ -29,7 +29,14 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   File? _avatar;
 
   Future getAvatarImage() async {
-    final image = await ImagePicker().pickImage(source: ImageSource.gallery);
+    XFile? image;
+
+    try {
+      image = await ImagePicker().pickImage(source: ImageSource.gallery);
+    } on PlatformException {
+      image = null;
+    }
+
     if (image == null) return;
 
     final imageTemporary = File(image.path);
@@ -96,8 +103,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                             children: [
                               Center(
                                 child: Container(
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(80),
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(80),
                                     border: Border.all(width: 5, color: Colors.white),
                                     color: Colors.white,
                                     boxShadow: const [
@@ -171,10 +178,10 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                                 "E-mail address", "Enter your email"),
                             keyboardType: TextInputType.emailAddress,
                             validator: (val) {
-                              if ((val!.isNotEmpty) &&
+                              if ((val!.isEmpty) ||
                                   !RegExp(r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?)*$")
                                       .hasMatch(val)) {
-                                return "Enter a valid email address";
+                                return "Enter valid email address";
                               }
                               return null;
                             },
@@ -191,8 +198,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                                     "XXX-XXX-XXXX",
                                     () => scanQR()),
                             validator: (val) {
-                              if (val!.isEmpty) {
-                                return "Serial number is not match format";
+                              if (val!.isEmpty || !RegExp(r"^[a-zA-Z0-9]{3}\-[a-zA-Z0-9]{3}\-[a-zA-Z0-9]{4}]*$").hasMatch(val)) {
+                                return "Enter valid serial number";
                               }
                               return null;
                             },
