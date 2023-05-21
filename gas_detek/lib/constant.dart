@@ -1,5 +1,7 @@
 import 'dart:ui';
 
+const String domain = "http://localhost:3000";
+
 const defaultPadding = 16.0;
 
 const kLightBlue = Color(0xffEBF6FF);

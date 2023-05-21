@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -7,8 +8,9 @@ import 'package:gas_detek/common/theme_helper.dart';
 import 'package:gas_detek/widgets/header_widget.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:vibration/vibration.dart';
+import 'package:http/http.dart' as http;
 
-import 'profile_page.dart';
+import '../constant.dart';
 
 class RegistrationScreen extends StatefulWidget {
   const RegistrationScreen({super.key});
@@ -21,10 +23,15 @@ class RegistrationScreen extends StatefulWidget {
 
 class _RegistrationScreenState extends State<RegistrationScreen> {
   final _formKey = GlobalKey<FormState>();
+
   bool checkedValue = false;
   bool checkboxValue = false;
 
+  final TextEditingController _firstNameController = TextEditingController();
+  final TextEditingController _lastNameController = TextEditingController();
+  final TextEditingController _emailAddressController = TextEditingController();
   final TextEditingController _serialNumberController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
 
   File? _avatar;
 
@@ -44,6 +51,17 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
     setState(() {
       _avatar = imageTemporary;
     });
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    _firstNameController.dispose();
+    _lastNameController.dispose();
+    _emailAddressController.dispose();
+    _serialNumberController.dispose();
+    _passwordController.dispose();
+    super.dispose();
   }
 
   @override
@@ -76,6 +94,74 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
     });
   }
 
+  Future<void> requestRegister() async {
+    String firstName = _firstNameController.text;
+    String lastName = _lastNameController.text;
+    String email = _emailAddressController.text;
+    String serialNumber = _serialNumberController.text;
+    String password = _passwordController.text;
+
+    // final jsonString = {
+    //   "first_name": firstName,
+    //   "last_name": lastName,
+    //   "email": email,
+    //   "serial_umber": serialNumber,
+    //   "password": password,
+    // };
+
+    String apiUrl = "$domain/register";
+
+    try {
+      final response = await http.post(
+        // Uri.parse(apiUrl),
+        // headers: <String, String>{
+        //   'Content-Type': 'application/json; charset=UTF-8',
+        // },
+        // body: jsonEncode(<String, String>{
+        //   "first_name": firstName,
+        //   "last_name": lastName,
+        //   "email": email,
+        //   "serial_umber": serialNumber,
+        //   "password": password,
+        // }),
+
+        Uri.parse('http://192.168.0.121:3000/register'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(<String, String>{}),
+      );
+
+      // print(response.runtimeType);
+      print(response);
+    } on PlatformException {
+      print('Failed to register.');
+    }
+  }
+
+  postData() async {
+    dynamic response;
+    try {
+      response = await http.post(
+        Uri.parse('http://192.168.0.121:3000/register'),
+        body: {"title": "title 1"}).timeout(
+          const Duration(seconds: 1),
+          onTimeout: () {
+            // Time has run out, do what you wanted to do.
+            print("time out");
+            return http.Response(
+                'Error', 408); // Request Timeout response status code
+          },
+      );
+    } on SocketException catch (_) {
+      // Other exception
+      response = "Fail";
+      print("exception");
+    }
+
+    print(response.body);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -83,10 +169,9 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
       body: SingleChildScrollView(
         child: Stack(
           children: [
-            Container(
+            const SizedBox(
               height: 150,
-              child: const HeaderWidget(
-                  150, false, Icons.person_add_alt_1_rounded),
+              child: HeaderWidget(150, false, Icons.person_add_alt_1_rounded),
             ),
             Container(
               margin: const EdgeInsets.fromLTRB(25, 50, 25, 10),
@@ -105,26 +190,34 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                                 child: Container(
                                     decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(80),
-                                    border: Border.all(width: 5, color: Colors.white),
-                                    color: Colors.white,
-                                    boxShadow: const [
-                                      BoxShadow(
-                                        color: Colors.black12,
-                                        blurRadius: 10,
-                                        offset: Offset(5, 5),
-                                      ),
-                                    ],
-                                  ),
-                                  child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(40.0),
-                                    child: _avatar != null
-                                        ? Image.file(_avatar!, width: 80.0, height: 80.0, fit: BoxFit.cover)
-                                        : Icon(Icons.person, color: Colors.grey.shade300, size: 80.0,),
-                                  )
-                                ),
+                                      border: Border.all(
+                                          width: 5, color: Colors.white),
+                                      color: Colors.white,
+                                      boxShadow: const [
+                                        BoxShadow(
+                                          color: Colors.black12,
+                                          blurRadius: 10,
+                                          offset: Offset(5, 5),
+                                        ),
+                                      ],
+                                    ),
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(40.0),
+                                      child: _avatar != null
+                                          ? Image.file(_avatar!,
+                                              width: 80.0,
+                                              height: 80.0,
+                                              fit: BoxFit.cover)
+                                          : Icon(
+                                              Icons.person,
+                                              color: Colors.grey.shade300,
+                                              size: 80.0,
+                                            ),
+                                    )),
                               ),
                               Container(
-                                padding: const EdgeInsets.fromLTRB(60, 55, 0, 0),
+                                padding:
+                                    const EdgeInsets.fromLTRB(60, 55, 0, 0),
                                 alignment: Alignment.center,
                                 child: IconButton(
                                   icon: Icon(
@@ -144,8 +237,9 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                         Container(
                           decoration: ThemeHelper().inputBoxDecorationShaddow(),
                           child: TextFormField(
+                            controller: _firstNameController,
                             decoration: ThemeHelper().textInputDecoration(
-                                'First Name', 'Enter your first name'),
+                                'First Name*', 'Enter your first name'),
                             validator: (val) {
                               if (val!.isEmpty) {
                                 return "Please enter your password";
@@ -155,13 +249,14 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                           ),
                         ),
                         const SizedBox(
-                          height: 30,
+                          height: 20.0,
                         ),
                         Container(
                           decoration: ThemeHelper().inputBoxDecorationShaddow(),
                           child: TextFormField(
+                            controller: _lastNameController,
                             decoration: ThemeHelper().textInputDecoration(
-                                'Last Name', 'Enter your last name'),
+                                'Last Name*', 'Enter your last name'),
                             validator: (val) {
                               if (val!.isEmpty) {
                                 return "Please enter your password";
@@ -174,8 +269,9 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                         Container(
                           decoration: ThemeHelper().inputBoxDecorationShaddow(),
                           child: TextFormField(
+                            controller: _emailAddressController,
                             decoration: ThemeHelper().textInputDecoration(
-                                "E-mail address", "Enter your email"),
+                                "E-mail address*", "Enter your email"),
                             keyboardType: TextInputType.emailAddress,
                             validator: (val) {
                               if ((val!.isEmpty) ||
@@ -195,10 +291,12 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                             decoration: ThemeHelper()
                                 .textInputDecorationWithQRScan(
                                     "Robot Serial Number*",
-                                    "XXX-XXX-XXXX",
+                                    "XXXXXXXXXX",
                                     () => scanQR()),
                             validator: (val) {
-                              if (val!.isEmpty || !RegExp(r"^[a-zA-Z0-9]{3}\-[a-zA-Z0-9]{3}\-[a-zA-Z0-9]{4}]*$").hasMatch(val)) {
+                              if (val!.isEmpty ||
+                                  !RegExp(r"^[a-zA-Z0-9]{10}]*$")
+                                      .hasMatch(val)) {
                                 return "Enter valid serial number";
                               }
                               return null;
@@ -209,6 +307,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                         Container(
                           decoration: ThemeHelper().inputBoxDecorationShaddow(),
                           child: TextFormField(
+                            controller: _passwordController,
                             obscureText: true,
                             decoration: ThemeHelper().textInputDecoration(
                                 "Password*", "Enter your password"),
@@ -282,12 +381,15 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                               ),
                             ),
                             onPressed: () {
-                              if (_formKey.currentState!.validate()) {
-                                Navigator.of(context).pushAndRemoveUntil(
-                                    MaterialPageRoute(
-                                        builder: (context) => ProfilePage()),
-                                    (Route<dynamic> route) => false);
-                              }
+                              postData();
+                              // requestRegister();
+                              // if (_formKey.currentState!.validate()) {
+                              // Navigator.of(context).pushAndRemoveUntil(
+                              //     MaterialPageRoute(
+                              //         builder: (context) =>
+                              //             const ProfilePage()),
+                              //     (Route<dynamic> route) => false);
+                              // }
                             },
                           ),
                         ),

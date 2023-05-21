@@ -26,4 +26,11 @@ router.post("/sendRobotStatus", function (req, res) {
   res.json({ message: `Server busy - id = ${ req.body.id}` });
 });
 
+router.post("/register", function (req, res) {
+  console.log("Client request: ", req.body)
+  logger.info(`Client request - status= ${ req.body.status}`);
+
+  res.json({ message: `register success - email = ${ req.body.email}` });
+});
+
 module.exports = router;
