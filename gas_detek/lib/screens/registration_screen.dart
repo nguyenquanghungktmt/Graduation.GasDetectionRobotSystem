@@ -29,6 +29,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
 
   final TextEditingController _firstNameController = TextEditingController();
   final TextEditingController _lastNameController = TextEditingController();
+  final TextEditingController _userNameController = TextEditingController();
   final TextEditingController _emailAddressController = TextEditingController();
   final TextEditingController _serialNumberController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
@@ -61,6 +62,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
     _emailAddressController.dispose();
     _serialNumberController.dispose();
     _passwordController.dispose();
+    _userNameController.dispose();
     super.dispose();
   }
 
@@ -97,69 +99,46 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   Future<void> requestRegister() async {
     String firstName = _firstNameController.text;
     String lastName = _lastNameController.text;
+    String userName = _userNameController.text;
     String email = _emailAddressController.text;
     String serialNumber = _serialNumberController.text;
     String password = _passwordController.text;
-
-    // final jsonString = {
-    //   "first_name": firstName,
-    //   "last_name": lastName,
-    //   "email": email,
-    //   "serial_umber": serialNumber,
-    //   "password": password,
-    // };
 
     String apiUrl = "$domain/register";
 
     try {
       final response = await http.post(
-        // Uri.parse(apiUrl),
-        // headers: <String, String>{
-        //   'Content-Type': 'application/json; charset=UTF-8',
-        // },
-        // body: jsonEncode(<String, String>{
-        //   "first_name": firstName,
-        //   "last_name": lastName,
-        //   "email": email,
-        //   "serial_umber": serialNumber,
-        //   "password": password,
-        // }),
-
-        Uri.parse('http://192.168.0.121:3000/register'),
+        Uri.parse(apiUrl),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
-        body: jsonEncode(<String, String>{}),
+        body: jsonEncode(<String, String>{
+          "first_name": firstName,
+          "last_name": lastName,
+          "email": email,
+          "user_name": userName,
+          "serial_number": serialNumber,
+          "password": password,
+        }),
       );
 
       // print(response.runtimeType);
-      print(response);
+      print(response.statusCode);
+      // print(response.body);
+
+      if (response.statusCode == 200) {
+        // If the server did return a 201 CREATED response,
+        // then parse the JSON.
+        print(response.body);
+      } else {
+        // If the server did not return a 201 CREATED response,
+        // then throw an exception.
+      }
+    } on SocketException {
+      // print("SocketException");
     } on PlatformException {
-      print('Failed to register.');
+      // print('Failed to register.');
     }
-  }
-
-  postData() async {
-    dynamic response;
-    try {
-      response = await http.post(
-        Uri.parse('http://192.168.0.121:3000/register'),
-        body: {"title": "title 1"}).timeout(
-          const Duration(seconds: 1),
-          onTimeout: () {
-            // Time has run out, do what you wanted to do.
-            print("time out");
-            return http.Response(
-                'Error', 408); // Request Timeout response status code
-          },
-      );
-    } on SocketException catch (_) {
-      // Other exception
-      response = "Fail";
-      print("exception");
-    }
-
-    print(response.body);
   }
 
   @override
@@ -242,7 +221,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                                 'First Name*', 'Enter your first name'),
                             validator: (val) {
                               if (val!.isEmpty) {
-                                return "Please enter your password";
+                                return "Please enter your first name";
                               }
                               return null;
                             },
@@ -259,7 +238,24 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                                 'Last Name*', 'Enter your last name'),
                             validator: (val) {
                               if (val!.isEmpty) {
-                                return "Please enter your password";
+                                return "Please enter your last name";
+                              }
+                              return null;
+                            },
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 20.0,
+                        ),
+                        Container(
+                          decoration: ThemeHelper().inputBoxDecorationShaddow(),
+                          child: TextFormField(
+                            controller: _userNameController,
+                            decoration: ThemeHelper().textInputDecoration(
+                                'User Name*', 'Enter your user name'),
+                            validator: (val) {
+                              if (val!.isEmpty) {
+                                return "Please enter your user name";
                               }
                               return null;
                             },
@@ -381,7 +377,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                               ),
                             ),
                             onPressed: () {
-                              postData();
+                              requestRegister();
                               // requestRegister();
                               // if (_formKey.currentState!.validate()) {
                               // Navigator.of(context).pushAndRemoveUntil(

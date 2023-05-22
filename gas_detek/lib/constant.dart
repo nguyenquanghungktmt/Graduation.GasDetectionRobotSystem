@@ -1,6 +1,7 @@
 import 'dart:ui';
 
-const String domain = "http://localhost:3000";
+// chang domain here //
+const String domain = "https://65a0-58-186-128-249.ngrok-free.app";
 
 const defaultPadding = 16.0;
 
