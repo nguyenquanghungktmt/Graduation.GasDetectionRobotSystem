@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:io';
 import 'dart:convert';
 
@@ -10,6 +12,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:vibration/vibration.dart';
 import 'package:http/http.dart' as http;
 
+import '../common/alert_helper.dart';
 import '../common/loading/loading_screen.dart';
 import '../constant.dart';
 
@@ -105,13 +108,13 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
     String serialNumber = _serialNumberController.text;
     String password = _passwordController.text;
 
-    String apiUrl = "$domain/register";
     LoadingScreen().show(
       context: context,
       text: 'Please wait a moment',
     );
 
     try {
+      String apiUrl = "$domain/register";
       final response = await http.post(
         Uri.parse(apiUrl),
         headers: <String, String>{
@@ -131,18 +134,26 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
       print(response.statusCode);
       // print(response.body);
 
+      LoadingScreen().hide();
       if (response.statusCode == 200) {
         // If the server did return a 201 CREATED response,
         // then parse the JSON.
         print(response.body);
+
+        Alert.dialogSuccess(context, 'Registration Success');
       } else {
         // If the server did not return a 201 CREATED response,
         // then throw an exception.
+
+        Alert.dialogError(context, 'Registration Failed');
       }
-      LoadingScreen().hide();
+      Alert.closeDialog(context, durationBeforeClose: const Duration(seconds: 1));
     } on Exception {
       // print("SocketException");
       LoadingScreen().hide();
+      
+      Alert.dialogError(context, 'Error');
+      Alert.closeDialog(context, durationBeforeClose: const Duration(seconds: 1));
     }
   }
 

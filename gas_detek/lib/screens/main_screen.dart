@@ -1,22 +1,33 @@
+// ignore_for_file: no_logic_in_create_state
+
 import 'package:gas_detek/widgets/room_grid_widget.dart';
 import 'package:flutter/material.dart';
 
 import '../constant.dart';
 import '../widgets/side_menu_widget.dart';
+import '../common/alert_helper.dart';
 
-class MainScreen extends StatelessWidget {
-  const MainScreen({Key? key}) : super(key: key);
+class MainScreen extends StatefulWidget {
+  const MainScreen({super.key});
 
+  @override
+  State<StatefulWidget> createState() {
+    Alert.toastSuccess('Login Success');
+    Alert.closeToast(durationBeforeClose: const Duration(milliseconds: 1500));
+    return _MainScreenState();
+  }
+}
+
+class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: const Text("Gas Detection",
-        textAlign: TextAlign.center,
-          style: TextStyle(
-            color: Colors.grey,
-            fontWeight: FontWeight.bold),
+        title: const Text(
+          "Gas Detection",
+          textAlign: TextAlign.center,
+          style: TextStyle(color: Colors.grey, fontWeight: FontWeight.bold),
         ),
         elevation: 0,
         backgroundColor: Colors.transparent,

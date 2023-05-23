@@ -1,11 +1,38 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:gas_detek/screens/login_screen.dart';
 import 'package:ternav_icons/ternav_icons.dart';
+
+import '../common/alert_helper.dart';
 
 class SideMenu extends StatelessWidget {
   const SideMenu({
     Key? key,
   }) : super(key: key);
+
+  Future<void> _logout(BuildContext context) async{
+    bool? isYes = await Alert.dialogConfirmation(
+      context,
+      'Logout?',
+      'You sure logout from this account?',
+    );
+    if (isYes ?? false) {
+      Alert.toastSuccess('Logout Success');
+      Alert.closeToast(durationBeforeClose: const Duration(milliseconds: 1500));
+      Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(builder: (context) => const LoginScreen()), (route) => false
+      );
+    }
+  }
+
+  Future<void> _aboutUs(BuildContext context) async{
+    Alert.dialogNotification(
+      context,
+      'About Us',
+      'This application created by Nguyễn Quang Hưng.\nAll right reserved.\nVersion: 1.2.6',
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -35,16 +62,12 @@ class SideMenu extends StatelessWidget {
           DrawerListTile(
             icon: TernavIcons.lightOutline.info_1,
             title: "About us",
-            onTap: () {},
+            onTap: () => _aboutUs(context),
           ),
           DrawerListTile(
             icon: TernavIcons.lightOutline.logout,
             title: "Log out",
-            onTap: () {
-              Navigator.of(context).pushAndRemoveUntil(
-                MaterialPageRoute(builder: (context) => const LoginScreen()), (route) => false
-              );
-            },
+            onTap: () => _logout(context),
           ),
           const SizedBox(
             height: 60,

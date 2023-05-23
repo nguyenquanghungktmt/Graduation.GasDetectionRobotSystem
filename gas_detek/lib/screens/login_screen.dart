@@ -1,11 +1,18 @@
+// ignore_for_file: use_build_context_synchronously
+
+import 'dart:convert';
+
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:gas_detek/common/theme_helper.dart';
 import 'package:gas_detek/screens/main_screen.dart';
+import 'package:http/http.dart' as http;
 
 import '../common/loading/loading_screen.dart';
+import '../common/alert_helper.dart';
 import 'registration_screen.dart';
 import '../widgets/header_widget.dart';
+import '../constant.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -18,26 +25,72 @@ class _LoginScreenState extends State<LoginScreen> {
   final double _headerHeight = 250;
   final Key _formKey = GlobalKey<FormState>();
 
+  final TextEditingController _userNameController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+
   void _requestLogin() async {
-     // Call LoadingScreen().show() to SHOW  Loading Dialog
+    String userName = _userNameController.text;
+    String password = _passwordController.text;
+
+    // Call LoadingScreen().show() to show Loading Dialog
     LoadingScreen().show(
       context: context,
       text: 'Please wait a moment',
     );
 
-    // await for 2 seconds to Mock Loading Data
-    await Future.delayed(const Duration(seconds: 2));
-    
-    // ignore: use_build_context_synchronously
-    Navigator.push(context, MaterialPageRoute(builder: (context) => const MainScreen()));
+
+    try {
+      String apiUrl = "$domain/login";
+      final response = await http.post(
+        Uri.parse(apiUrl),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(<String, String>{
+          "user_name": userName,
+          "password": password,
+        }),
+      );
+
+      print(response.statusCode);
+      LoadingScreen().hide();
+
+      if (response.statusCode == 200) {
+        // If the server did return a 200 response, then parse the JSON.
+        print(response.body);
+
+        Navigator.push(context, MaterialPageRoute(builder: (context) => const MainScreen()));
+      } else {
+        // error response
+        // Alert.dialogError(context, 'Login Failed.\nPlease check your network again.');
+        // Alert.closeDialog(context, durationBeforeClose: const Duration(milliseconds: 1500));
+
+        
+        Navigator.push(context, MaterialPageRoute(builder: (context) => const MainScreen()));
+      }
+    } on Exception {
+      // catch exception
+      LoadingScreen().hide();
+      
+      Alert.dialogError(context, 'Error');
+      Alert.closeDialog(context, durationBeforeClose: const Duration(milliseconds: 1500));
+    }
+
 
     // Call LoadingScreen().hide() to HIDE  Loading Dialog
     LoadingScreen().hide();
   }
 
   @override
-  Widget build(BuildContext context) {
+  void dispose() {
+    // TODO: implement dispose
+    _userNameController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
 
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
@@ -70,6 +123,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             Container(
                               decoration: ThemeHelper().inputBoxDecorationShaddow(),
                               child: TextField(
+                                controller: _userNameController,
                                 decoration: ThemeHelper().textInputDecoration('User Name', 'Enter your user name'),
                               ),
                             ),
@@ -77,6 +131,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             Container(
                               decoration: ThemeHelper().inputBoxDecorationShaddow(),
                               child: TextField(
+                                controller: _passwordController,
                                 obscureText: true,
                                 decoration: ThemeHelper().textInputDecoration('Password', 'Enter your password'),
                               ),
