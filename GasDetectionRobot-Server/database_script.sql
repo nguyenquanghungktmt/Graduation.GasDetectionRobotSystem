@@ -1,4 +1,4 @@
-create table gas_detekt_db;
+create database gas_detekt_db;
 
 use gas_detekt_db;
 
@@ -12,13 +12,13 @@ create table user (
     email varchar(100),
     password varchar(100),
     avatar_url varchar(50),
+    own_device_sn varchar(15),
     created_time datetime,
     modified_time datetime
 );
 
 create table device (
-	serial_number varchar(10) primary key not null,
-    owner_uuid varchar(36) not null,
+	serial_number varchar(15) primary key not null,
     model_name varchar(100),
     image_url varchar(50),
     device_status varchar(100),
@@ -35,3 +35,5 @@ create table room (
     created_time datetime,
     modified_time datetime
 );
+
+select * from device;
