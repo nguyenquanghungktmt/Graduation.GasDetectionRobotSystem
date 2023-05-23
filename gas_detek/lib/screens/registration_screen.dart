@@ -10,6 +10,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:vibration/vibration.dart';
 import 'package:http/http.dart' as http;
 
+import '../common/loading/loading_screen.dart';
 import '../constant.dart';
 
 class RegistrationScreen extends StatefulWidget {
@@ -105,6 +106,10 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
     String password = _passwordController.text;
 
     String apiUrl = "$domain/register";
+    LoadingScreen().show(
+      context: context,
+      text: 'Please wait a moment',
+    );
 
     try {
       final response = await http.post(
@@ -134,10 +139,10 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
         // If the server did not return a 201 CREATED response,
         // then throw an exception.
       }
-    } on SocketException {
+      LoadingScreen().hide();
+    } on Exception {
       // print("SocketException");
-    } on PlatformException {
-      // print('Failed to register.');
+      LoadingScreen().hide();
     }
   }
 

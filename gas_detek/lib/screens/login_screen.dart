@@ -3,19 +3,37 @@ import 'package:flutter/material.dart';
 import 'package:gas_detek/common/theme_helper.dart';
 import 'package:gas_detek/screens/main_screen.dart';
 
+import '../common/loading/loading_screen.dart';
 import 'registration_screen.dart';
 import '../widgets/header_widget.dart';
 
-class LoginScreen extends StatefulWidget{
-  const LoginScreen({Key? key}): super(key:key);
+class LoginScreen extends StatefulWidget {
+  const LoginScreen({Key? key}) : super(key: key);
 
   @override
   _LoginScreenState createState() => _LoginScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen>{
+class _LoginScreenState extends State<LoginScreen> {
   final double _headerHeight = 250;
   final Key _formKey = GlobalKey<FormState>();
+
+  void _requestLogin() async {
+     // Call LoadingScreen().show() to SHOW  Loading Dialog
+    LoadingScreen().show(
+      context: context,
+      text: 'Please wait a moment',
+    );
+
+    // await for 2 seconds to Mock Loading Data
+    await Future.delayed(const Duration(seconds: 2));
+    
+    // ignore: use_build_context_synchronously
+    Navigator.push(context, MaterialPageRoute(builder: (context) => const MainScreen()));
+
+    // Call LoadingScreen().hide() to HIDE  Loading Dialog
+    LoadingScreen().hide();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -79,14 +97,11 @@ class _LoginScreenState extends State<LoginScreen>{
                               decoration: ThemeHelper().buttonBoxDecoration(context),
                               child: ElevatedButton(
                                 style: ThemeHelper().buttonStyle(),
+                                onPressed: _requestLogin,
                                 child: Padding(
                                   padding: const EdgeInsets.fromLTRB(40, 10, 40, 10),
                                   child: Text('Sign In'.toUpperCase(), style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white),),
                                 ),
-                                onPressed: (){
-                                  //After successful login we will redirect to profile page. Let's create profile page now
-                                  Navigator.push(context, MaterialPageRoute(builder: (context) => MainScreen()));
-                                },
                               ),
                             ),
                             Container(
