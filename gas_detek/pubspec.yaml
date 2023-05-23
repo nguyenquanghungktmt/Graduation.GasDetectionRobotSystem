@@ -20,6 +20,8 @@ dependencies:
   vibration: ^1.7.6
   flutter_launcher_icons: ^0.13.1
   http: ^0.13.6
+  get: ^4.6.1
+  fluttertoast: ^8.2.1
 
 
 dev_dependencies:
