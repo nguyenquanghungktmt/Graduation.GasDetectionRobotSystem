@@ -12,7 +12,7 @@ create table user (
     email varchar(100),
     password varchar(100),
     avatar_url varchar(50),
-    own_device_sn varchar(15),
+    device_serial_number varchar(15),
     created_time datetime,
     modified_time datetime
 );
@@ -36,11 +36,39 @@ create table room (
     modified_time datetime
 );
 
+select * from user;
 select * from device;
+select * from room;
+
+/* permission for root account */
+ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'qwerty123';
+flush privileges;
+
 
 /* add record to tables */
+insert into user (uuid, username, password, device_serial_number)
+values ('123e4567-e89b-12d3-a456-426655440000', 'hungnq', '123', 'RB23GT1708');
+
+
 insert into device (serial_number, model_name, description)
 values ('RB23GT1708', 'Gas detection robot', 'Using Raspberry Pi 3, Ultrasonic sensor, gas detect sensor');
 
 insert into device (serial_number, model_name, description)
 values ('RB23GT1807', 'Gas detection robot', 'Using Raspberry Pi 3, Ultrasonic sensor, gas detect sensor');
+
+
+/* select querry */
+select * from user where username='hungnq' and password='123';
+
+SELECT * FROM user WHERE username = "hungnq";
+SELECT * FROM user WHERE email = "hungnq@cdc.com";
+SELECT * FROM device WHERE serial_number = "RB23GT1708";
+
+
+select count(*) from user, device
+where user.device_serial_number!='RB23GT1807' and device.serial_number='RB23GT1807';
+
+SELECT COUNT(*) FROM user JOIN device 
+ON user.device_serial_number!='RB23GT1807' AND device.serial_number='RB23GT1807';
+
+
