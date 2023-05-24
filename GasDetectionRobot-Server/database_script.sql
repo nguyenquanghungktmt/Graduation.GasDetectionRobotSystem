@@ -37,3 +37,10 @@ create table room (
 );
 
 select * from device;
+
+/* add record to tables */
+insert into device (serial_number, model_name, description)
+values ('RB23GT1708', 'Gas detection robot', 'Using Raspberry Pi 3, Ultrasonic sensor, gas detect sensor');
+
+insert into device (serial_number, model_name, description)
+values ('RB23GT1807', 'Gas detection robot', 'Using Raspberry Pi 3, Ultrasonic sensor, gas detect sensor');
