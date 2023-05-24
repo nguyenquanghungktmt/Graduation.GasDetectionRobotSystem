@@ -126,6 +126,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
           "email": email,
           "user_name": userName,
           "serial_number": serialNumber,
+          "avatar_url": _avatar != null ? _avatar!.toString() : '',
           "password": password,
         }),
       );
