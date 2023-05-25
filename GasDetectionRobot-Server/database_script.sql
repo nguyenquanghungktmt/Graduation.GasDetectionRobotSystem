@@ -55,6 +55,7 @@ values ('RB23GD1708', 'Gas detection robot', 'Using Raspberry Pi 3, Ultrasonic s
 
 insert into device (serial_number, model_name, description)
 values ('RB23GD0002', 'Gas detection robot', 'Using Raspberry Pi 3, Ultrasonic sensor, gas detect sensor');
+values ('RB23GD0001', 'Gas detection robot', 'Using Raspberry Pi 3, Ultrasonic sensor, gas detect sensor');
 
 
 /* select querry */
