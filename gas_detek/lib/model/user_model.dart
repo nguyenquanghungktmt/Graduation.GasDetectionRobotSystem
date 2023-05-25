@@ -23,9 +23,9 @@ class User {
       firstName: json['first_name'] ?? "",
       lastName: json['last_name'] ?? "",
       username: json['username'] ?? "",
-      avatarUrl: json['avatar_url'] ?? "",
+      email: json['email'] ?? "",
       serialNumber: json['serial_number'] ?? "",
-      email: json['email'],
+      avatarUrl: json['avatar_url'],
     );
   }
 }

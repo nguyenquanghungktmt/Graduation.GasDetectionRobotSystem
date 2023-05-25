@@ -16,6 +16,7 @@ import 'package:http/http.dart' as http;
 import '../common/alert_helper.dart';
 import '../common/loading/loading_screen.dart';
 import '../constant.dart';
+import 'main_screen.dart';
 
 class RegistrationScreen extends StatefulWidget {
   const RegistrationScreen({super.key});
@@ -115,7 +116,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
     );
 
     try {
-      String apiUrl = "$domain/test";
+      String apiUrl = "$domain/register";
       final response = await http.post(
         Uri.parse(apiUrl),
         headers: <String, String>{
@@ -135,7 +136,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
       print(response.statusCode);
       LoadingScreen().hide();
 
-      if (response.statusCode == 200) {
+      if (response.statusCode == 200 || response.statusCode == 201) {
         // If the server did return a 200 CREATED response, then parse the JSON.
         final body = json.decode(response.body);
 
@@ -147,24 +148,25 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
         if (status == 1 && (code==200 || code==201)) {
           User user = User.fromJson(data);
           print(user.firstName);
-          Alert.dialogSuccess(context, message);
+          Alert.toastSuccess(message);
+          Navigator.push(context, MaterialPageRoute(builder: (context) => const MainScreen()));
         } else {
           Alert.dialogError(context, message);
+          Alert.closeDialog(context, durationBeforeClose: const Duration(seconds: 1));
         }
       } else {
         // If the server did not return a 201 CREATED response,
         // then throw an exception.
 
         Alert.dialogError(context, 'Registration Failed');
+        Alert.closeDialog(context, durationBeforeClose: const Duration(seconds: 1));
       }
-      Alert.closeDialog(context, durationBeforeClose: const Duration(seconds: 1));
     } on Exception {
       // print("SocketException");
       LoadingScreen().hide();
 
       Alert.dialogError(context, 'Error');
-      Alert.closeDialog(context,
-          durationBeforeClose: const Duration(seconds: 1));
+      Alert.closeDialog(context, durationBeforeClose: const Duration(seconds: 1));
     }
   }
 

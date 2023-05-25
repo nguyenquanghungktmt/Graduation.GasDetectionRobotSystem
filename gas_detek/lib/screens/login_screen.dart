@@ -70,8 +70,7 @@ class _LoginScreenState extends State<LoginScreen> {
           // print(user.firstName);
 
           Alert.toastSuccess(message);
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => const MainScreen()));
+          Navigator.push(context, MaterialPageRoute(builder: (context) => const MainScreen()));
         } else {
           Alert.dialogError(context, message);
           Alert.closeDialog(context,
