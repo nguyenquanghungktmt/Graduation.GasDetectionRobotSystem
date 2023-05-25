@@ -119,8 +119,17 @@ router.post('/register', function(req, res){
           res.status(404).json(response.createResponse(0, 404, "Server Error !"))
           throw err
         }
-
-        res.status(201).json(response.createResponse(1, 201, 'Success', 'Registration Success',result[0]))
+        
+        let data = {
+          "uuid": uuid_user,
+          "first_name": first_name,
+          "last_name": last_name,
+          "username": username,
+          "email": email,
+          "avatar_url": avatarUrl,
+          "serial_number": first_name
+        }
+        res.status(201).json(response.createResponse(1, 201, 'Registration Success', data))
         conn.end()
       })
     }
