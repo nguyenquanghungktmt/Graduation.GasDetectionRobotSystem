@@ -3,6 +3,7 @@ const uuid = require("uuid")
 const database = require("../common/connect.js");
 const logger = require("../common/log.js");
 const datetime = require("../common/datetime.js");
+const response = require("../common/response.js");
 
 // define a router
 var router = express.Router();
@@ -40,24 +41,13 @@ router.post("/login", function (req, res) {
   const conn = database.createConnection();
   conn.query(query, function (err, result) {
     if (err) {
-      console.log(err);
-      res.status(400).json({ 
-        status: "Fail",
-        message: "Error in database operation" 
-      });
+      res.status(404).json(response.createResponse(0, 404, "Server Error !"));
       
     } else {
       if (!result.length) {
-        res.status(200).json({ 
-          status: "Fail",
-          message: "Username or Password wrong!" 
-        });
+        res.status(200).json(response.createResponse(1, 400, "Username or Password wrong!"));
       } 
-      else res.status(200).json({
-        status: "Success",
-        message: "Login Success",
-        data: result[0]
-      });
+      else res.status(200).json(response.createResponse(1, 200, "Login Success", result[0]));
     }
     conn.end();
   });
@@ -73,7 +63,7 @@ router.post('/register', function(req, res){
 
   let first_name = req.body.first_name ?? '';
   let last_name = req.body.last_name ?? '';
-  let username = req.body.user_name ?? '';
+  let username = req.body.username ?? '';
   let email = req.body.email ?? '';
   let password = req.body.password ?? '';
   let avatarUrl = req.body.avatar_url ?? '';
@@ -81,54 +71,42 @@ router.post('/register', function(req, res){
   
 
   var listQueryCheck = []
-  listQueryCheck.push(`SELECT COUNT(*) as cnt FROM user WHERE username = "${username}"`);
-  listQueryCheck.push(`SELECT COUNT(*) FROM user WHERE email = "${email}"`);
-  listQueryCheck.push(`SELECT COUNT(*) FROM user JOIN device ON user.device_serial_number!="${serialNumber}" AND device.serial_number="${serialNumber}";`);
-
-  console.log(listQueryCheck)
+  listQueryCheck.push(`SELECT COUNT(*) as count FROM user WHERE username = "${username}"`);
+  listQueryCheck.push(`SELECT COUNT(*) as count FROM user WHERE email = "${email}"`);
+  listQueryCheck.push(`SELECT COUNT(*) as count FROM device WHERE serial_number = "${serialNumber}"`);
+  listQueryCheck.push(`SELECT COUNT(*) as count FROM user WHERE device_serial_number = "${serialNumber}"`);
 
   
-  // Kiểm tra xem tài khoản đã tồn tại hay chưa
+  // check if username, email, serial_number is exist ?
   const conn = database.createConnection();
   conn.query(listQueryCheck.join('; '), function(err, results){
-    
-    console.log(results)
-    console.log(results[0].cnt)
-    // console.log(results[0].count);
-    // console.log(typeof results[0]);
     if (err) {
-      console.log("Query error first time");
-      res.status(400).json({ 
-        status: "Fail",
-        message: "Server Error !" 
-      });
+      res.status(404).json(response.createResponse(0, 404, "Server Error !"));
       throw err
     }
 
-    // Đã tồn tại tài khoản
-    if(Number(results[0].count) > 0){
-      res.send({
-        status: 'Fail', 
-        message: 'Username has existed. Please try another.'
-      })
+    if(results[0][0].count){
+      // Username already exist
+      res.send(response.createResponse(1, 400, 'Username has existed. Please try another.'))
       conn.end()
     }
-    else if(Number(results[1].count) > 0){
-      res.send({
-        status: 'Fail', 
-        message: 'Email has existed. Please try again.'
-      })
+    else if(results[1][0].count){
+      // Email already exist
+      res.send(response.createResponse(1, 400, 'Email has existed. Please try again.'))
       conn.end()
     }
-    else if(!Number(results[2].count)){
-      res.send({
-        status: 'Fail', 
-        message: 'Serial Number of device is wrong or already used. Please check again.'
-      })
+    else if(!results[2][0].count){
+      // Serial number is wrong
+      res.send(response.createResponse(1, 400, 'Serial Number of device is wrong. Please check again.'))
+      conn.end()
+    }
+    else if(results[3][0].count){
+      // Serial number already used
+      res.send(response.createResponse(1, 400, 'Serial Number of device already used. Please try another.'))
       conn.end()
     }
     else{
-      //Thêm tài khoản vào db
+      // Add new user account to DB
       let uuid_user = uuid.v4();
       let currentTime = datetime.getDatetimeNow();
       let querryInsertAcc = `INSERT INTO user (uuid, username, first_name, last_name, email, password, avatar_url, device_serial_number, created_time, modified_time) VALUES ('${uuid_user}', '${username}', '${first_name}', '${last_name}', '${email}', '${password}', '${avatarUrl}', '${serialNumber}', '${currentTime}', '${currentTime}')`;
@@ -138,18 +116,11 @@ router.post('/register', function(req, res){
       conn.query(querryInsertAcc, function(err, result){
         if(err) {
           console.log("Query error first time");
-          res.status(400).json({ 
-            status: "Fail",
-            message: "Server Error !" 
-          });
+          res.status(404).json(response.createResponse(0, 404, "Server Error !"))
           throw err
         }
 
-        res.send({
-          status: 'Success',
-          message: 'Registration Success',
-          data: result[0]
-        })
+        res.status(201).json(response.createResponse(1, 201, 'Success', 'Registration Success',result[0]))
         conn.end()
       })
     }
@@ -158,4 +129,15 @@ router.post('/register', function(req, res){
   console.log("===========");
 })
 
+
+router.post("/test", function (req, res) {
+  console.log("Client request: ", req.body)
+  let data = {
+    "first_name": "Hung",
+    "last_name": "Nguyen",
+  }
+  res.status(200).json(response.createResponse(1, 200, "Registration Success", data));
+
+  console.log("===========");
+})
 module.exports = router;
