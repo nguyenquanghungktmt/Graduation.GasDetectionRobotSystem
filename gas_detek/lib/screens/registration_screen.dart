@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:gas_detek/common/theme_helper.dart';
+import 'package:gas_detek/model/user_model.dart';
 import 'package:gas_detek/widgets/header_widget.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:vibration/vibration.dart';
@@ -114,7 +115,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
     );
 
     try {
-      String apiUrl = "$domain/register";
+      String apiUrl = "$domain/test";
       final response = await http.post(
         Uri.parse(apiUrl),
         headers: <String, String>{
@@ -124,24 +125,32 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
           "first_name": firstName,
           "last_name": lastName,
           "email": email,
-          "user_name": userName,
+          "username": userName,
           "serial_number": serialNumber,
-          "avatar_url": _avatar != null ? _avatar!.toString() : '',
+          // "avatar_url": _avatar != null ? _avatar!.toString() : '',
           "password": password,
         }),
       );
 
-      // print(response.runtimeType);
       print(response.statusCode);
-      // print(response.body);
-
       LoadingScreen().hide();
-      if (response.statusCode == 200) {
-        // If the server did return a 201 CREATED response,
-        // then parse the JSON.
-        print(response.body);
 
-        Alert.dialogSuccess(context, 'Registration Success');
+      if (response.statusCode == 200) {
+        // If the server did return a 200 CREATED response, then parse the JSON.
+        final body = json.decode(response.body);
+
+        final status = body['status'] as int;
+        final code = body['code'] as int;
+        final message = body['message'] as String;
+        final data = body['data'];
+
+        if (status == 1 && (code==200 || code==201)) {
+          User user = User.fromJson(data);
+          print(user.firstName);
+          Alert.dialogSuccess(context, message);
+        } else {
+          Alert.dialogError(context, message);
+        }
       } else {
         // If the server did not return a 201 CREATED response,
         // then throw an exception.
@@ -152,9 +161,10 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
     } on Exception {
       // print("SocketException");
       LoadingScreen().hide();
-      
+
       Alert.dialogError(context, 'Error');
-      Alert.closeDialog(context, durationBeforeClose: const Duration(seconds: 1));
+      Alert.closeDialog(context,
+          durationBeforeClose: const Duration(seconds: 1));
     }
   }
 

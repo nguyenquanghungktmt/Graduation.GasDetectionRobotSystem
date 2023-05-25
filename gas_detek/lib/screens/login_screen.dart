@@ -10,6 +10,7 @@ import 'package:http/http.dart' as http;
 
 import '../common/loading/loading_screen.dart';
 import '../common/alert_helper.dart';
+import '../model/user_model.dart';
 import 'registration_screen.dart';
 import '../widgets/header_widget.dart';
 import '../constant.dart';
@@ -29,7 +30,7 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _passwordController = TextEditingController();
 
   void _requestLogin() async {
-    String userName = _userNameController.text;
+    String username = _userNameController.text;
     String password = _passwordController.text;
 
     // Call LoadingScreen().show() to show Loading Dialog
@@ -37,7 +38,6 @@ class _LoginScreenState extends State<LoginScreen> {
       context: context,
       text: 'Please wait a moment',
     );
-
 
     try {
       String apiUrl = "$domain/login";
@@ -47,7 +47,7 @@ class _LoginScreenState extends State<LoginScreen> {
           'Content-Type': 'application/json; charset=UTF-8',
         },
         body: jsonEncode(<String, String>{
-          "user_name": userName,
+          "username": username,
           "password": password,
         }),
       );
@@ -56,26 +56,43 @@ class _LoginScreenState extends State<LoginScreen> {
       LoadingScreen().hide();
 
       if (response.statusCode == 200) {
-        // If the server did return a 200 response, then parse the JSON.
-        print(response.body);
+        // If the server did return a 200 CREATED response, then parse the JSON.
+        final body = json.decode(response.body);
 
-        Navigator.push(context, MaterialPageRoute(builder: (context) => const MainScreen()));
+        final status = body['status'] as int;
+        final code = body['code'] as int;
+        final message = body['message'] as String;
+        final data = body['data'];
+
+        if (status == 1 && (code == 200 || code == 201)) {
+          User user = User.fromJson(data);
+          // TODO: save to realm db
+          // print(user.firstName);
+
+          Alert.toastSuccess(message);
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => const MainScreen()));
+        } else {
+          Alert.dialogError(context, message);
+          Alert.closeDialog(context,
+              durationBeforeClose: const Duration(seconds: 1));
+        }
       } else {
-        // error response
-        // Alert.dialogError(context, 'Login Failed.\nPlease check your network again.');
-        // Alert.closeDialog(context, durationBeforeClose: const Duration(milliseconds: 1500));
+        // If the server did not return a 201 CREATED response,
+        // then throw an exception.
 
-        
-        Navigator.push(context, MaterialPageRoute(builder: (context) => const MainScreen()));
+        Alert.dialogError(context, 'Login Failed');
+        Alert.closeDialog(context,
+            durationBeforeClose: const Duration(seconds: 1));
       }
     } on Exception {
       // catch exception
       LoadingScreen().hide();
-      
-      Alert.dialogError(context, 'Error');
-      Alert.closeDialog(context, durationBeforeClose: const Duration(milliseconds: 1500));
-    }
 
+      Alert.dialogError(context, 'Error');
+      Alert.closeDialog(context,
+          durationBeforeClose: const Duration(milliseconds: 1500));
+    }
 
     // Call LoadingScreen().hide() to HIDE  Loading Dialog
     LoadingScreen().hide();
@@ -99,96 +116,115 @@ class _LoginScreenState extends State<LoginScreen> {
             SizedBox(
               height: _headerHeight,
               // hungnq: set icon login page
-              child: HeaderWidget(_headerHeight, true, Icons.login_rounded), //let's create a common header widget
+              child: HeaderWidget(_headerHeight, true,
+                  Icons.login_rounded), //let's create a common header widget
             ),
             SafeArea(
-              child: Container( 
-                padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
-                  margin: const EdgeInsets.fromLTRB(20, 10, 20, 10),// This will be the login form
-                child: Column(
-                  children: [
-                    const Text(
-                      'Gas Detekt',
-                      style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
-                    ),
-                    const Text(
-                      'Connect to Robot',
-                      style: TextStyle(color: Colors.grey),
-                    ),
-                    const SizedBox(height: 30.0),
-                    Form(
-                      key: _formKey,
-                        child: Column(
-                          children: [
-                            Container(
-                              decoration: ThemeHelper().inputBoxDecorationShaddow(),
-                              child: TextField(
-                                controller: _userNameController,
-                                decoration: ThemeHelper().textInputDecoration('User Name', 'Enter your user name'),
-                              ),
-                            ),
-                            const SizedBox(height: 30.0),
-                            Container(
-                              decoration: ThemeHelper().inputBoxDecorationShaddow(),
-                              child: TextField(
-                                controller: _passwordController,
-                                obscureText: true,
-                                decoration: ThemeHelper().textInputDecoration('Password', 'Enter your password'),
-                              ),
-                            ),
-                            const SizedBox(height: 15.0),
-                            Container(
-                              margin: const EdgeInsets.fromLTRB(10,0,10,20),
-                              alignment: Alignment.topRight,
-                              child: GestureDetector(
-                                onTap: () {
-                                  
-                                },
-                                child: const Text( "Forgot your password?", style: TextStyle( color: Colors.grey, ),
+              child: Container(
+                  padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
+                  margin: const EdgeInsets.fromLTRB(
+                      20, 10, 20, 10), // This will be the login form
+                  child: Column(
+                    children: [
+                      const Text(
+                        'Gas Detekt',
+                        style: TextStyle(
+                            fontSize: 40, fontWeight: FontWeight.bold),
+                      ),
+                      const Text(
+                        'Connect to Robot',
+                        style: TextStyle(color: Colors.grey),
+                      ),
+                      const SizedBox(height: 30.0),
+                      Form(
+                          key: _formKey,
+                          child: Column(
+                            children: [
+                              Container(
+                                decoration:
+                                    ThemeHelper().inputBoxDecorationShaddow(),
+                                child: TextField(
+                                  controller: _userNameController,
+                                  decoration: ThemeHelper().textInputDecoration(
+                                      'User Name', 'Enter your user name'),
                                 ),
                               ),
-                            ),
-                            Container(
-                              decoration: ThemeHelper().buttonBoxDecoration(context),
-                              child: ElevatedButton(
-                                style: ThemeHelper().buttonStyle(),
-                                onPressed: _requestLogin,
-                                child: Padding(
-                                  padding: const EdgeInsets.fromLTRB(40, 10, 40, 10),
-                                  child: Text('Sign In'.toUpperCase(), style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white),),
+                              const SizedBox(height: 30.0),
+                              Container(
+                                decoration:
+                                    ThemeHelper().inputBoxDecorationShaddow(),
+                                child: TextField(
+                                  controller: _passwordController,
+                                  obscureText: true,
+                                  decoration: ThemeHelper().textInputDecoration(
+                                      'Password', 'Enter your password'),
                                 ),
                               ),
-                            ),
-                            Container(
-                              margin: const EdgeInsets.fromLTRB(10,20,10,20),
-                              //child: Text('Don\'t have an account? Create'),
-                              child: Text.rich(
-                                TextSpan(
-                                  children: [
-                                    const TextSpan(text: "Don\'t have an account? "),
-                                    TextSpan(
-                                      text: 'Create',
-                                      recognizer: TapGestureRecognizer()
-                                        ..onTap = (){
-                                          Navigator.push(context, MaterialPageRoute(builder: (context) => const RegistrationScreen()));
-                                        },
-                                      style: TextStyle(fontWeight: FontWeight.bold, color: Theme.of(context).canvasColor),
+                              const SizedBox(height: 15.0),
+                              Container(
+                                margin:
+                                    const EdgeInsets.fromLTRB(10, 0, 10, 20),
+                                alignment: Alignment.topRight,
+                                child: GestureDetector(
+                                  onTap: () {},
+                                  child: const Text(
+                                    "Forgot your password?",
+                                    style: TextStyle(
+                                      color: Colors.grey,
                                     ),
-                                  ]
-                                )
+                                  ),
+                                ),
                               ),
-                            ),
-                          ],
-                        )
-                    ),
-                  ],
-                )
-              ),
+                              Container(
+                                decoration:
+                                    ThemeHelper().buttonBoxDecoration(context),
+                                child: ElevatedButton(
+                                  style: ThemeHelper().buttonStyle(),
+                                  onPressed: _requestLogin,
+                                  child: Padding(
+                                    padding: const EdgeInsets.fromLTRB(
+                                        40, 10, 40, 10),
+                                    child: Text(
+                                      'Sign In'.toUpperCase(),
+                                      style: const TextStyle(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.white),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              Container(
+                                margin:
+                                    const EdgeInsets.fromLTRB(10, 20, 10, 20),
+                                //child: Text('Don\'t have an account? Create'),
+                                child: Text.rich(TextSpan(children: [
+                                  const TextSpan(
+                                      text: "Don\'t have an account? "),
+                                  TextSpan(
+                                    text: 'Create',
+                                    recognizer: TapGestureRecognizer()
+                                      ..onTap = () {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    const RegistrationScreen()));
+                                      },
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        color: Theme.of(context).canvasColor),
+                                  ),
+                                ])),
+                              ),
+                            ],
+                          )),
+                    ],
+                  )),
             ),
           ],
         ),
       ),
     );
-
   }
 }
