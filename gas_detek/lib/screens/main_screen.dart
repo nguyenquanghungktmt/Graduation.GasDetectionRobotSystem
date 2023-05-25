@@ -2,6 +2,7 @@
 
 import 'package:gas_detek/widgets/room_grid_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../constant.dart';
 import '../widgets/side_menu_widget.dart';
@@ -10,10 +11,16 @@ import '../common/alert_helper.dart';
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
 
+  Future<void> _fetchData() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String uuid = prefs.getString('current_user_uuid') ?? "";
+    print("uuid - $uuid");
+  }
+
   @override
   State<StatefulWidget> createState() {
-    Alert.toastSuccess('Login Success');
-    Alert.closeToast(durationBeforeClose: const Duration(milliseconds: 1500));
+    _fetchData();
+
     return _MainScreenState();
   }
 }

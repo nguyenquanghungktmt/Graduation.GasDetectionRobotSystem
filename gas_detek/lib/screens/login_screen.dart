@@ -6,6 +6,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:gas_detek/common/theme_helper.dart';
 import 'package:gas_detek/screens/main_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
 import '../common/loading/loading_screen.dart';
@@ -28,6 +29,14 @@ class _LoginScreenState extends State<LoginScreen> {
 
   final TextEditingController _userNameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+
+  void _saveData(User user) async {
+    // Save uuid to shared preference
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString('current_user_uuid', user.uuid);
+
+    // save user object ro realm db
+  }
 
   void _requestLogin() async {
     String username = _userNameController.text;
@@ -66,11 +75,14 @@ class _LoginScreenState extends State<LoginScreen> {
 
         if (status == 1 && (code == 200 || code == 201)) {
           User user = User.fromJson(data);
-          // TODO: save to realm db
-          // print(user.firstName);
+
+          // TODO: save to shared preference and realm db
+          _saveData(user);
 
           Alert.toastSuccess(message);
-          Navigator.push(context, MaterialPageRoute(builder: (context) => const MainScreen()));
+          Alert.closeToast(durationBeforeClose: const Duration(milliseconds: 1500));
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => const MainScreen()));
         } else {
           Alert.dialogError(context, message);
           Alert.closeDialog(context,
