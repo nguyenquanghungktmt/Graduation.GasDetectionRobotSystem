@@ -28,4 +28,14 @@ class User {
       avatarUrl: json['avatar_url'],
     );
   }
+
+  Map<String, Object?> toJson() => {
+    'uuid': uuid,
+    'first_name': firstName,
+    'last_name': lastName,
+    'username': username,
+    'email': email,
+    'serial_number': serialNumber,
+    'avatar_url': avatarUrl
+  };
 }
