@@ -29,7 +29,7 @@ class RoomWidget extends StatelessWidget {
                 Align(
                   alignment: Alignment.center,
                   child: Text(
-                    room.lessons,
+                    room.roomName,
                     style: const TextStyle(
                         fontSize: 18, fontWeight: FontWeight.bold),
                   ),
@@ -40,7 +40,7 @@ class RoomWidget extends StatelessWidget {
                     thickness: 1,
                   ),
                 ),
-                Text(room.text,
+                Text(room.roomStatus,
                     style: const TextStyle(
                         fontSize: 16, fontWeight: FontWeight.w400))
               ],

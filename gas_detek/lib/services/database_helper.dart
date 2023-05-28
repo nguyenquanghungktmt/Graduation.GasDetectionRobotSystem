@@ -23,9 +23,7 @@ class DatabaseHelper {
     owner_uuid varchar(36) not null,
     is_gas_detect boolean,
     room_status varchar(100),
-    map2d_url varchar(50),
-    created_time datetime,
-    modified_time datetime);
+    map2d_url varchar(50));
   ''';
 
   static Future<Database> getDB() async {
@@ -33,7 +31,7 @@ class DatabaseHelper {
       onCreate: (db, version) async {
       print("crate database");
       await db.execute(_queryCreateUser);
-      // await db.execute(_queryCreateRoom);
+      await db.execute(_queryCreateRoom);
     }, version: _version);
   }
 

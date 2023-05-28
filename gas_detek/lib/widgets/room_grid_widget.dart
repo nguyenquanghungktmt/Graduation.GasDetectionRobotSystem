@@ -15,10 +15,10 @@ class RoomGrid extends StatelessWidget {
         itemBuilder: (context, index) {
           return Container(
             width: 50,
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage(listRoom[index].backImage), fit: BoxFit.fill),
-            ),
+            // decoration: BoxDecoration(
+            //   image: DecorationImage(
+            //     image: AssetImage(listRoom[index].backImage), fit: BoxFit.fill),
+            // ),
             child: Padding(
               padding: const EdgeInsets.all(16),
               child: Row(
@@ -29,11 +29,11 @@ class RoomGrid extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       Text(
-                        listRoom[index].text,
+                        listRoom[index].roomName,
                         style: const TextStyle(color: Colors.white),
                       ),
                       Text(
-                        listRoom[index].lessons,
+                        listRoom[index].roomStatus,
                         style: const TextStyle(color: Colors.white),
                       ),
                       // CircularPercentIndicator(
