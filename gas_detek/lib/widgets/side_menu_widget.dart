@@ -2,6 +2,9 @@
 
 import 'package:flutter/material.dart';
 import 'package:gas_detek/screens/login_screen.dart';
+import 'package:gas_detek/services/database_helper.dart';
+import 'package:gas_detek/services/user_db_helper.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:ternav_icons/ternav_icons.dart';
 
 import '../common/alert_helper.dart';
@@ -11,22 +14,42 @@ class SideMenu extends StatelessWidget {
     Key? key,
   }) : super(key: key);
 
-  Future<void> _logout(BuildContext context) async{
+  Future<void> _logout(BuildContext context) async {
     bool? isYes = await Alert.dialogConfirmation(
       context,
       'Logout?',
       'You sure logout from this account?',
     );
     if (isYes ?? false) {
+      // delete loca data shared preference
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      await prefs.clear();
+
+      // Delete local Sqflite Database
+      DatabaseHelper.deleteDB();
+
+      Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(builder: (context) => const LoginScreen()),
+          (route) => false);
+
       Alert.toastSuccess('Logout Success');
       Alert.closeToast(durationBeforeClose: const Duration(milliseconds: 1500));
-      Navigator.of(context).pushAndRemoveUntil(
-        MaterialPageRoute(builder: (context) => const LoginScreen()), (route) => false
-      );
     }
   }
 
-  Future<void> _aboutUs(BuildContext context) async{
+  Future<void> _userTapped(BuildContext context) async {
+    // get the uuid
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final uuid = prefs.getString('current_user_uuid') ?? "";
+
+    UserDBHelper.getUser(uuid).then((user) => {
+          if (user != null)
+            Alert.dialogNotification(
+                context, 'About Us', "User's Fullname is ${user.getFullNam()}")
+        });
+  }
+
+  Future<void> _aboutUs(BuildContext context) async {
     Alert.dialogNotification(
       context,
       'About Us',
@@ -57,7 +80,7 @@ class SideMenu extends StatelessWidget {
           DrawerListTile(
             icon: TernavIcons.lightOutline.user_2,
             title: "User",
-            onTap: () {},
+            onTap: () => _userTapped(context),
           ),
           DrawerListTile(
             icon: TernavIcons.lightOutline.info_1,

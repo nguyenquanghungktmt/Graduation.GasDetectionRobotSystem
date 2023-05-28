@@ -12,6 +12,7 @@ import 'package:http/http.dart' as http;
 import '../common/loading/loading_screen.dart';
 import '../common/alert_helper.dart';
 import '../model/user_model.dart';
+import '../services/user_db_helper.dart';
 import 'registration_screen.dart';
 import '../widgets/header_widget.dart';
 import '../constant.dart';
@@ -36,6 +37,7 @@ class _LoginScreenState extends State<LoginScreen> {
     prefs.setString('current_user_uuid', user.uuid);
 
     // save user object ro realm db
+    UserDBHelper.addUser(user);
   }
 
   void _requestLogin() async {
@@ -80,7 +82,8 @@ class _LoginScreenState extends State<LoginScreen> {
           _saveData(user);
 
           Alert.toastSuccess(message);
-          Alert.closeToast(durationBeforeClose: const Duration(milliseconds: 1500));
+          Alert.closeToast(
+              durationBeforeClose: const Duration(milliseconds: 1500));
           Navigator.push(context,
               MaterialPageRoute(builder: (context) => const MainScreen()));
         } else {

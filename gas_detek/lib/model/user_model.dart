@@ -24,7 +24,7 @@ class User {
       lastName: json['last_name'] ?? "",
       username: json['username'] ?? "",
       email: json['email'] ?? "",
-      serialNumber: json['serial_number'] ?? "",
+      serialNumber: json['device_serial_number'] ?? "",
       avatarUrl: json['avatar_url'],
     );
   }
@@ -38,4 +38,8 @@ class User {
     'serial_number': serialNumber,
     'avatar_url': avatarUrl
   };
+
+  String getFullNam() {
+    return "$firstName $lastName";
+  }
 }

@@ -1,4 +1,3 @@
-import 'package:gas_detek/model/user_model.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
@@ -8,18 +7,18 @@ class DatabaseHelper {
 
   static const String _queryCreateUser = '''
   create table user (
-	uuid varchar(36) primary key not null,
+	  uuid varchar(36) primary key not null,
     username varchar(100),
     first_name varchar(100),
     last_name varchar(100),
     email varchar(100),
     avatar_url varchar(50),
-    device_serial_number varchar(15) );
+    serial_number varchar(15) );
   ''';
 
   static const String _queryCreateRoom = '''
   create table room (
-	room_id varchar(36) primary key not null,
+	  room_id varchar(36) primary key not null,
     room_name varchar(100),
     owner_uuid varchar(36) not null,
     is_gas_detect boolean,
@@ -29,50 +28,20 @@ class DatabaseHelper {
     modified_time datetime);
   ''';
 
-  static Future<Database> _getDB() async {
+  static Future<Database> getDB() async {
     return openDatabase(join(await getDatabasesPath(), _dbName),
-    onCreate: (db, version) async {
+      onCreate: (db, version) async {
+      print("crate database");
       await db.execute(_queryCreateUser);
       // await db.execute(_queryCreateRoom);
     }, version: _version);
   }
 
-  static Future<int> addUser(User user) async {
-    final db = await _getDB();
-    return await db.insert("User", user.toJson(),
-        conflictAlgorithm: ConflictAlgorithm.replace);
-  }
+  static Future<void> deleteDB() async {
+    var databasesPath = await getDatabasesPath();
+    String path = join(databasesPath, _dbName);
 
-  static Future<int> updateNote(User user) async {
-    final db = await _getDB();
-    return await db.update("User", user.toJson(),
-        where: 'uuid = ?',
-        whereArgs: [user.uuid],
-        conflictAlgorithm: ConflictAlgorithm.replace);
-  }
-
-  static Future<int> deleteNote(User user) async {
-    final db = await _getDB();
-    return await db.delete(
-      "User",
-      where: 'uuid = ?',
-      whereArgs: [user.uuid],
-    );
-  }
-
-  static Future<User?> getUser(String uuid) async {
-    final db = await _getDB();
-
-    final List<Map<String, dynamic>> records = await db.query(
-      "Note",
-      where: 'uuid = ?',
-      whereArgs: [uuid],
-    );
-
-    if (records.isEmpty) {
-      return null;
-    }
-
-    return User.fromJson(records[0]);
+    // Delete the database
+    await deleteDatabase(path);
   }
 }
