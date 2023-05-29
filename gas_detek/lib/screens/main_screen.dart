@@ -132,11 +132,11 @@ class _MainScreenState extends State<MainScreen> {
         title: const Text(
           "Gas Detection",
           textAlign: TextAlign.center,
-          style: TextStyle(color: Colors.grey, fontWeight: FontWeight.bold),
+          style: TextStyle(color: Colors.black54, fontWeight: FontWeight.bold),
         ),
         elevation: 0,
         backgroundColor: Colors.transparent,
-        iconTheme: const IconThemeData(color: Colors.grey, size: 36),
+        iconTheme: const IconThemeData(color: kDarkBlue, size: 36),
         actions: [
           // IconButton(
           //   onPressed: () {},
@@ -151,7 +151,8 @@ class _MainScreenState extends State<MainScreen> {
             },
             icon: const Icon(
               Icons.add,
-              color: Colors.grey,
+              size: 36,
+              color: kDarkBlue,
             ),
           ),
           // Container(

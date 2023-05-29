@@ -27,7 +27,7 @@ class SplashScreen extends StatefulWidget {
   @override
   // ignore: no_logic_in_create_state
   _SplashScreenState createState() {
-    // _getRootScreen();
+    _getRootScreen();
     return _SplashScreenState();
   }
 }

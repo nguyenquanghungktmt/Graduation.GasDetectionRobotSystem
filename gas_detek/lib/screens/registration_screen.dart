@@ -160,7 +160,10 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
           User user = User.fromJson(data);
           _saveData(user);
           Alert.toastSuccess(message);
-          Navigator.push(context, MaterialPageRoute(builder: (context) => MainScreen(user: user,)));
+          Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(
+                  builder: (context) => MainScreen(user: user,)),
+              (Route<dynamic> route) => false);
         } else {
           Alert.dialogError(context, message);
           Alert.closeDialog(context,
@@ -420,15 +423,9 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                               ),
                             ),
                             onPressed: () {
-                              requestRegister();
-                              // requestRegister();
-                              // if (_formKey.currentState!.validate()) {
-                              // Navigator.of(context).pushAndRemoveUntil(
-                              //     MaterialPageRoute(
-                              //         builder: (context) =>
-                              //             const ProfilePage()),
-                              //     (Route<dynamic> route) => false);
-                              // }
+                              if (_formKey.currentState!.validate()) {
+                                requestRegister();
+                              }
                             },
                           ),
                         ),
