@@ -1,6 +1,9 @@
+// ignore_for_file: must_be_immutable
+
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:gas_detek/screens/main_screen.dart';
+import 'package:gas_detek/services/user_db_helper.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'login_screen.dart';
 
@@ -13,8 +16,11 @@ class SplashScreen extends StatefulWidget {
 
   void _getRootScreen() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    if (prefs.getString('current_user_uuid') != null) {
-      rootScreen = const MainScreen();
+    final uuid = prefs.getString('current_user_uuid');
+    if (uuid != null) {
+      UserDBHelper.getUser(uuid).then((user) => {
+        rootScreen = MainScreen(user: user,)
+      });
     }
   }
 

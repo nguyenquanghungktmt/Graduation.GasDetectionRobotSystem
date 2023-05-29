@@ -39,7 +39,7 @@ class User {
     'avatar_url': avatarUrl
   };
 
-  String getFullNam() {
+  String getFullName() {
     return "$firstName $lastName";
   }
 }

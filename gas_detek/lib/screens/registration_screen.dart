@@ -10,12 +10,14 @@ import 'package:gas_detek/common/theme_helper.dart';
 import 'package:gas_detek/model/user_model.dart';
 import 'package:gas_detek/widgets/header_widget.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:vibration/vibration.dart';
 import 'package:http/http.dart' as http;
 
 import '../common/alert_helper.dart';
 import '../common/loading/loading_screen.dart';
 import '../constant.dart';
+import '../services/user_db_helper.dart';
 import 'main_screen.dart';
 
 class RegistrationScreen extends StatefulWidget {
@@ -102,6 +104,15 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
     });
   }
 
+  void _saveData(User user) async {
+    // Save uuid to shared preference
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString('current_user_uuid', user.uuid);
+
+    // save user object ro realm db
+    UserDBHelper.addUser(user);
+  }
+
   Future<void> requestRegister() async {
     String firstName = _firstNameController.text;
     String lastName = _lastNameController.text;
@@ -145,28 +156,31 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
         final message = body['message'] as String;
         final data = body['data'];
 
-        if (status == 1 && (code==200 || code==201)) {
+        if (status == 1 && (code == 200 || code == 201)) {
           User user = User.fromJson(data);
-          print(user.firstName);
+          _saveData(user);
           Alert.toastSuccess(message);
-          Navigator.push(context, MaterialPageRoute(builder: (context) => const MainScreen()));
+          Navigator.push(context, MaterialPageRoute(builder: (context) => MainScreen(user: user,)));
         } else {
           Alert.dialogError(context, message);
-          Alert.closeDialog(context, durationBeforeClose: const Duration(seconds: 1));
+          Alert.closeDialog(context,
+              durationBeforeClose: const Duration(seconds: 1));
         }
       } else {
         // If the server did not return a 201 CREATED response,
         // then throw an exception.
 
         Alert.dialogError(context, 'Registration Failed');
-        Alert.closeDialog(context, durationBeforeClose: const Duration(seconds: 1));
+        Alert.closeDialog(context,
+            durationBeforeClose: const Duration(seconds: 1));
       }
     } on Exception {
       // print("SocketException");
       LoadingScreen().hide();
 
       Alert.dialogError(context, 'Error');
-      Alert.closeDialog(context, durationBeforeClose: const Duration(seconds: 1));
+      Alert.closeDialog(context,
+          durationBeforeClose: const Duration(seconds: 1));
     }
   }
 

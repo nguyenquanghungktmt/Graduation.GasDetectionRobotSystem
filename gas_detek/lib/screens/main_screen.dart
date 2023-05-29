@@ -2,18 +2,20 @@
 import 'dart:convert';
 
 import 'package:gas_detek/model/room_model.dart';
-import 'package:gas_detek/widgets/room_grid_widget.dart';
+import 'package:gas_detek/services/room_db_helper.dart';
+import 'package:gas_detek/widgets/room_widget/room_grid_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
 import '../common/loading/loading_screen.dart';
 import '../constant.dart';
+import '../model/user_model.dart';
 import '../widgets/side_menu_widget.dart';
 import '../common/alert_helper.dart';
 
 class MainScreen extends StatefulWidget {
-  const MainScreen({super.key});
+  User? user;
+  MainScreen({Key? key, this.user}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() {
@@ -22,12 +24,16 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
-  List<Room> listRoom = [];
+  User? _user;
+  List<Room>? _listRoom;
+  int _totalRecord = 0;
 
   Future<void> _fetchData() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String uuid = prefs.getString('current_user_uuid') ?? "";
-    print("uuid - $uuid");
+    // SharedPreferences prefs = await SharedPreferences.getInstance();
+    // String uuid = prefs.getString('current_user_uuid') ?? "";
+    // print("uuid - $uuid");
+
+    String? uuid = _user?.uuid;
 
     // get data from internet
     LoadingScreen().show(
@@ -36,14 +42,14 @@ class _MainScreenState extends State<MainScreen> {
     );
 
     try {
-      String apiUrl = "$domain/getListRoom";
+      String apiUrl = "$domain/room/getListRoom";
       final response = await http.post(
         Uri.parse(apiUrl),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
         body: jsonEncode(<String, String>{
-          "owner_uuid": uuid,
+          "owner_uuid": uuid ?? "",
         }),
       );
 
@@ -54,29 +60,40 @@ class _MainScreenState extends State<MainScreen> {
         // If the server did return a 200 CREATED response, then parse the JSON.
         final body = json.decode(response.body);
 
-        final status = body['status'] as int;
-        final code = body['code'] as int;
-        final message = body['message'] as String;
+        // final status = body['status'] as int;
+        // final code = body['code'] as int;
+        // final message = body['message'] as String;
         final data = body['data'];
+        final items = data['items'];
+        _totalRecord = data['total_record'];
 
-        if (status == 1 && (code == 200 || code == 201)) {
-          // Convert json data to list object
-          listRoom = List.generate(data.length, (index) => Room.fromJson(data[index]));
+        // Convert json data to list object
+        final listRoomTmp =
+            List.generate(items.length, (index) => Room.fromJson(items[index]));
+        // print(listRoom?.length);
+        // print(listRoom);
 
-          // TODO: save to shared preference and realm db
-          _saveListRoomData();
-        } else {
-          Alert.dialogError(context, message);
-          Alert.closeDialog(context,
-              durationBeforeClose: const Duration(seconds: 1));
-        }
+        setState(() {
+          _listRoom = listRoomTmp;
+        });
+
+        // Save to shared preference and realm db
+        _saveListRoomData(listRoomTmp);
       } else {
-        // If the server did not return a 201 CREATED response,
-        // then throw an exception.
-
-        Alert.dialogError(context, 'Loading Data Failed');
+        Alert.dialogError(context, 'Loading Data Failed\nPlease check your internet.');
         Alert.closeDialog(context,
-            durationBeforeClose: const Duration(seconds: 1));
+            durationBeforeClose: const Duration(seconds: 2));
+
+        // If the server did not return a 200 Success response, load data from db
+        // TODO: load data
+        RoomDBHelper.getAllRooms().then((records) => {
+          if (records != null) {
+            setState(() {
+              _listRoom = records;
+              _totalRecord = records.length;
+            })
+          }
+        });
       }
     } on Exception {
       // catch exception
@@ -88,13 +105,27 @@ class _MainScreenState extends State<MainScreen> {
     }
   }
 
-  Future<void> _saveListRoomData() async {
+  Future<void> _saveListRoomData(List<Room>? rooms) async {
+    // RoomDBHelper
+    if (rooms == null) return;
+    RoomDBHelper.deleteAllRooms();
+    rooms.forEach((element) {
+      RoomDBHelper.addRoom(element);
+    });
     return;
   }
 
   @override
+  void initState() {
+    super.initState();
+    _user = widget.user;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _fetchData();
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
-    _fetchData();
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -141,16 +172,16 @@ class _MainScreenState extends State<MainScreen> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               RichText(
-                text: const TextSpan(
+                text: TextSpan(
                   text: "Hello ",
-                  style: TextStyle(color: kDarkBlue, fontSize: 20),
+                  style: const TextStyle(color: kDarkBlue, fontSize: 20),
                   children: [
                     TextSpan(
-                      text: "Nguyen Hung",
-                      style: TextStyle(
+                      text: (_user != null) ? _user!.getFullName() : "",
+                      style: const TextStyle(
                           color: kDarkBlue, fontWeight: FontWeight.bold),
                     ),
-                    TextSpan(
+                    const TextSpan(
                       text: ", welcome back!",
                     ),
                   ],
@@ -170,7 +201,10 @@ class _MainScreenState extends State<MainScreen> {
               const SizedBox(
                 height: 10,
               ),
-              const RoomGrid(),
+              RoomGrid(
+                listRoom: _listRoom ?? [],
+                totalRoom: _totalRecord,
+              ),
               // const SizedBox(
               //   height: 20,
               // ),

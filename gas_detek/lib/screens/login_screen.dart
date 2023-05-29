@@ -81,11 +81,11 @@ class _LoginScreenState extends State<LoginScreen> {
           // TODO: save to shared preference and realm db
           _saveData(user);
 
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => MainScreen(user: user)));
           Alert.toastSuccess(message);
           Alert.closeToast(
               durationBeforeClose: const Duration(milliseconds: 1500));
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => const MainScreen()));
         } else {
           Alert.dialogError(context, message);
           Alert.closeDialog(context,

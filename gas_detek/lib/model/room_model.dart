@@ -4,7 +4,7 @@ class Room {
   late String roomId;
   late String roomName;
   late String ownerUUID;
-  late Bool isGasDetect;
+  late int isGasDetect;
   late String roomStatus;
   late String? map2dUrl;
 
@@ -22,7 +22,7 @@ class Room {
       roomId: json['room_id'] ?? "",
       roomName: json['room_name'] ?? "",
       ownerUUID: json['owner_uuid'] ?? "",
-      isGasDetect: json['is_gas_detect'] ?? false,
+      isGasDetect: json['is_gas_detect'] ?? 0,
       roomStatus: json['room_status'] ?? "",
       map2dUrl: json['map2d_url'],
     );

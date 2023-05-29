@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:gas_detek/model/room_model.dart';
 
-class RoomWidget extends StatelessWidget {
+class RoomCellWidget extends StatelessWidget {
   final Room room;
   final VoidCallback onTap;
   final VoidCallback onLongPress;
-  const RoomWidget(
+  const RoomCellWidget(
       {Key? key,
         required this.room,
         required this.onTap,

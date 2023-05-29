@@ -21,7 +21,7 @@ class DatabaseHelper {
 	  room_id varchar(36) primary key not null,
     room_name varchar(100),
     owner_uuid varchar(36) not null,
-    is_gas_detect boolean,
+    is_gas_detect int,
     room_status varchar(100),
     map2d_url varchar(50));
   ''';
@@ -29,7 +29,7 @@ class DatabaseHelper {
   static Future<Database> getDB() async {
     return openDatabase(join(await getDatabasesPath(), _dbName),
       onCreate: (db, version) async {
-      print("crate database");
+      print("create database");
       await db.execute(_queryCreateUser);
       await db.execute(_queryCreateRoom);
     }, version: _version);

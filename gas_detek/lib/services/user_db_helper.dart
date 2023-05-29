@@ -4,8 +4,6 @@ import 'database_helper.dart';
 import 'package:gas_detek/model/user_model.dart';
 
 extension UserDBHelper on DatabaseHelper {
-  
-
   static Future<int> addUser(User user) async {
     final db = await DatabaseHelper.getDB();
     return await db.insert("User", user.toJson(),

@@ -45,7 +45,7 @@ class SideMenu extends StatelessWidget {
     UserDBHelper.getUser(uuid).then((user) => {
           if (user != null)
             Alert.dialogNotification(
-                context, 'About Us', "User's Fullname is ${user.getFullNam()}")
+                context, 'About Us', "User's Fullname is ${user.getFullName()}")
         });
   }
 
