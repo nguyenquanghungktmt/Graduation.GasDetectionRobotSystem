@@ -107,9 +107,6 @@ class _LoginScreenState extends State<LoginScreen> {
       Alert.closeDialog(context,
           durationBeforeClose: const Duration(milliseconds: 1500));
     }
-
-    // Call LoadingScreen().hide() to HIDE  Loading Dialog
-    LoadingScreen().hide();
   }
 
   @override

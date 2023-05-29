@@ -1,4 +1,4 @@
-// ignore_for_file: no_logic_in_create_state, use_build_context_synchronously
+// ignore_for_file: no_logic_in_create_state, use_build_context_synchronously, must_be_immutable
 import 'dart:convert';
 
 import 'package:gas_detek/model/room_model.dart';
