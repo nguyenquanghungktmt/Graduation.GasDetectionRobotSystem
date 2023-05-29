@@ -64,3 +64,13 @@
 [2023-05-25 00:36:26][INFO] Client request: registration - {"first_name":"Nguyen","last_name":"Hung","email":"hungnq@cdc.com","user_name":"hungnq123","serial_number":"RB23GT1708","avatar_url":"","password":"123345"}
 [2023-05-25 00:36:47][INFO] Client request: registration - {"first_name":"Nguyen","last_name":"Hung","email":"hungnq@cdc.com","user_name":"hungnq123","serial_number":"RB23GT1708","avatar_url":"","password":"123345"}
 [2023-05-25 00:38:11][INFO] Client request: registration - {"first_name":"Nguyen","last_name":"Hung","email":"hungnq@cdc.com","user_name":"hungnq123","serial_number":"RB23GT1708","avatar_url":"","password":"123345"}
+[2023-05-29 09:51:55][INFO] Client request: login - {"owner_uuid":"123e4567-e89b-12d3-a456-426655440000"}
+[2023-05-29 09:52:48][INFO] Client request: login - {"owner_uuid":"123e4567-e89b-12d3-a456-426655440000"}
+[2023-05-29 10:01:19][INFO] Client request: login - {"owner_uuid":"b8950f09-50dc-4269-baea-6594e993e9a2"}
+[2023-05-29 10:02:28][INFO] Client request: login - {"owner_uuid":"b8950f09-50dc-4269-baea-6594e993e9a2"}
+[2023-05-29 10:06:00][INFO] Client request: login - {"owner_uuid":"123e4567-e89b-12d3-a456-426655440000"}
+[2023-05-29 10:07:29][INFO] Client request: login - {"owner_uuid":"123e4567-e89b-12d3-a456-426655440000"}
+[2023-05-29 10:07:35][INFO] Client request: login - {"owner_uuid":"b8950f09-50dc-4269-baea-6594e993e9a2"}
+[2023-05-29 10:09:01][INFO] Client request: login - {"owner_uuid":"b8950f09"}
+[2023-05-29 10:09:10][INFO] Client request: login - {"owner_uuid":"b8950f09-50dc-4269-baea-6594e993e9a2"}
+[2023-05-29 10:12:06][INFO] Client request: login - {"owner_uuid":"b8950f09-50dc-4269-baea-6594e993e9a2"}

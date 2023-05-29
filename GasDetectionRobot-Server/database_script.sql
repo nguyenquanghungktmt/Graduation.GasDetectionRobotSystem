@@ -55,7 +55,12 @@ values ('RB23GD1708', 'Gas detection robot', 'Using Raspberry Pi 3, Ultrasonic s
 
 insert into device (serial_number, model_name, description)
 values ('RB23GD0002', 'Gas detection robot', 'Using Raspberry Pi 3, Ultrasonic sensor, gas detect sensor');
-values ('RB23GD0001', 'Gas detection robot', 'Using Raspberry Pi 3, Ultrasonic sensor, gas detect sensor');
+
+insert into room (room_id, room_name, owner_uuid, is_gas_detect, room_status, map2d_url)
+values ('2', 'Room 2', 'b8950f09-50dc-4269-baea-6594e993e9a2', true, "Danger", null);
+
+insert into room (room_id, room_name, owner_uuid, is_gas_detect, room_status, map2d_url)
+values ('4', 'Living Room', 'b8950f09-50dc-4269-baea-6594e993e9a2', false, "Normal", null);
 
 
 /* select querry */
