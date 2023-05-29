@@ -14,7 +14,7 @@ router.use(express.json({ type: "*/*" }));
 // get list room api //
 router.post("/getListRoom", function (req, res) {
   console.log("Client request: ", req.body)
-  logger.info(`Client request: login - ${JSON.stringify(req.body)}`);
+  logger.info(`Client request: getListRoom - ${JSON.stringify(req.body)}`);
 
   let owner_uuid = req.body.owner_uuid ?? '';
   var query = `SELECT * FROM room WHERE owner_uuid='${owner_uuid}';`;

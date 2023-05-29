@@ -139,6 +139,31 @@ router.post('/register', function(req, res){
 })
 
 
+// logout //
+router.post("/logout", function (req, res) {
+  console.log("Client request: ", req.body)
+  logger.info(`Client request: logout - ${JSON.stringify(req.body)}`);
+
+  let uuid = req.body.uuid ?? '';
+  var query = `SELECT * FROM user WHERE uuid='${uuid}';`;
+
+  const conn = database.createConnection();
+  conn.query(query, function (err, result) {
+    if (err) {
+      res.status(404).json(response.createResponse(0, 404, "Server Error !"));
+      
+    } else {
+      if (!result.length) {
+        res.status(200).json(response.createResponse(1, 400, "Logout wrong! Please check your internet."));
+      } 
+      else res.status(200).json(response.createResponse(1, 200, "Logout Success"));
+    }
+    conn.end();
+  });
+
+  console.log("===========");
+});
+
 router.post("/test", function (req, res) {
   console.log("Client request: ", req.body)
   let data = {
