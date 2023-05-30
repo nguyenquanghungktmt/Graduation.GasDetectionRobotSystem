@@ -270,8 +270,8 @@ class Alert {
       toastLength: isLong ? toast.Toast.LENGTH_LONG : toast.Toast.LENGTH_SHORT,
       gravity: toast.ToastGravity.BOTTOM,
       timeInSecForIosWeb: 1,
-      backgroundColor: Colors.green[100],
-      textColor: Colors.green[900],
+      backgroundColor: Colors.blue[100],
+      textColor: Colors.blue[900],
       fontSize: 16,
     );
   }
@@ -283,8 +283,8 @@ class Alert {
       toastLength: isLong ? toast.Toast.LENGTH_LONG : toast.Toast.LENGTH_SHORT,
       gravity: toast.ToastGravity.BOTTOM,
       timeInSecForIosWeb: 1,
-      backgroundColor: Colors.blue[100],
-      textColor: Colors.blue[900],
+      backgroundColor: Colors.green[100],
+      textColor: Colors.green[900],
       fontSize: 16,
     );
   }
