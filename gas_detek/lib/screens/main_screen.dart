@@ -102,6 +102,17 @@ class _MainScreenState extends State<MainScreen> {
       Alert.dialogError(context, 'Error');
       Alert.closeDialog(context,
           durationBeforeClose: const Duration(milliseconds: 1500));
+          
+      // If the server did not return a 200 Success response, load data from db
+        // TODO: load data
+        RoomDBHelper.getAllRooms().then((records) => {
+          if (records != null) {
+            setState(() {
+              _listRoom = records;
+              _totalRecord = records.length;
+            })
+          }
+        });
     }
   }
 
