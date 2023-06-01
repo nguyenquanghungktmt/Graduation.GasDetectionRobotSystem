@@ -116,6 +116,11 @@ class _MainScreenState extends State<MainScreen> {
     }
   }
 
+  Future<void> _refresh() async {
+    // _fetchData();
+    return Future.delayed(const Duration(seconds: 2));
+  }
+
   Future<void> _saveListRoomData(List<Room>? rooms) async {
     // RoomDBHelper
     if (rooms == null) return;
@@ -176,51 +181,57 @@ class _MainScreenState extends State<MainScreen> {
         ],
       ),
       drawer: const SideMenu(),
-      body: SingleChildScrollView(
-        physics: const BouncingScrollPhysics(),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              RichText(
-                text: TextSpan(
-                  text: "Hello ",
-                  style: const TextStyle(color: kDarkBlue, fontSize: 20),
-                  children: [
-                    TextSpan(
-                      text: (_user != null) ? _user!.getFullName() : "",
-                      style: const TextStyle(
-                          color: kDarkBlue, fontWeight: FontWeight.bold),
-                    ),
-                    const TextSpan(
-                      text: ", welcome back!",
-                    ),
-                  ],
+      body: RefreshIndicator(
+        strokeWidth: 2,
+        color: kDarkBlue,
+        backgroundColor: Colors.white,
+        onRefresh: () => _refresh(),
+        child: SingleChildScrollView(
+          physics: const BouncingScrollPhysics(),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                RichText(
+                  text: TextSpan(
+                    text: "Hello ",
+                    style: const TextStyle(color: kDarkBlue, fontSize: 20),
+                    children: [
+                      TextSpan(
+                        text: (_user != null) ? _user!.getFullName() : "",
+                        style: const TextStyle(
+                            color: kDarkBlue, fontWeight: FontWeight.bold),
+                      ),
+                      const TextSpan(
+                        text: ", welcome back!",
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-              // cách ra một khoảng
-              const SizedBox(
-                height: 15,
-              ),
-              const SizedBox(
-                height: 50,
-                child: Text(
-                  "My Rooms",
-                  style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold),
+                // cách ra một khoảng
+                const SizedBox(
+                  height: 15,
                 ),
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              RoomGrid(
-                listRoom: _listRoom ?? [],
-                totalRoom: _totalRecord,
-              ),
-              // const SizedBox(
-              //   height: 20,
-              // ),
-            ],
+                const SizedBox(
+                  height: 50,
+                  child: Text(
+                    "My Rooms",
+                    style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold),
+                  ),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                RoomGrid(
+                  listRoom: _listRoom ?? [],
+                  totalRoom: _totalRecord,
+                ),
+                // const SizedBox(
+                //   height: 20,
+                // ),
+              ],
+            ),
           ),
         ),
       ),
