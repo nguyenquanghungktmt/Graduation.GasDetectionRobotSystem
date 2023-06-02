@@ -207,12 +207,28 @@ class _MainScreenState extends State<MainScreen> {
         title: const Text(
           "Gas Detection",
           textAlign: TextAlign.center,
-          style: TextStyle(color: Colors.black54, fontWeight: FontWeight.bold),
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
         elevation: 0,
-        backgroundColor: Colors.transparent,
-        iconTheme: const IconThemeData(color: kDarkBlue, size: 36),
+        backgroundColor: kDarkBlue,
+        iconTheme: const IconThemeData(color: Colors.white, size: 36),
+        // flexibleSpace:Container(
+        //   decoration: BoxDecoration(
+        //       gradient: LinearGradient(
+        //           begin: Alignment.topLeft,
+        //           end: Alignment.bottomRight,
+        //           colors: <Color>[Theme.of(context).primaryColor, Theme.of(context).canvasColor,]
+        //       )
+        //   ),
+        // ),
+        bottom: PreferredSize(
+          preferredSize: const Size.fromHeight(4.0), 
+          child: Container(
+              color: Colors.grey.shade500,
+              height: 0.5,
+          ),
+        ),
         actions: [
           IconButton(
             onPressed: () {
@@ -221,11 +237,20 @@ class _MainScreenState extends State<MainScreen> {
             icon: const Icon(
               Icons.add,
               size: 36,
-              color: kDarkBlue,
+              color: Colors.white,
             ),
           ),
         ],
       ),
+      // floatingActionButton: FloatingActionButton(
+      //   onPressed: () => {},
+      //   backgroundColor: Colors.blue.shade400,
+      //   child: const Icon(
+      //     Icons.add_rounded,
+      //     color: Colors.white,
+      //     size: 40.0,
+      //   )
+      // ),
       drawer: const SideMenu(),
       body: RefreshIndicator(
         strokeWidth: 2,
