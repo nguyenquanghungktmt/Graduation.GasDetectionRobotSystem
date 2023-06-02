@@ -80,20 +80,21 @@ class _MainScreenState extends State<MainScreen> {
         // Save to shared preference and realm db
         _saveListRoomData(listRoomTmp);
       } else {
-        Alert.dialogError(context, 'Loading Data Failed\nPlease check your internet.');
+        Alert.dialogError(
+            context, 'Loading data failed\nPlease check your internet.');
         Alert.closeDialog(context,
             durationBeforeClose: const Duration(seconds: 2));
 
         // If the server did not return a 200 Success response, load data from db
-        // TODO: load data
         RoomDBHelper.getAllRooms().then((records) => {
-          if (records != null) {
-            setState(() {
-              _listRoom = records;
-              _totalRecord = records.length;
-            })
-          }
-        });
+              if (records != null)
+                {
+                  setState(() {
+                    _listRoom = records;
+                    _totalRecord = records.length;
+                  })
+                }
+            });
       }
     } on Exception {
       // catch exception
@@ -102,23 +103,81 @@ class _MainScreenState extends State<MainScreen> {
       Alert.dialogError(context, 'Error');
       Alert.closeDialog(context,
           durationBeforeClose: const Duration(milliseconds: 1500));
-          
+
       // If the server did not return a 200 Success response, load data from db
-        // TODO: load data
-        RoomDBHelper.getAllRooms().then((records) => {
-          if (records != null) {
-            setState(() {
-              _listRoom = records;
-              _totalRecord = records.length;
-            })
-          }
-        });
+      RoomDBHelper.getAllRooms().then((records) => {
+            if (records != null)
+              {
+                setState(() {
+                  _listRoom = records;
+                  _totalRecord = records.length;
+                })
+              }
+          });
     }
   }
 
   Future<void> _refresh() async {
-    // _fetchData();
-    return Future.delayed(const Duration(seconds: 2));
+    String? uuid = _user?.uuid;
+
+    try {
+      // call api get list room
+      String apiUrl = "$domain/room/getListRoom";
+      final response = await http.post(
+        Uri.parse(apiUrl),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(<String, String>{
+          "owner_uuid": uuid ?? "",
+        }),
+      );
+
+      print(response.statusCode);
+      if (response.statusCode == 200) {
+        final body = json.decode(response.body);
+
+        final data = body['data'];
+        final items = data['items'];
+        _totalRecord = data['total_record'];
+
+        // Convert json data to list object
+        final listRoomTmp =
+            List.generate(items.length, (index) => Room.fromJson(items[index]));
+
+        setState(() {
+          _listRoom = listRoomTmp;
+        });
+
+        // Save to shared preference and realm db
+        _saveListRoomData(listRoomTmp);
+      } else {
+        Alert.dialogError(context, 'Reloading data from internet failed.');
+        Alert.closeDialog(context,
+            durationBeforeClose: const Duration(seconds: 2));
+
+        // load data from db
+        RoomDBHelper.getAllRooms().then((records) => {
+              if (records != null)
+                {
+                  setState(() {
+                    _listRoom = records;
+                    _totalRecord = records.length;
+                  })
+                }
+            });
+      }
+    } on Exception {
+      RoomDBHelper.getAllRooms().then((records) => {
+            if (records != null)
+              {
+                setState(() {
+                  _listRoom = records;
+                  _totalRecord = records.length;
+                })
+              }
+          });
+    }
   }
 
   Future<void> _saveListRoomData(List<Room>? rooms) async {
@@ -150,17 +209,11 @@ class _MainScreenState extends State<MainScreen> {
           textAlign: TextAlign.center,
           style: TextStyle(color: Colors.black54, fontWeight: FontWeight.bold),
         ),
+        centerTitle: true,
         elevation: 0,
         backgroundColor: Colors.transparent,
         iconTheme: const IconThemeData(color: kDarkBlue, size: 36),
         actions: [
-          // IconButton(
-          //   onPressed: () {},
-          //   icon: const Icon(
-          //     Icons.notifications,
-          //     color: Colors.grey,
-          //   ),
-          // ),
           IconButton(
             onPressed: () {
               print("add scan room");
@@ -171,13 +224,6 @@ class _MainScreenState extends State<MainScreen> {
               color: kDarkBlue,
             ),
           ),
-          // Container(
-          //   margin: const EdgeInsets.only(top: 5, right: 16, bottom: 5),
-          //   child: const CircleAvatar(
-          //     backgroundImage: NetworkImage(
-          //         "https://images.unsplash.com/photo-1500522144261-ea64433bbe27?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NTh8fHdvbWVufGVufDB8MHwwfHw%3D&auto=format&fit=crop&w=500&q=60"),
-          //   ),
-          // )
         ],
       ),
       drawer: const SideMenu(),
