@@ -15,6 +15,7 @@ class RoomDetail extends StatefulWidget {
 }
 
 Future<void> _fetchDataRoom() {
+  // TODO: Call api get device of user
   return Future.delayed(const Duration(seconds: 2));
 }
 
@@ -37,8 +38,7 @@ class _RoomDetailState extends State<RoomDetail> {
         title: Text(
           _room.roomName,
           textAlign: TextAlign.center,
-          style: const TextStyle(
-              color: Colors.white, fontWeight: FontWeight.w700),
+          style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w700),
         ),
         centerTitle: true,
         elevation: 0,
