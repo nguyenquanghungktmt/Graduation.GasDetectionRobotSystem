@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:gas_detek/model/room_model.dart';
+import 'package:gas_detek/screens/room_detail_screen.dart';
 import 'package:gas_detek/widgets/room_widget/room_cell_widget.dart';
 
 class RoomGrid extends StatelessWidget {
@@ -40,7 +41,8 @@ class RoomGrid extends StatelessWidget {
         itemBuilder: (context, index) => RoomCellWidget(
               room: listRoom[index],
               onTap: () {
-                print("onTap");
+                Navigator.push(context, MaterialPageRoute(
+                              builder: (context) => RoomDetail( room: listRoom[index])));
               },
               onLongPress: () {
                 print("onLongPress");
