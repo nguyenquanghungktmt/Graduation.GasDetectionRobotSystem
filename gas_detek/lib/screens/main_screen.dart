@@ -1,11 +1,14 @@
 // ignore_for_file: no_logic_in_create_state, use_build_context_synchronously, must_be_immutable
 import 'dart:convert';
 
+import 'package:gas_detek/model/device_model.dart';
 import 'package:gas_detek/model/room_model.dart';
+import 'package:gas_detek/services/device_db_helper.dart';
 import 'package:gas_detek/services/room_db_helper.dart';
 import 'package:gas_detek/widgets/room_widget/room_grid_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../common/loading/loading_screen.dart';
 import '../constant.dart';
@@ -34,6 +37,7 @@ class _MainScreenState extends State<MainScreen> {
     // print("uuid - $uuid");
 
     String? uuid = _user?.uuid;
+    String? serialNumber = _user?.serialNumber;
 
     // get data from internet
     LoadingScreen().show(
@@ -42,23 +46,33 @@ class _MainScreenState extends State<MainScreen> {
     );
 
     try {
-      String apiUrl = "$domain/room/getListRoom";
-      final response = await http.post(
-        Uri.parse(apiUrl),
-        headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
-        },
-        body: jsonEncode(<String, String>{
-          "owner_uuid": uuid ?? "",
-        }),
-      );
+      final results = await Future.wait([
+        http.post(
+          Uri.parse("$domain/room/getListRoom"),
+          headers: <String, String>{
+            'Content-Type': 'application/json; charset=UTF-8',
+          },
+          body: jsonEncode(<String, String>{
+            "owner_uuid": uuid ?? "",
+          }),
+        ),
+        http.post(
+          Uri.parse("$domain/device/getDeviceInfo"),
+          headers: <String, String>{
+            'Content-Type': 'application/json; charset=UTF-8',
+          },
+          body: jsonEncode(<String, String>{
+            "serial_number": serialNumber ?? "",
+          }),
+        ),
+      ]);
 
-      print(response.statusCode);
+      print(results[0].statusCode);
       LoadingScreen().hide();
 
-      if (response.statusCode == 200) {
+      if (results[0].statusCode == 200) {
         // If the server did return a 200 CREATED response, then parse the JSON.
-        final body = json.decode(response.body);
+        final body = json.decode(results[0].body);
 
         // final status = body['status'] as int;
         // final code = body['code'] as int;
@@ -77,8 +91,14 @@ class _MainScreenState extends State<MainScreen> {
           _listRoom = listRoomTmp;
         });
 
+        // Convert json data in resp2 to device object
+        final bodyResp2 = json.decode(results[1].body);
+        final deviceData = bodyResp2['data'];
+        final deviceObject = Device.fromJson(deviceData);
+        print(deviceObject.toJson());
+
         // Save to shared preference and realm db
-        _saveListRoomData(listRoomTmp);
+        _saveListRoomData(listRoomTmp, deviceObject);
       } else {
         Alert.dialogError(
             context, 'Loading data failed\nPlease check your internet.');
@@ -119,23 +139,35 @@ class _MainScreenState extends State<MainScreen> {
 
   Future<void> _refresh() async {
     String? uuid = _user?.uuid;
+    String? serialNumber = _user?.serialNumber;
 
     try {
       // call api get list room
-      String apiUrl = "$domain/room/getListRoom";
-      final response = await http.post(
-        Uri.parse(apiUrl),
-        headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
-        },
-        body: jsonEncode(<String, String>{
-          "owner_uuid": uuid ?? "",
-        }),
-      );
+      final results = await Future.wait([
+        http.post(
+          Uri.parse("$domain/room/getListRoom"),
+          headers: <String, String>{
+            'Content-Type': 'application/json; charset=UTF-8',
+          },
+          body: jsonEncode(<String, String>{
+            "owner_uuid": uuid ?? "",
+          }),
+        ),
+        http.post(
+          Uri.parse("$domain/device/getDeviceInfo"),
+          headers: <String, String>{
+            'Content-Type': 'application/json; charset=UTF-8',
+          },
+          body: jsonEncode(<String, String>{
+            "serial_number": serialNumber ?? "",
+          }),
+        ),
+      ]);
 
-      print(response.statusCode);
-      if (response.statusCode == 200) {
-        final body = json.decode(response.body);
+      print(results[0].statusCode);
+      print(results[1].statusCode);
+      if (results[0].statusCode == 200 || results[1].statusCode == 200) {
+        final body = json.decode(results[0].body);
 
         final data = body['data'];
         final items = data['items'];
@@ -149,8 +181,14 @@ class _MainScreenState extends State<MainScreen> {
           _listRoom = listRoomTmp;
         });
 
+        // Convert json data in resp2 to device object
+        final bodyResp2 = json.decode(results[1].body);
+        final deviceData = bodyResp2['data'];
+        final deviceObject = Device.fromJson(deviceData);
+        print(deviceObject.toJson());
+
         // Save to shared preference and realm db
-        _saveListRoomData(listRoomTmp);
+        _saveListRoomData(listRoomTmp, deviceObject);
       } else {
         Alert.dialogError(context, 'Reloading data from internet failed.');
         Alert.closeDialog(context,
@@ -180,14 +218,17 @@ class _MainScreenState extends State<MainScreen> {
     }
   }
 
-  Future<void> _saveListRoomData(List<Room>? rooms) async {
+  Future<void> _saveListRoomData(List<Room> rooms, Device device) async {
     // RoomDBHelper
-    if (rooms == null) return;
     RoomDBHelper.deleteAllRooms();
     rooms.forEach((element) {
       RoomDBHelper.addRoom(element);
     });
-    return;
+
+    // Save device object
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString('device_serial_number', device.serialNumber);
+    DeviceDBHelper.addDevice(device);
   }
 
   @override
@@ -223,10 +264,10 @@ class _MainScreenState extends State<MainScreen> {
         //   ),
         // ),
         bottom: PreferredSize(
-          preferredSize: const Size.fromHeight(4.0), 
+          preferredSize: const Size.fromHeight(4.0),
           child: Container(
-              color: Colors.grey.shade500,
-              height: 0.5,
+            color: Colors.grey.shade500,
+            height: 0.5,
           ),
         ),
         actions: [
