@@ -12,8 +12,8 @@ class DatabaseHelper {
     first_name varchar(100),
     last_name varchar(100),
     email varchar(100),
-    avatar_url varchar(50),
-    serial_number varchar(15) );
+    device_serial_number varchar(15),
+    avatar_url varchar(50) );
   ''';
 
   static const String _queryCreateRoom = '''
@@ -26,12 +26,22 @@ class DatabaseHelper {
     map2d_url varchar(50));
   ''';
 
+  static const String _queryCreateDevice = '''
+  create table device (
+	  serial_number varchar(15) primary key not null,
+    model_name varchar(100),
+    image_url varchar(50),
+    device_status varchar(100),
+    description text );
+  ''';
+
   static Future<Database> getDB() async {
     return openDatabase(join(await getDatabasesPath(), _dbName),
       onCreate: (db, version) async {
       print("create database");
       await db.execute(_queryCreateUser);
       await db.execute(_queryCreateRoom);
+      await db.execute(_queryCreateDevice);
     }, version: _version);
   }
 

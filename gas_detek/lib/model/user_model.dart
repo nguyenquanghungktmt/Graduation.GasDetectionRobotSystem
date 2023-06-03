@@ -35,7 +35,7 @@ class User {
     'last_name': lastName,
     'username': username,
     'email': email,
-    'serial_number': serialNumber,
+    'device_serial_number': serialNumber,
     'avatar_url': avatarUrl
   };
 

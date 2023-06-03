@@ -19,7 +19,7 @@ class Device {
       modelName: json['model_name'] ?? "",
       deviceStatus: json['device_status'] ?? "",
       description: json['description'] ?? "",
-      imageUrl: json['imageUrl'],
+      imageUrl: json['image_url'],
     );
   }
 
@@ -28,7 +28,7 @@ class Device {
     'model_name': modelName,
     'device_status': deviceStatus,
     'description': description,
-    'imageUrl': imageUrl
+    'image_url': imageUrl
   };
 
 }

@@ -10,7 +10,7 @@ extension UserDBHelper on DatabaseHelper {
         conflictAlgorithm: ConflictAlgorithm.replace);
   }
 
-  static Future<int> updateNote(User user) async {
+  static Future<int> updateUser(User user) async {
     final db = await DatabaseHelper.getDB();
     return await db.update("User", user.toJson(),
         where: 'uuid = ?',
@@ -18,7 +18,7 @@ extension UserDBHelper on DatabaseHelper {
         conflictAlgorithm: ConflictAlgorithm.replace);
   }
 
-  static Future<int> deleteNote(User user) async {
+  static Future<int> deleteUser(User user) async {
     final db = await DatabaseHelper.getDB();
     return await db.delete(
       "User",
