@@ -12,8 +12,10 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // import routers
 let routes = require("./controllers/routes.js");
 let room_routes = require("./controllers/room_routes.js");
+let device_routes = require("./controllers/device_routes.js");
 app.use("/", routes);
 app.use("/room", room_routes);
+app.use("/device", device_routes);
 
 // start server
 const server = http.createServer(app);
