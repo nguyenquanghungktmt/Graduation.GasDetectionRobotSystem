@@ -7,7 +7,6 @@ const response = require("../common/response.js");
 
 // define a router
 let router = express.Router();
-router.use(express.json({ type: "*/*" }));
 
 /**
  * API device

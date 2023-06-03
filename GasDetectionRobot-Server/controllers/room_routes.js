@@ -5,7 +5,6 @@ const response = require("../common/response.js");
 
 // define a router
 var router = express.Router();
-router.use(express.json({ type: "*/*" }));
 
 /**
  * API Room

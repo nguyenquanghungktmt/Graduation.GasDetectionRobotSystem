@@ -2,10 +2,9 @@
 const http = require("http");
 const express = require("express");
 const bodyParser = require("body-parser");
-const logger = require("./common/log.js");
 
 // setup express
-var app = express();
+const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
@@ -16,6 +15,9 @@ let device_routes = require("./controllers/device_routes.js");
 app.use("/", routes);
 app.use("/room", room_routes);
 app.use("/device", device_routes);
+
+// public folder public to access
+app.use('/images', express.static('./public/images'));
 
 // start server
 const server = http.createServer(app);

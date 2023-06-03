@@ -4,10 +4,11 @@ const database = require("../common/connect.js");
 const logger = require("../common/log.js");
 const datetime = require("../common/datetime.js");
 const response = require("../common/response.js");
+const upload = require('../common/upload');
+const Resize = require('../common/resize');
 
 // define a router
 var router = express.Router();
-router.use(express.json({ type: "*/*" }));
 
 router.get("/", function (req, res) {
   res.json({ message: "Server alive" });
@@ -41,16 +42,16 @@ router.post("/login", function (req, res) {
 
 
 // registration
-router.post('/register', function(req, res){
+router.post('/register', upload.single('image'), async function (req, res){
   console.log("Client request: ", req.body)
-  logger.info(`Client request: registration - ${JSON.stringify(req.body)}`);
+  // logger.info(`Client request: registration - ${JSON.stringify(req.body)}`);
 
   let first_name = req.body.first_name ?? '';
   let last_name = req.body.last_name ?? '';
   let username = req.body.username ?? '';
   let email = req.body.email ?? '';
   let password = req.body.password ?? '';
-  let avatarUrl = req.body.avatar_url ?? '';
+  // let avatarUrl = req.body.avatar_url ?? '';
   let serialNumber = req.body.serial_number ?? '';
   
 
@@ -63,7 +64,7 @@ router.post('/register', function(req, res){
   
   // check if username, email, serial_number is exist ?
   const conn = database.createConnection();
-  conn.query(listQueryCheck.join('; '), function(err, results){
+  conn.query(listQueryCheck.join('; '), async function(err, results){
     if (err) {
       res.status(404).json(response.createResponse(0, 404, "Server Error !"));
       throw err
@@ -93,11 +94,30 @@ router.post('/register', function(req, res){
       // Add new user account to DB
       let uuid_user = uuid.v4();
       let currentTime = datetime.getDatetimeNow();
-      let querryInsertAcc = `INSERT INTO user (uuid, username, first_name, last_name, email, password, avatar_url, device_serial_number, created_time, modified_time) VALUES ('${uuid_user}', '${username}', '${first_name}', '${last_name}', '${email}', '${password}', '${avatarUrl}', '${serialNumber}', '${currentTime}', '${currentTime}')`;
+      
+      const imagePath = './public/images';
+      const fileUpload = new Resize(imagePath);
+      var avatarUrl = null;
+      if (req.file) avatarUrl = await fileUpload.saveAvatar(req.file.buffer);
+
+
+      let values = [
+        uuid_user,
+        username,
+        first_name,
+        last_name,
+        email,
+        password,
+        avatarUrl,
+        serialNumber,
+        currentTime,
+        currentTime
+      ]
+      let querryInsertAcc = `INSERT INTO user (uuid, username, first_name, last_name, email, password, avatar_url, device_serial_number, created_time, modified_time) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
       
       
       // console.log(querryInsertAcc);
-      conn.query(querryInsertAcc, function(err, result){
+      conn.query(querryInsertAcc, values, function(err, result){
         if(err) {
           console.log("Query error first time");
           res.status(404).json(response.createResponse(0, 404, "Server Error !"))
@@ -111,7 +131,7 @@ router.post('/register', function(req, res){
           "username": username,
           "email": email,
           "avatar_url": avatarUrl,
-          "serial_number": first_name
+          "device_serial_number": serialNumber
         }
         res.status(201).json(response.createResponse(1, 201, 'Registration Success', data))
         conn.end()
@@ -148,14 +168,4 @@ router.post("/logout", function (req, res) {
   console.log("===========");
 });
 
-router.post("/test", function (req, res) {
-  console.log("Client request: ", req.body)
-  let data = {
-    "first_name": "Hung",
-    "last_name": "Nguyen",
-  }
-  res.status(200).json(response.createResponse(1, 200, "Registration Success", data));
-
-  console.log("===========");
-})
 module.exports = router;
