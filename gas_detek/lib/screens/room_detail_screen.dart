@@ -1,4 +1,3 @@
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:gas_detek/model/device_model.dart';
 import 'package:gas_detek/model/room_model.dart';

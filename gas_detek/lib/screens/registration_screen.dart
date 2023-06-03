@@ -113,7 +113,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
     UserDBHelper.addUser(user);
   }
 
-  Future<void> requestRegister() async {
+  Future<void> _requestRegister() async {
     String firstName = _firstNameController.text;
     String lastName = _lastNameController.text;
     String userName = _userNameController.text;
@@ -128,28 +128,30 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
 
     try {
       String apiUrl = "$domain/register";
-      final response = await http.post(
-        Uri.parse(apiUrl),
-        headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
-        },
-        body: jsonEncode(<String, String>{
-          "first_name": firstName,
-          "last_name": lastName,
-          "email": email,
-          "username": userName,
-          "serial_number": serialNumber,
-          // "avatar_url": _avatar != null ? _avatar!.toString() : '',
-          "password": password,
-        }),
-      );
 
+      var request = http.MultipartRequest('POST', Uri.parse(apiUrl));
+      request.fields.addAll(<String, String>{
+        "first_name": firstName,
+        "last_name": lastName,
+        "email": email,
+        "username": userName,
+        "serial_number": serialNumber,
+        "password": password,
+      });
+
+      if (_avatar != null) {
+        request.files.add(http.MultipartFile.fromBytes(
+            'image', _avatar!.readAsBytesSync(),
+            filename: _avatar!.path.split("/").last));
+      }
+
+      final response = await request.send();
       print(response.statusCode);
       LoadingScreen().hide();
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         // If the server did return a 200 CREATED response, then parse the JSON.
-        final body = json.decode(response.body);
+        final body = json.decode(await response.stream.bytesToString());
 
         final status = body['status'] as int;
         final code = body['code'] as int;
@@ -424,7 +426,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                             ),
                             onPressed: () {
                               if (_formKey.currentState!.validate()) {
-                                requestRegister();
+                                _requestRegister();
                               }
                             },
                           ),
