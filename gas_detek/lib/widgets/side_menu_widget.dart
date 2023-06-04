@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:gas_detek/common/loading/loading_screen.dart';
 import 'package:gas_detek/screens/login_screen.dart';
+import 'package:gas_detek/screens/user_profile_sreen.dart';
 import 'package:gas_detek/services/database_helper.dart';
 import 'package:gas_detek/services/user_db_helper.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -89,8 +90,8 @@ class SideMenu extends StatelessWidget {
 
     UserDBHelper.getUser(uuid).then((user) => {
           if (user != null)
-            Alert.dialogNotification(
-                context, 'User Info', "User's Fullname is ${user.getFullName()}")
+            Navigator.push(context, MaterialPageRoute(
+                              builder: (context) => UserProfile(user: user)))
         });
   }
 

@@ -161,7 +161,7 @@ class _RoomDetailState extends State<RoomDetail> {
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
                                   // Text('more infor', style: TextStyle(color: Colors.grey.shade500),),
-                                  Text("more info", style: TextStyle(color: Colors.grey.shade500)),
+                                  Text("more", style: TextStyle(color: Colors.grey.shade500)),
                                   Icon(
                                     Icons.chevron_right_outlined,
                                     color: Colors.grey.shade400,
