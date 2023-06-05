@@ -22,8 +22,11 @@ class RoomDetail extends StatefulWidget {
 class _RoomDetailState extends State<RoomDetail> {
   late Room _room;
   late Device? _device;
+  String _roomName = "";
   String _robotName = "";
   String _robotSN = "";
+
+  final TextEditingController _roomNameController = TextEditingController();
 
   Future<void> _fetchDataRoom() async {
     // TODO: Call api get device of user
@@ -61,11 +64,26 @@ class _RoomDetailState extends State<RoomDetail> {
     }
   }
 
+  void _updateRoomName() {
+    setState(() {
+      _roomName = _roomNameController.text;
+    });
+  }
+
   @override
   void initState() {
     super.initState();
     _room = widget.room;
+    _roomName = _room.roomName;
+    _roomNameController.text = _room.roomName;
+    _roomNameController.addListener(_updateRoomName);
     _fetchDataRoom();
+  }
+
+  @override
+  void dispose() {
+    _roomNameController.dispose();
+    super.dispose();
   }
 
   @override
@@ -74,313 +92,393 @@ class _RoomDetailState extends State<RoomDetail> {
     String map2dUrl = "$domain/images/${_room.map2dUrl}";
     // String map2dUrl = 'https://raspberrypi.vn/wp-content/uploads/2016/10/raspberry_pi_3.jpg';
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          _room.roomName,
-          textAlign: TextAlign.center,
-          style:
-              const TextStyle(color: Colors.white, fontWeight: FontWeight.w700),
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
-        ),
-        centerTitle: true,
-        elevation: 0,
-        backgroundColor: kDarkBlue,
-        iconTheme: const IconThemeData(color: Colors.white, size: 36),
-        bottom: PreferredSize(
-          preferredSize: const Size.fromHeight(4.0),
-          child: Container(
-            color: Colors.grey,
-            height: 0.5,
+    return WillPopScope(
+      onWillPop: () async {
+        print("back press");
+        return true;
+      },
+      child: Scaffold(
+        resizeToAvoidBottomInset: false,
+        appBar: AppBar(
+          title: Text(
+            _roomName,
+            textAlign: TextAlign.center,
+            style: const TextStyle(
+                color: Colors.white, fontWeight: FontWeight.w700),
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
           ),
-        ),
-        actions: [
-          IconButton(
-            onPressed: () { },
-            icon: const Icon(
-              Icons.check_rounded,
-              size: 36,
-              color: Colors.white,
+          centerTitle: true,
+          elevation: 0,
+          backgroundColor: kDarkBlue,
+          iconTheme: const IconThemeData(color: Colors.white, size: 36),
+          bottom: PreferredSize(
+            preferredSize: const Size.fromHeight(4.0),
+            child: Container(
+              color: Colors.grey,
+              height: 0.5,
             ),
           ),
-          PopupMenuButton(
+          actions: [
+            IconButton(
+              onPressed: () {},
               icon: const Icon(
-                Icons.more_vert_outlined,
+                Icons.check_rounded,
                 size: 36,
                 color: Colors.white,
               ),
-              itemBuilder: (context) {
-                return [
-                  const PopupMenuItem(
-                    padding: EdgeInsets.only(right: 10, left: 20),
-                    value: 0,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text('Save Map 2D'),
-                        SizedBox(width: 5),
-                        Icon(Icons.save_alt_outlined,
-                            size: 20, color: Colors.black87),
-                      ],
-                    ),
-                  ),
-                  const PopupMenuItem(
+            ),
+            PopupMenuButton(
+                icon: const Icon(
+                  Icons.more_vert_outlined,
+                  size: 36,
+                  color: Colors.white,
+                ),
+                itemBuilder: (context) {
+                  return [
+                    const PopupMenuItem(
                       padding: EdgeInsets.only(right: 10, left: 20),
-                      value: 1,
+                      value: 0,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text(
-                            'Delete Room',
-                            style: TextStyle(color: Colors.red),
-                          ),
+                          Text('Save Map 2D'),
                           SizedBox(width: 5),
-                          Icon(Icons.delete_rounded,
-                              size: 20, color: Colors.red),
+                          Icon(Icons.save_alt_outlined,
+                              size: 20, color: Colors.black87),
                         ],
-                      )),
-                ];
-              },
-              onSelected: (value) {
-                switch (value) {
-                  case 0:
-                    print("Save Image selected.");
-                    _saveImage(map2dUrl);
-                    break;
-                  case 1:
-                    print("Delete Room selected.");
-                    break;
-                }
-              }
-          ),
-        ],
-      ),
-      body: Padding(
-          padding: const EdgeInsets.only(top: 20.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // create box information about robot
-              Container(
-                margin: const EdgeInsets.symmetric(horizontal: 10.0),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: const BorderRadius.all(Radius.circular(10.0)),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey.withOpacity(0.3),
-                      spreadRadius: 2,
-                      blurRadius: 10,
-                      offset: const Offset(2, 2),
+                      ),
                     ),
-                  ],
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.fromLTRB(15, 15, 5, 15),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
+                    const PopupMenuItem(
+                        padding: EdgeInsets.only(right: 10, left: 20),
+                        value: 1,
+                        child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Text(
-                              "Robot: $_robotName",
-                              style: const TextStyle(
-                                  fontSize: 16.0,
-                                  fontWeight: FontWeight.w600,
-                                  color: Colors.black),
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
+                              'Delete Room',
+                              style: TextStyle(color: Colors.red),
                             ),
-                            InkWell(
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  // Text('more infor', style: TextStyle(color: Colors.grey.shade500),),
-                                  Text("more",
-                                      style: TextStyle(
-                                          color: Colors.grey.shade500)),
-                                  Icon(
-                                    Icons.chevron_right_outlined,
-                                    color: Colors.grey.shade400,
-                                  )
-                                ],
-                              ),
-                              onTap: () => {
-                                if (_device != null)
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              DeviceInfo(device: _device!)))
-                              },
-                            )
-                          ]),
-                      Text(
-                        "S/N: $_robotSN",
-                        style: const TextStyle(
-                            fontSize: 15.0,
-                            fontWeight: FontWeight.w400,
-                            color: Colors.black),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                      const SizedBox(height: 4.0),
-                      const Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Icon(
-                            Icons.circle,
-                            color: kGreen,
-                            size: 12.0,
-                          ),
-                          SizedBox(
-                            width: 4.0,
-                          ),
-                          Text(
-                            "Online",
-                            style: TextStyle(
-                                fontSize: 14.0,
-                                fontWeight: FontWeight.w400,
-                                color: Colors.black),
-                          ),
-                        ],
+                            SizedBox(width: 5),
+                            Icon(Icons.delete_rounded,
+                                size: 20, color: Colors.red),
+                          ],
+                        )),
+                  ];
+                },
+                onSelected: (value) {
+                  switch (value) {
+                    case 0:
+                      print("Save Image selected.");
+                      _saveImage(map2dUrl);
+                      break;
+                    case 1:
+                      print("Delete Room selected.");
+                      break;
+                  }
+                }),
+          ],
+        ),
+        body: Padding(
+            padding: const EdgeInsets.only(top: 20.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  height: 50.0,
+                  width: maxWidth - 20.0,
+                  margin: const EdgeInsets.symmetric(horizontal: 10.0),
+                  padding: const EdgeInsets.all(10.0),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(10.0),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.3),
+                        spreadRadius: 2,
+                        blurRadius: 10,
+                        offset: const Offset(2, 2),
                       ),
                     ],
                   ),
-                ),
-              ),
-              const SizedBox(height: 30.0),
-              // TODO: create main UI below here
-              Container(
-                height: maxWidth,
-                width: maxWidth,
-                margin: const EdgeInsets.symmetric(horizontal: 10.0),
-                alignment: Alignment.center,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: const BorderRadius.all(Radius.circular(16.0)),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey.withOpacity(0.3),
-                      spreadRadius: 2,
-                      blurRadius: 10,
-                      offset: const Offset(2, 2),
-                    ),
-                  ],
-                ),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(16.0),
-                  child: Image.network(map2dUrl, fit: BoxFit.cover,
-                      errorBuilder: (context, error, stackTrace) {
-                    // return Image.asset('assets/images/icon_404_not_found.png');
-                    return const Text(
-                      "Loading image map ...",
-                      style: TextStyle(fontSize: 24.0),
-                    );
-                  }),
-                ),
-              ),
-              const SizedBox(height: 30.0),
-
-              Expanded(
-                child: Align(
-                  alignment: Alignment.bottomCenter,
-                  child: SizedBox(
-                    width: double.infinity,
-                    child: Container(
-                      height: 100.0,
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 16.0, horizontal: 20.0),
-                      decoration: BoxDecoration(
-                        color: Colors.grey.shade300,
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey.withOpacity(0.3),
-                            spreadRadius: 2,
-                            blurRadius: 10,
-                            offset: const Offset(2, 2),
-                          ),
-                        ],
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      const Text(
+                        'Name: ',
+                        style: TextStyle(
+                            fontSize: 20.0, fontWeight: FontWeight.w600),
                       ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          ElevatedButton(
-                            onPressed: () {},
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: kDarkBlue,
-                              fixedSize: const Size(50, 50),
-                              shape: const CircleBorder(),
-                            ),
-                            child: const Icon(
-                              Icons.play_arrow_rounded,
-                              color: Colors.white,
+                      Flexible(
+                        child: TextFormField(
+                          controller: _roomNameController,
+                          decoration: const InputDecoration(
+                            focusedBorder: UnderlineInputBorder(
+                              borderSide:
+                                  BorderSide(color: kDarkBlue), //<-- SEE HERE
                             ),
                           ),
-                          ElevatedButton(
-                            onPressed: () {},
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: kDarkBlue,
-                              fixedSize: const Size(50, 50),
-                              shape: const CircleBorder(),
+                        ),
+                      ),
+                    ],
+                  ),
+                  // child: TextFormField(
+                  //   decoration: const InputDecoration(
+                  //     border: UnderlineInputBorder(),
+                  //   ),
+                  // ),
+                ),
+                const SizedBox(
+                  height: 10.0,
+                ),
+                // create box information about robot
+                Container(
+                  margin: const EdgeInsets.symmetric(horizontal: 10.0),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: const BorderRadius.all(Radius.circular(10.0)),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.3),
+                        spreadRadius: 2,
+                        blurRadius: 10,
+                        offset: const Offset(2, 2),
+                      ),
+                    ],
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(15, 15, 5, 5),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Text(
+                                "Robot: $_robotName",
+                                style: const TextStyle(
+                                    fontSize: 16.0,
+                                    fontWeight: FontWeight.w600,
+                                    color: Colors.black),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                              InkWell(
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    // Text('more infor', style: TextStyle(color: Colors.grey.shade500),),
+                                    Text("more",
+                                        style: TextStyle(
+                                            color: Colors.grey.shade500)),
+                                    Icon(
+                                      Icons.chevron_right,
+                                      color: Colors.grey.shade300,
+                                    )
+                                  ],
+                                ),
+                                onTap: () => {
+                                  if (_device != null)
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                DeviceInfo(device: _device!)))
+                                },
+                              )
+                            ]),
+                        const SizedBox(height: 6,),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "S/N: $_robotSN",
+                                  style: const TextStyle(
+                                      fontSize: 15.0,
+                                      fontWeight: FontWeight.w400,
+                                      color: Colors.black),
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                                const SizedBox(height: 4.0),
+                                const Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Icon(
+                                      Icons.circle,
+                                      color: kGreen,
+                                      size: 12.0,
+                                    ),
+                                    SizedBox(
+                                      width: 4.0,
+                                    ),
+                                    Text(
+                                      "Online",
+                                      style: TextStyle(
+                                          fontSize: 14.0,
+                                          fontWeight: FontWeight.w400,
+                                          color: Colors.black),
+                                    ),
+                                  ],
+                                ),
+                              ],
                             ),
-                            child: const Icon(
-                              Icons.pause_rounded,
-                              color: Colors.white,
+                            ElevatedButton(
+                              onPressed: () {},
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: kDarkBlue,
+                              ),
+                              child: const Text("connect",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 14.0,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
                             ),
-                          ),
-                          ElevatedButton(
-                            onPressed: () {},
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: kDarkBlue,
-                              fixedSize: const Size(50, 50),
-                              shape: const CircleBorder(),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 10.0),
+                // TODO: create main UI below here
+                Container(
+                  height: maxWidth,
+                  width: maxWidth,
+                  margin: const EdgeInsets.symmetric(horizontal: 10.0),
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: const BorderRadius.all(Radius.circular(16.0)),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.3),
+                        spreadRadius: 2,
+                        blurRadius: 10,
+                        offset: const Offset(2, 2),
+                      ),
+                    ],
+                  ),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(16.0),
+                    child: Image.network(map2dUrl, fit: BoxFit.cover,
+                        errorBuilder: (context, error, stackTrace) {
+                      // return Image.asset('assets/images/icon_404_not_found.png');
+                      return const Text(
+                        "Loading image map ...",
+                        style: TextStyle(fontSize: 24.0),
+                      );
+                    }),
+                  ),
+                ),
+                const SizedBox(height: 10.0),
+
+                Expanded(
+                  child: Align(
+                    alignment: Alignment.bottomCenter,
+                    child: SizedBox(
+                      width: double.infinity,
+                      child: Container(
+                        height: 100.0,
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 16.0, horizontal: 20.0),
+                        decoration: BoxDecoration(
+                          color: Colors.grey.shade300,
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey.withOpacity(0.3),
+                              spreadRadius: 2,
+                              blurRadius: 10,
+                              offset: const Offset(2, 2),
                             ),
-                            child: const Icon(
-                              Icons.stop_rounded,
-                              color: Colors.white,
+                          ],
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            ElevatedButton(
+                              onPressed: () {},
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: kDarkBlue,
+                                fixedSize: const Size(50, 50),
+                                shape: const CircleBorder(),
+                              ),
+                              child: const Icon(
+                                Icons.play_arrow_rounded,
+                                color: Colors.white,
+                              ),
                             ),
-                          ),
-                          ElevatedButton(
-                            onPressed: () {},
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: kDarkBlue,
-                              fixedSize: const Size(50, 50),
-                              shape: const CircleBorder(),
+                            ElevatedButton(
+                              onPressed: () {},
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: kDarkBlue,
+                                fixedSize: const Size(50, 50),
+                                shape: const CircleBorder(),
+                              ),
+                              child: const Icon(
+                                Icons.pause_rounded,
+                                color: Colors.white,
+                              ),
                             ),
-                            child: const Icon(
-                              Icons.add_rounded,
-                              color: Colors.white,
+                            ElevatedButton(
+                              onPressed: () {},
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: kDarkBlue,
+                                fixedSize: const Size(50, 50),
+                                shape: const CircleBorder(),
+                              ),
+                              child: const Icon(
+                                Icons.stop_rounded,
+                                color: Colors.white,
+                              ),
                             ),
-                          ),
-                          ElevatedButton(
-                            onPressed: () {},
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: kDarkBlue,
-                              fixedSize: const Size(50, 50),
-                              shape: const CircleBorder(),
+                            ElevatedButton(
+                              onPressed: () {},
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: kDarkBlue,
+                                fixedSize: const Size(50, 50),
+                                shape: const CircleBorder(),
+                              ),
+                              child: const Icon(
+                                Icons.add_rounded,
+                                color: Colors.white,
+                              ),
                             ),
-                            child: const Icon(
-                              Icons.remove_rounded,
-                              color: Colors.white,
+                            ElevatedButton(
+                              onPressed: () {},
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: kDarkBlue,
+                                fixedSize: const Size(50, 50),
+                                shape: const CircleBorder(),
+                              ),
+                              child: const Icon(
+                                Icons.remove_rounded,
+                                color: Colors.white,
+                              ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
                   ),
                 ),
-              ),
-            ],
-          )),
+              ],
+            )),
+      ),
     );
   }
 }
