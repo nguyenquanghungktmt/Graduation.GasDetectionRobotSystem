@@ -95,7 +95,6 @@ class _MainScreenState extends State<MainScreen> {
         final bodyResp2 = json.decode(results[1].body);
         final deviceData = bodyResp2['data'];
         final deviceObject = Device.fromJson(deviceData);
-        print(deviceObject.toJson());
 
         // Save to shared preference and realm db
         _saveListRoomData(listRoomTmp, deviceObject);
@@ -185,7 +184,6 @@ class _MainScreenState extends State<MainScreen> {
         final bodyResp2 = json.decode(results[1].body);
         final deviceData = bodyResp2['data'];
         final deviceObject = Device.fromJson(deviceData);
-        print(deviceObject.toJson());
 
         // Save to shared preference and realm db
         _saveListRoomData(listRoomTmp, deviceObject);

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gas_detek/model/device_model.dart';
 import 'package:gas_detek/model/room_model.dart';
+import 'package:gas_detek/screens/device_info_screen.dart';
 import 'package:gas_detek/services/device_db_helper.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -168,7 +169,10 @@ class _RoomDetailState extends State<RoomDetail> {
                                   )
                                 ],
                               ),
-                              onTap: () => {print("tap on more info ${_device?.toJson()}") },
+                              onTap: () => {
+                                if (_device != null)
+                                  Navigator.push(context, MaterialPageRoute(builder: (context) => DeviceInfo(device: _device!)))
+                              },
                             )
                           ]),
                       Text(

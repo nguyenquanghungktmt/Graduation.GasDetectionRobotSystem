@@ -45,7 +45,7 @@ class _UserProfileState extends State<UserProfile> {
   @override
   Widget build(BuildContext context) {
     double maxWidth = MediaQuery.of(context).size.width;
-    String avatarUrl = "$domain/images123/${_user.avatarUrl}";
+    String avatarUrl = "$domain/images/${_user.avatarUrl}";
 
     return Scaffold(
       appBar: AppBar(
@@ -141,20 +141,19 @@ class _UserProfileState extends State<UserProfile> {
                 ),
                 child: Container(
                   alignment: Alignment.center,
-                  padding: const EdgeInsets.symmetric(vertical: 10.0),
-                  decoration: const BoxDecoration(
+                  decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     color: Colors.white,
+                    border: Border.all(color: Colors.white, width: 6.0),
                   ),
                   child: ClipOval(
-                    child: SizedBox.fromSize(
-                      size: const Size.fromRadius(58), // Image radius
+                    child: SizedBox.fromSize(// Image radius
                       child: FittedBox(
                         fit: BoxFit.fitWidth,
                         child: Image.network(avatarUrl,
                             errorBuilder: (context, error, stackTrace) {
                           return Icon(Icons.person,
-                              color: Colors.grey.shade300);
+                              color: Colors.grey.shade300, size: 100.0,);
                         }),
                       ),
                     ),
