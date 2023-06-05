@@ -149,21 +149,21 @@ class _RoomDetailState extends State<RoomDetail> {
                         ],
                       ),
                     ),
-                    const PopupMenuItem(
-                        padding: EdgeInsets.only(right: 10, left: 20),
-                        value: 1,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              'Delete Room',
-                              style: TextStyle(color: Colors.red),
-                            ),
-                            SizedBox(width: 5),
-                            Icon(Icons.delete_rounded,
-                                size: 20, color: Colors.red),
-                          ],
-                        )),
+                    // const PopupMenuItem(
+                    //     padding: EdgeInsets.only(right: 10, left: 20),
+                    //     value: 1,
+                    //     child: Row(
+                    //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    //       children: [
+                    //         Text(
+                    //           'Delete Room',
+                    //           style: TextStyle(color: Colors.red),
+                    //         ),
+                    //         SizedBox(width: 5),
+                    //         Icon(Icons.delete_rounded,
+                    //             size: 20, color: Colors.red),
+                    //       ],
+                    //     )),
                   ];
                 },
                 onSelected: (value) {
@@ -228,28 +228,31 @@ class _RoomDetailState extends State<RoomDetail> {
                 ),
                 // container room status
                 Container(
-                  height: 28.0,
-                  width: maxWidth - 20.0,
-                  margin: const EdgeInsets.symmetric(horizontal: 10.0),
-                  padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
-                  decoration: const BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.vertical(bottom: Radius.circular(10)),
-                  ),
-                  child: Text.rich(TextSpan(
-                    children: [
-                      const TextSpan(text: 'Status: ', style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.w500)),
-                      TextSpan(
-                        text: _room.roomStatus, 
-                        style: TextStyle(
-                          color: _room.isGasDetect==1 ? Colors.red : Colors.green,
-                          fontSize: 16.0, 
-                          fontWeight: FontWeight.w400
-                        )
-                      )
-                    ]),
-                  )
-                ),
+                    height: 28.0,
+                    width: maxWidth - 20.0,
+                    margin: const EdgeInsets.symmetric(horizontal: 10.0),
+                    padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
+                    decoration: const BoxDecoration(
+                      color: Colors.white,
+                      borderRadius:
+                          BorderRadius.vertical(bottom: Radius.circular(10)),
+                    ),
+                    child: Text.rich(
+                      TextSpan(children: [
+                        const TextSpan(
+                            text: 'Status: ',
+                            style: TextStyle(
+                                fontSize: 16.0, fontWeight: FontWeight.w500)),
+                        TextSpan(
+                            text: _room.roomStatus,
+                            style: TextStyle(
+                                color: _room.isGasDetect == 1
+                                    ? Colors.red
+                                    : Colors.green,
+                                fontSize: 16.0,
+                                fontWeight: FontWeight.w400))
+                      ]),
+                    )),
                 const SizedBox(
                   height: 10.0,
                 ),
@@ -312,7 +315,9 @@ class _RoomDetailState extends State<RoomDetail> {
                                 },
                               )
                             ]),
-                        const SizedBox(height: 6,),
+                        const SizedBox(
+                          height: 6,
+                        ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -359,7 +364,8 @@ class _RoomDetailState extends State<RoomDetail> {
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: kDarkBlue,
                               ),
-                              child: const Text("connect",
+                              child: const Text(
+                                "connect",
                                 style: TextStyle(
                                   color: Colors.white,
                                   fontSize: 14.0,
@@ -374,7 +380,6 @@ class _RoomDetailState extends State<RoomDetail> {
                   ),
                 ),
                 const SizedBox(height: 10.0),
-                // TODO: create main UI below here
                 Container(
                   height: maxWidth - 20.0,
                   width: maxWidth - 20.0,
@@ -396,7 +401,10 @@ class _RoomDetailState extends State<RoomDetail> {
                     borderRadius: BorderRadius.circular(14.0),
                     child: Image.network(map2dUrl, fit: BoxFit.cover,
                         errorBuilder: (context, error, stackTrace) {
-                      return Image.asset('assets/images/icon_404_not_found.png', fit: BoxFit.contain,);
+                      return Image.asset(
+                        'assets/images/icon_404_not_found.png',
+                        fit: BoxFit.contain,
+                      );
                       // return const Center(
                       //   child: Text(
                       //     "Loading image map ...",

@@ -216,6 +216,67 @@ class _MainScreenState extends State<MainScreen> {
     }
   }
 
+  Future<void> _requestDeleteRoom(Room room) async {
+    // request delete room
+    try {
+      String apiUrl = "$domain/room/deleteRoom";
+      final response = await http.post(
+        Uri.parse(apiUrl),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(<String, String>{
+          "room_id": room.roomId,
+          "owner_uuid": room.ownerUUID,
+        }),
+      );
+
+      print(response.statusCode);
+
+      if (response.statusCode == 200) {
+        // If the server did return a 200 CREATED response, then parse the JSON.
+        final body = json.decode(response.body);
+
+        final status = body['status'] as int;
+        final code = body['code'] as int;
+        final message = body['message'] as String;
+
+        if (status == 1 && code == 200) {
+          // delete room success
+          // delete in db local
+          RoomDBHelper.deleteRoom(room);
+
+          // refresh state
+          setState(() {
+            _totalRecord--;
+            _listRoom?.remove(room);
+          });
+
+          Alert.toastSuccess(message);
+          Alert.closeToast(
+              durationBeforeClose: const Duration(milliseconds: 1500));
+        } else {
+          // delete faild
+          Alert.toastError(message);
+          Alert.closeToast(
+              durationBeforeClose: const Duration(milliseconds: 1500));
+        }
+      } else {
+        // If the server did not return a 201 CREATED response,
+        // then throw an exception.
+
+        Alert.toastError('Delete room failed');
+        Alert.closeToast(
+            durationBeforeClose: const Duration(milliseconds: 1500));
+      }
+    } on Exception {
+      // catch exception
+
+      Alert.toastError('Server error!');
+      Alert.closeToast(durationBeforeClose: const Duration(milliseconds: 1500));
+    }
+  }
+
   Future<void> _saveListRoomData(List<Room> rooms, Device device) async {
     // RoomDBHelper
     RoomDBHelper.deleteAllRooms();
@@ -336,6 +397,7 @@ class _MainScreenState extends State<MainScreen> {
                 RoomGrid(
                   listRoom: _listRoom ?? [],
                   totalRoom: _totalRecord,
+                  deleteRoom: (room) => _requestDeleteRoom(room),
                 ),
                 // const SizedBox(
                 //   height: 20,
