@@ -110,7 +110,8 @@ class _DeviceInfoState extends State<DeviceInfo> {
                 width: maxWidth,
                 decoration: BoxDecoration(
                   color: Colors.white,
-                  borderRadius: const BorderRadius.all(Radius.circular(16.0)),
+                  borderRadius: BorderRadius.circular(16.0),
+                  border: Border.all(color: kDarkBlue, width: 2.0),
                   boxShadow: [
                     BoxShadow(
                       color: Colors.grey.withOpacity(0.3),
@@ -121,7 +122,7 @@ class _DeviceInfoState extends State<DeviceInfo> {
                   ],
                 ),
                 child: ClipRRect(
-                  borderRadius: BorderRadius.circular(16.0),
+                  borderRadius: BorderRadius.circular(14.0),
                   child: Image.network(imageUrl,
                     fit: BoxFit.cover,
                     errorBuilder: (context, error, stackTrace) {

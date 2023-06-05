@@ -27,14 +27,18 @@ class _UserProfileState extends State<UserProfile> {
 
   void _saveImage(String url) async {
     try {
-      await GallerySaver.saveImage(url, albumName: 'Flutter',).then((success) {
+      await GallerySaver.saveImage(
+        url,
+        albumName: 'Flutter',
+      ).then((success) {
         String message = 'Save failed';
         if (success ?? false) {
           message = 'Image saved';
         }
-        
+
         Alert.toastSuccess(message);
-        Alert.closeToast(durationBeforeClose: const Duration(milliseconds: 1500));
+        Alert.closeToast(
+            durationBeforeClose: const Duration(milliseconds: 1500));
       });
     } catch (e) {
       Alert.toastSuccess('Save failed');
@@ -46,6 +50,7 @@ class _UserProfileState extends State<UserProfile> {
   Widget build(BuildContext context) {
     double maxWidth = MediaQuery.of(context).size.width;
     String avatarUrl = "$domain/images/${_user.avatarUrl}";
+    print(avatarUrl);
 
     return Scaffold(
       appBar: AppBar(
@@ -67,54 +72,54 @@ class _UserProfileState extends State<UserProfile> {
         // ),
         actions: [
           PopupMenuButton(
-            icon: const Icon(
-              Icons.more_vert_outlined,
-              size: 36,
-              color: Colors.white,
-            ),
-            itemBuilder: (context) {
-              return [
-                const PopupMenuItem(
-                  padding: EdgeInsets.only(right: 10, left: 20),
-                  value: 0,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text('Save Avatar'),
-                      SizedBox(width: 5),
-                      Icon(Icons.save_alt_outlined,
-                          size: 20, color: Colors.black87),
-                    ],
-                  ),
-                ),
-                const PopupMenuItem(
+              icon: const Icon(
+                Icons.more_vert_outlined,
+                size: 36,
+                color: Colors.white,
+              ),
+              itemBuilder: (context) {
+                return [
+                  const PopupMenuItem(
                     padding: EdgeInsets.only(right: 10, left: 20),
-                    value: 1,
+                    value: 0,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(
-                          'Delete Account',
-                          style: TextStyle(color: Colors.red),
-                        ),
+                        Text('Save Avatar'),
                         SizedBox(width: 5),
-                        Icon(Icons.delete_rounded, size: 20, color: Colors.red),
+                        Icon(Icons.save_alt_outlined,
+                            size: 20, color: Colors.black87),
                       ],
-                    )),
-              ];
-            },
-            onSelected: (value) {
-              switch (value) {
-                case 0:
-                  // print("Save Avatar selected.");
-                  _saveImage(avatarUrl);
-                  break;
-                case 1:
-                  print("Delete Room selected.");
-                  break;
-              }
-            }
-          ),
+                    ),
+                  ),
+                  const PopupMenuItem(
+                      padding: EdgeInsets.only(right: 10, left: 20),
+                      value: 1,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            'Delete Account',
+                            style: TextStyle(color: Colors.red),
+                          ),
+                          SizedBox(width: 5),
+                          Icon(Icons.delete_rounded,
+                              size: 20, color: Colors.red),
+                        ],
+                      )),
+                ];
+              },
+              onSelected: (value) {
+                switch (value) {
+                  case 0:
+                    // print("Save Avatar selected.");
+                    _saveImage(avatarUrl);
+                    break;
+                  case 1:
+                    print("Delete Room selected.");
+                    break;
+                }
+              }),
         ],
       ),
       body: SingleChildScrollView(
@@ -147,13 +152,18 @@ class _UserProfileState extends State<UserProfile> {
                     border: Border.all(color: Colors.white, width: 6.0),
                   ),
                   child: ClipOval(
-                    child: SizedBox.fromSize(// Image radius
+                    child: SizedBox.fromSize(
+                      size: const Size(120.0, 120.0),
+                      // Image radius
                       child: FittedBox(
                         fit: BoxFit.fitWidth,
                         child: Image.network(avatarUrl,
                             errorBuilder: (context, error, stackTrace) {
-                          return Icon(Icons.person,
-                              color: Colors.grey.shade300, size: 100.0,);
+                          return Icon(
+                            Icons.person,
+                            color: Colors.grey.shade300,
+                            size: 100.0,
+                          );
                         }),
                       ),
                     ),
