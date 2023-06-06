@@ -1,8 +1,9 @@
-const sharp = require('sharp');
+const resizeImg = require('resize-image-buffer');
 const uuid = require("uuid")
 const path = require('path');
 
 class Resize {
+
     constructor(folder) {
         this.folder = folder;
     }
@@ -12,10 +13,9 @@ class Resize {
         const filename = `avatar-${uuid.v1()}.png`;
         const filepath = this.filepath(filename);
 
-        await sharp(buffer)
-            .resize(720, 720, { // size image 300x300
-            fit: sharp.fit.inside,
-            withoutEnlargement: true
+        await resizeImg(buffer,{
+            width: 720,
+            height: 720,
             })
             .toFile(filepath);
 

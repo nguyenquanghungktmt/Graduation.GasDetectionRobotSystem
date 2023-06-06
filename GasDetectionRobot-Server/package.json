@@ -5,7 +5,7 @@
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon app.js"
+    "start": "node app.js"
   },
   "author": "Nguyen Quang Hung",
   "license": "ISC",
@@ -16,7 +16,7 @@
     "multer": "^1.4.5-lts.1",
     "mysql": "^2.18.1",
     "nodemon": "^2.0.22",
-    "sharp": "^0.32.1",
+    "resize-image-buffer": "^1.0.0",
     "uuid": "^9.0.0",
     "winston": "^3.4.0"
   }
