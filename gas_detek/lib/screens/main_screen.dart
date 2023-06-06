@@ -358,7 +358,7 @@ class _MainScreenState extends State<MainScreen> {
         backgroundColor: Colors.white,
         onRefresh: () => _refresh(),
         child: SingleChildScrollView(
-          physics: const BouncingScrollPhysics(),
+          physics: const AlwaysScrollableScrollPhysics(),
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12),
             child: Column(
