@@ -40,6 +40,9 @@ select * from user;
 select * from device;
 select * from room;
 
+-- check mysql version --
+select version();
+
 /* permission for root account */
 ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'qwerty123';
 flush privileges;
