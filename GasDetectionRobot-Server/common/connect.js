@@ -1,5 +1,6 @@
-var config = require("config");
-var mysql = require("mysql");
+const config = require("config");
+const mysql = require("mysql");
+const fs = require('fs');
 const logger = require("../common/log.js");
 
 // define mysql connection
@@ -11,6 +12,11 @@ module.exports = {
       password: config.get("mysql.password"),
       database: config.get("mysql.database"),
       port: config.get("mysql.port"),
+      ssl: {
+          ca: fs.readFileSync(
+              config.get("mysql.path_ssl_cert")
+          )
+      },
       multipleStatements: true
     })
     connection.connect(function (err, connection) {
