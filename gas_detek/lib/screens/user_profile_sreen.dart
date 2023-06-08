@@ -156,7 +156,7 @@ class _UserProfileState extends State<UserProfile> {
                       size: const Size(120.0, 120.0),
                       // Image radius
                       child: FittedBox(
-                        fit: BoxFit.fitWidth,
+                        fit: BoxFit.cover,
                         child: Image.network(avatarUrl,
                             errorBuilder: (context, error, stackTrace) {
                           return Icon(
