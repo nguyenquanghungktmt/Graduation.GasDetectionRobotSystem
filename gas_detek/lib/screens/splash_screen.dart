@@ -85,12 +85,9 @@ class _SplashScreenState extends State<SplashScreen> {
                     spreadRadius: 2.0,
                   )
                 ]),
-            child: const Center(
-              child: ClipRRect(
-                child: Icon(
-                  Icons.car_rental_outlined,
-                  size: 160,
-                ), //put your logo here
+            child: Center(
+              child: ClipOval(
+                child: Image.asset('assets/images/icon_gas_detection_app.png'),
               ),
             ),
           ),
