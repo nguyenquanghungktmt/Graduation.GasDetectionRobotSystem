@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>617187922510-ph9m7cllmmf17p1tacqafv3drctr4l9d.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.617187922510-ph9m7cllmmf17p1tacqafv3drctr4l9d</string>
+	<key>API_KEY</key>
+	<string>AIzaSyBGm5W0nHB2QNkmtIfdIq61nPXdgOJLC5g</string>
+	<key>GCM_SENDER_ID</key>
+	<string>617187922510</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.example.gasDetek</string>
+	<key>PROJECT_ID</key>
+	<string>gas-detekt-firebase</string>
+	<key>STORAGE_BUCKET</key>
+	<string>gas-detekt-firebase.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:617187922510:ios:a3814b188866f80e90e91f</string>
+</dict>
+</plist>

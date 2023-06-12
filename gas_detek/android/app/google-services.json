@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "617187922510",
+    "project_id": "gas-detekt-firebase",
+    "storage_bucket": "gas-detekt-firebase.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:617187922510:android:4f1be0b794fe3a4890e91f",
+        "android_client_info": {
+          "package_name": "com.example.gas_detek"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "617187922510-fhpvaa4ht3v98m050kr7f53lpheol8c1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD451yLv5c3K-za6Qyq5Tj3Rz1OonoSFAU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "617187922510-fhpvaa4ht3v98m050kr7f53lpheol8c1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
