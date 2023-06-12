@@ -1,0 +1,17 @@
+host: gas-detekt-iot-hub.azure-devices.net
+port: 8883
+device id: RB23GD1708
+username: gas-detekt-iot-hub.azure-devices.net/RB23GD1708/?api-version=2021-04-12
+password: SharedAccessSignature sr=gas-detekt-iot-hub.azure-devices.net%2Fdevices%2FRB23GD1708&sig=XofOELyukgQGePm7M9hxRCAX5Bw0v6llreuhdByeJQg%3D&se=1686592908
+
+public topic: device/RB23GD1708/messages/events/
+
+
+====== Hub trả tiền ==========
+host: gas-detekt-hub.azure-devices.net
+port: 8883
+device id: RB23GD1708
+username: gas-detekt-hub.azure-devices.net/RB23GD1708/?api-version=2021-04-12
+password: SharedAccessSignature sr=gas-detekt-hub.azure-devices.net%2Fdevices%2FRB23GD1708&sig=5y3bE32AccRzB4gQLO%2B3jiguD30IptD92u4aO85qI%2FU%3D&se=1686592841
+
+public topic: device/RB23GD1708/messages/events/
