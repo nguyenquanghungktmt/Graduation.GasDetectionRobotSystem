@@ -1,7 +1,7 @@
 import 'dart:ui';
 
 // chang domain here //
-const String domain = "https://gas-detekt-system.azurewebsites.net/";
+const String domain = "https://gas-detekt-system.azurewebsites.net";
 
 const defaultPadding = 16.0;
 
