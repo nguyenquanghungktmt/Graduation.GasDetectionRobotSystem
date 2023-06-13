@@ -12,11 +12,11 @@ app.use(bodyParser.urlencoded({ extended: true }));
 let routes = require("./controllers/routes.js");
 let room_routes = require("./controllers/room_routes.js");
 let device_routes = require("./controllers/device_routes.js");
-let upload_routes = require("./controllers/upload_routes.js");
+let notification_routes = require("./controllers/push_notification_routes.js");
 app.use("/", routes);
 app.use("/room", room_routes);
 app.use("/device", device_routes);
-app.use("/upload", upload_routes);
+app.use("/notification", notification_routes);
 
 // public folder public to access
 app.use('/images', express.static('./public/images'));
