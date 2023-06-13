@@ -47,6 +47,11 @@ select version();
 ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'qwerty123';
 flush privileges;
 
+/* create new user*/
+CREATE USER 'hungnq'@'localhost' IDENTIFIED BY 'HuyenAnh@123';
+GRANT ALL PRIVILEGES ON * . * TO 'hungnq'@'localhost';
+ALTER USER 'hungnq'@'localhost' IDENTIFIED WITH mysql_native_password BY 'HuyenAnh@123';
+FLUSH PRIVILEGES;
 
 /* add record to tables */
 insert into user (uuid, username, password, device_serial_number)

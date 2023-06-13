@@ -1,6 +1,6 @@
-const resizeImg = require('resize-image-buffer');
 const uuid = require("uuid")
 const path = require('path');
+const jimp = require('jimp');
 
 class Resize {
 
@@ -13,11 +13,9 @@ class Resize {
         const filename = `avatar-${uuid.v1()}.png`;
         const filepath = this.filepath(filename);
 
-        await resizeImg(buffer,{
-            width: 720,
-            height: 720,
-            })
-            .toFile(filepath);
+        const image = await jimp.read(buffer);
+        image.resize(720, jimp.AUTO)
+            .write(filepath);
 
         return filename;
     }

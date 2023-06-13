@@ -22,7 +22,6 @@ class _UserProfileState extends State<UserProfile> {
   void initState() {
     super.initState();
     _user = widget.user;
-    print(_user.toJson());
   }
 
   void _saveImage(String url) async {
@@ -46,11 +45,11 @@ class _UserProfileState extends State<UserProfile> {
     }
   }
 
+
   @override
   Widget build(BuildContext context) {
     double maxWidth = MediaQuery.of(context).size.width;
     String avatarUrl = "$domain/images/${_user.avatarUrl}";
-    print(avatarUrl);
 
     return Scaffold(
       appBar: AppBar(
@@ -116,7 +115,7 @@ class _UserProfileState extends State<UserProfile> {
                     _saveImage(avatarUrl);
                     break;
                   case 1:
-                    print("Delete Room selected.");
+                    print("Delete Account selected.");
                     break;
                 }
               }),
@@ -156,7 +155,7 @@ class _UserProfileState extends State<UserProfile> {
                       size: const Size(120.0, 120.0),
                       // Image radius
                       child: FittedBox(
-                        fit: BoxFit.fitWidth,
+                        fit: BoxFit.cover,
                         child: Image.network(avatarUrl,
                             errorBuilder: (context, error, stackTrace) {
                           return Icon(

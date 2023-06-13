@@ -2,6 +2,15 @@ const winston = require("winston");
 const path = require("path");
 
 /**
+ * set timezone to Asia/Ho_Chi_Minh
+ */
+const timezoned = () => {
+  return new Date().toLocaleString('en-US', {
+      timeZone: 'Asia/Ho_Chi_Minh'
+  });
+}
+
+/**
  * winston logger configuration
  * levels: fatal, error, warning, info, debug
  * export a module logger
@@ -13,6 +22,7 @@ module.exports = winston.createLogger({
     // Time format for log
     winston.format.timestamp({
       format: "YYYY-MM-DD HH:mm:ss",
+      format: timezoned
     }),
 
     // set the format of log
