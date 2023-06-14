@@ -21,20 +21,48 @@ router.post("/login", function (req, res) {
 
   let username = req.body.username ?? '';
   let password = req.body.password ?? '';
+  let firebaseToken = req.body.firebase_token ?? '';
+  // console.log("firebaseToken: ", firebaseToken);
+
+  if (!firebaseToken) {
+    res.status(200).json(response.createResponse(1, 400, "Firebase token is null or empty!"));
+    return;
+  }
+
   var query = `SELECT * FROM user WHERE username='${username}' and password='${password}';`;
 
   const conn = database.createConnection();
   conn.query(query, function (err, result) {
-    if (err) {
-      res.status(404).json(response.createResponse(0, 404, "Server Error !"));
-      
-    } else {
-      if (!result.length) {
-        res.status(200).json(response.createResponse(1, 400, "Username or Password wrong!"));
-      } 
-      else res.status(200).json(response.createResponse(1, 200, "Login Success", result[0]));
+    if(err) {
+      res.status(404).json(response.createResponse(0, 404, "Server Error !"))
+      throw err
     }
-    conn.end();
+    
+    if (!result.length) {
+      res.status(200).json(response.createResponse(1, 400, "Username or Password wrong!"));
+      conn.end();
+    } 
+    else {
+      let updateQuery = `UPDATE user SET firebase_token=?, modified_time=? WHERE username=? and password=?;`;
+      let values = [
+        firebaseToken,
+        datetime.getDatetimeNow(),
+        username,
+        password,
+      ]
+
+      console.log(values);
+
+      conn.query(updateQuery, values, function(err){
+        if(err) {
+          res.status(404).json(response.createResponse(0, 404, "Server Error !"))
+          throw err
+        }
+        res.status(200).json(response.createResponse(1, 200, "Login Success", result[0]));
+        conn.end()
+      })
+    
+    }
   });
 
   console.log("===========");
@@ -53,7 +81,12 @@ router.post('/register', upload.single('image'), async function (req, res){
   let password = req.body.password ?? '';
   // let avatarUrl = req.body.avatar_url ?? '';
   let serialNumber = req.body.serial_number ?? '';
-  
+  let firebaseToken = req.body.firebase_token ?? '';
+
+  if (!firebaseToken) {
+    res.status(200).json(response.createResponse(1, 400, "Firebase token is null or empty!"));
+    return;
+  }
 
   var listQueryCheck = []
   listQueryCheck.push(`SELECT COUNT(*) as count FROM user WHERE username = "${username}"`);
@@ -113,13 +146,12 @@ router.post('/register', upload.single('image'), async function (req, res){
         currentTime,
         currentTime
       ]
-      let querryInsertAcc = `INSERT INTO user (uuid, username, first_name, last_name, email, password, avatar_url, device_serial_number, created_time, modified_time) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+      let querryInsertAcc = `INSERT INTO user (uuid, username, first_name, last_name, email, password, avatar_url, device_serial_number, created_time, modified_time, firebase_token) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
       
       
       // console.log(querryInsertAcc);
       conn.query(querryInsertAcc, values, function(err, result){
         if(err) {
-          console.log("Query error first time");
           res.status(404).json(response.createResponse(0, 404, "Server Error !"))
           throw err
         }
