@@ -96,4 +96,8 @@ where  device.serial_number='RB23GT1807' And not exists (
 
 SELECT COUNT(*) as count FROM user WHERE device_serial_number = "RB23GD1708";
 
+/* edit: add field firebase_token to user */
+ALTER TABLE user ADD firebase_token varchar(200) NOT NULL;
+
+
 

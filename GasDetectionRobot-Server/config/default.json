@@ -10,5 +10,8 @@
     "user": "hungnq",
     "password": "HuyenAnh@123",
     "path_ssl_cert": "./DigiCertGlobalRootCA.crt.pem"
+  },
+  "firebase": {
+    "token_default": "dJOShBouRW2Mj6ISocM3WE:APA91bFZUzGhzdwSghMITo_Yqbj4c4YTVAjuUWRmJIiZpQFnC_LPzP3hgEslyyNMlfdj4u6g-BHc5CqpjwMtR8o6TERQUAbtY3TOcPeTt7wSA9980beJUY9RfJwGjLB8Qxkb_1bHH6W6"
   }
 }
