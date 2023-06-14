@@ -114,6 +114,9 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   }
 
   Future<void> _requestRegister() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? firebaseToken = prefs.getString('firebase_token');
+    
     String firstName = _firstNameController.text;
     String lastName = _lastNameController.text;
     String userName = _userNameController.text;
@@ -137,6 +140,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
         "username": userName,
         "serial_number": serialNumber,
         "password": password,
+        "firebase_token": firebaseToken ?? ""
       });
 
       if (_avatar != null) {

@@ -41,6 +41,9 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   void _requestLogin() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? firebaseToken = prefs.getString('firebase_token');
+
     String username = _userNameController.text;
     String password = _passwordController.text;
 
@@ -57,9 +60,10 @@ class _LoginScreenState extends State<LoginScreen> {
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
-        body: jsonEncode(<String, String>{
+        body: jsonEncode(<String, String?>{
           "username": username,
           "password": password,
+          "firebase_token": firebaseToken
         }),
       );
 

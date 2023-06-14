@@ -46,8 +46,11 @@ class SideMenu extends StatelessWidget {
         final body = json.decode(response.body);
         final message = body['message'] as String;
 
-        // Delete local Sqflite Database, pref
-        prefs.clear();
+        // Delete local Sqflite Database, pref 
+        // Except firebase_token
+        for(String key in prefs.getKeys()) {
+          if (key != 'firebase_token') prefs.remove(key);
+        }
         DatabaseHelper.deleteDB();
 
         Navigator.of(context).pushAndRemoveUntil(
@@ -90,8 +93,10 @@ class SideMenu extends StatelessWidget {
 
     UserDBHelper.getUser(uuid).then((user) => {
           if (user != null)
-            Navigator.push(context, MaterialPageRoute(
-                              builder: (context) => UserProfile(user: user)))
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => UserProfile(user: user)))
         });
   }
 

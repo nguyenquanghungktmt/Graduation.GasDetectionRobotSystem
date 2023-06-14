@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:gas_detek/services/notification_service.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'firebase_options.dart';
 
 import 'screens/splash_screen.dart';
@@ -14,10 +15,14 @@ void _registerNotification() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-  FirebaseMessaging.instance.getToken().then((value) => {
-        // save to DB
-        print('getToken: $value')
-      });
+  FirebaseMessaging.instance.getToken().then((token) async {
+    // save to SP
+    debugPrint('getToken: $token');
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    if (prefs.getString('firebase_token') == null) {
+      prefs.setString('firebase_token', token ?? "");
+    }
+  });
 
   FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
     print('onMessageOpenedApp: $message');
