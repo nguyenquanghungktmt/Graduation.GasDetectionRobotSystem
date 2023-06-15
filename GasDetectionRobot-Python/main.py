@@ -1,20 +1,49 @@
-from engines_controller import EnginesController
-from ultrasonic_sensors_controller import UltrasonicSensorsController
-import RPi.GPIO as GPIO
+# from engines_controller import EnginesController
+# from ultrasonic_sensors_controller import UltrasonicSensorsController
+import asyncio
+from network_utils import NetworkUtils
+from azure_hub_utils import AzureIoTHubUtils
+# import RPi.GPIO as GPIO
 import time
 
 # Define hằng số
 MIN_DISTANCE = 15   # khoang cach gioi han den vat can
 
 # define global variable
-robot_controller = EnginesController()
-us_sensor_controller = UltrasonicSensorsController()
+# robot_controller = EnginesController()
+# us_sensor_controller = UltrasonicSensorsController()
+network_util = NetworkUtils()
+azure_hub_utils = AzureIoTHubUtils()
 
  
-if __name__ == '__main__':
+def main():
+    print('Start robot ...')
 
+    print('========================')
+    print('Connect to azure iot hub ....')
+    if asyncio.run(azure_hub_utils.connectHub()) == False:
+        print('Cannot connect to azure hub!')
+        quit()
+    time.sleep(1)
+    print('Connected\n')
+
+    
+    print('========================')
+    print('Connect to server ...')
+    if network_util.pingConnectToServer() == False:
+        print('Cannot connect to server!')
+        quit()
+    time.sleep(1)
+    print('Connected\n')
+
+
+    # Connection Done
+    print('========================')
+    print('Let\'s start !')
+    asyncio.run(azure_hub_utils.sendMessage())
+
+    """
     try:
-        print('Start robot ...')
         distance_front = 0
 
         while True:
@@ -64,3 +93,15 @@ if __name__ == '__main__':
         print("============================")
         print("Crash Robot")
         GPIO.cleanup()
+
+    """
+
+if __name__ == '__main__':
+    try:
+        main()
+    except KeyboardInterrupt:
+        print("Device stopped by user")
+    finally:
+        print("Shutting down robot. Dispose all resource.")
+        if azure_hub_utils.client is None :
+            asyncio.run(azure_hub_utils.client.shutdown())

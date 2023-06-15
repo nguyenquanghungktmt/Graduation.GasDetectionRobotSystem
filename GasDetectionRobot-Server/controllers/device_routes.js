@@ -51,11 +51,30 @@ router.post("/getDeviceInfo", function (req, res) {
 
 
 // api send device connection status to server //
-router.post("/sendDeviceConnectStatus", function (req, res) {
-  console.log("Client request - sendDeviceConnectStatus: ", req.body)
-  logger.info(`Client request - sendDeviceConnectStatus= ${ req.body.status}`);
+router.post("/pingConnectionDevice", function (req, res) {
+  console.log("Client request - pingConnectionDevice: ", req.body)
+  logger.info(`Client request - pingConnectionDevice= ${ req.body.status}`);
 
-  res.json({ message: `Server busy` });
+  let serial_number = req.body.device_serial_number ?? '';
+  var query = `SELECT * FROM device WHERE serial_number='${serial_number}';`;
+
+
+  const conn = database.createConnection();
+  conn.query(query, function (err, result) {
+    if (err) {
+      res.status(404).json(response.createResponse(0, 404, "Server Error !"));
+    } else {
+      if (!result.length) {
+          res.status(200).json(response.createResponse(1, 400, "Cannot recognize your device in system. Please try again."));
+        } 
+        else {
+          res.status(200).json(response.createResponse(1, 200, "Success"));
+        }
+    }
+    conn.end();
+  });
+
+  console.log("===========");
 });
 
 

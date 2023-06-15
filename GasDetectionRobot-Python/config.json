@@ -1,0 +1,9 @@
+{
+  "device_name": "Raspberry Pi Node",
+  "device_id" : "RB23GD1708",
+  "LEDPinGPIO": 24,
+  "messageMax": 256,
+  "device_status": "In Warranty",
+  "description": "Board: Raspberry Pi 3\nCPU: 64-bit quad-core ARM Cortex-A53 running at 1.2 GHz\nConnection: 802.11 b/g/n Wireless LAN\nMemory: 1 GB LPDDR2\nPort: 4 x USB 2.0, 1 x Ethernet, 1 x HDMI, 1 x RCA\nGPIO: 40 pins\nSensor: 3 x Ultrasonic sensor HQ-04, 1 x Gas detect sensor MQ2, 1x Low voltage module\nEngine: 4 x DC motor, 4 x wheel, 1 x Engine control module L298N\nBattery, : 7.4V - 2000mAh (2 x 18650 battery), rechargeable\nCar frame: Mica material",
+  "connection_string": "HostName=gas-detekt-hub.azure-devices.net;DeviceId=RB23GD1708;SharedAccessKey=69YtdVAf9FSyp57wqex4UheI85jW5aL+BQP7atss7wE="
+}

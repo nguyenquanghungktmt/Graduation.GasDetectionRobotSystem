@@ -238,3 +238,15 @@
 [6/14/2023, 4:48:27 PM][INFO] Client request: push_notification - {"registrationToken":"dJOShBouRW2Mj6ISocM3WE:APA91bFZUzGhzdwSghMITo_Yqbj4c4YTVAjuUWRmJIiZpQFnC_LPzP3hgEslyyNMlfdj4u6g-BHc5CqpjwMtR8o6TERQUAbtY3TOcPeTt7wSA9980beJUY9RfJwGjLB8Qxkb_1bHH6W6"}
 [6/14/2023, 4:49:01 PM][INFO] Client request: push_notification - {"registrationToken":"fvrGQSiaRY61SQd3lXoGzL:APA91bEZVkgQQvSDN8NVDttDpII6f3SQKBDv4sFFegTd4R8QaAFaPezrBWdybBU7hd5wQYdzcVaOXKjgtmuSKcP6drj43GwjcWKB09lHFCperWbhyP3h_aMBGQjKRoY3hcTm_wHmGwwS"}
 [6/14/2023, 4:49:12 PM][INFO] Client request: push_notification - {"registrationToken":"fvrGQSiaRY61SQd3lXoGzL:APA91bEZVkgQQvSDN8NVDttDpII6f3SQKBDv4sFFegTd4R8QaAFaPezrBWdybBU7hd5wQYdzcVaOXKjgtmuSKcP6drj43GwjcWKB09lHFCperWbhyP3h_aMBGQjKRoY3hcTm_wHmGwwS"}
+[6/15/2023, 9:31:35 PM][INFO] Client request - pingConnectionDevice= undefined
+[6/15/2023, 9:38:43 PM][INFO] Client request - pingConnectionDevice= undefined
+[6/15/2023, 9:39:58 PM][INFO] Client request - pingConnectionDevice= undefined
+[6/15/2023, 9:40:47 PM][INFO] Client request - pingConnectionDevice= undefined
+[6/15/2023, 9:41:19 PM][INFO] Client request - pingConnectionDevice= undefined
+[6/15/2023, 9:50:33 PM][INFO] Client request - pingConnectionDevice= undefined
+[6/15/2023, 9:56:11 PM][INFO] Client request - pingConnectionDevice= undefined
+[6/15/2023, 9:57:07 PM][INFO] Client request - pingConnectionDevice= undefined
+[6/16/2023, 12:18:48 AM][INFO] Client request - pingConnectionDevice= undefined
+[6/16/2023, 12:24:54 AM][INFO] Client request - pingConnectionDevice= undefined
+[6/16/2023, 12:25:42 AM][INFO] Client request - pingConnectionDevice= undefined
+[6/16/2023, 12:27:20 AM][INFO] Client request - pingConnectionDevice= undefined
