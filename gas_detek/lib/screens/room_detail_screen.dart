@@ -1,3 +1,6 @@
+import 'dart:async';
+
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:gallery_saver/gallery_saver.dart';
 import 'package:gas_detek/common/alert_helper.dart';
@@ -27,6 +30,8 @@ class _RoomDetailState extends State<RoomDetail> {
   String _robotSN = "";
 
   final TextEditingController _roomNameController = TextEditingController();
+
+  late StreamSubscription _fcmListener;
 
   Future<void> _fetchDataRoom() async {
     // TODO: Call api get device of user
@@ -70,6 +75,17 @@ class _RoomDetailState extends State<RoomDetail> {
     });
   }
 
+  Future<void> _initializeFCM() async {
+    await FirebaseMessaging.instance
+        .subscribeToTopic(firebaseTopic)
+        .then((value) => print("Firebase subcribe topic $firebaseTopic"));
+
+    _fcmListener = FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      print('Got a message whilst in the foreground!');
+      print('message: $message');
+    });
+  }
+
   @override
   void initState() {
     super.initState();
@@ -77,12 +93,14 @@ class _RoomDetailState extends State<RoomDetail> {
     _roomName = _room.roomName;
     _roomNameController.text = _room.roomName;
     _roomNameController.addListener(_updateRoomName);
+    _initializeFCM();
     _fetchDataRoom();
   }
 
   @override
   void dispose() {
     _roomNameController.dispose();
+    _fcmListener.cancel();
     super.dispose();
   }
 
@@ -94,7 +112,7 @@ class _RoomDetailState extends State<RoomDetail> {
 
     return WillPopScope(
       onWillPop: () async {
-        print("back press");
+        FirebaseMessaging.instance.unsubscribeFromTopic(firebaseTopic);
         return true;
       },
       child: Scaffold(
@@ -193,7 +211,8 @@ class _RoomDetailState extends State<RoomDetail> {
                   padding: const EdgeInsets.all(10.0),
                   decoration: const BoxDecoration(
                     color: Colors.white,
-                    borderRadius: BorderRadius.vertical(top: Radius.circular(10)),
+                    borderRadius:
+                        BorderRadius.vertical(top: Radius.circular(10)),
                     // boxShadow: [
                     //   BoxShadow(
                     //     color: Colors.grey.withOpacity(0.3),

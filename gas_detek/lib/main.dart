@@ -15,6 +15,8 @@ void _registerNotification() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
+  FirebaseMessaging.instance.unsubscribeFromTopic(firebaseTopic);
+
   FirebaseMessaging.instance.getToken().then((token) async {
     // save to SP
     debugPrint('getToken: $token');
@@ -25,7 +27,11 @@ void _registerNotification() async {
   });
 
   FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
-    print('onMessageOpenedApp: $message');
+    print('main - onMessageOpenedApp');
+
+    if (message.from == '/topics/$firebaseTopic') {
+      return;
+    }
 
     await NotificationService.showNotification(
       title: message.notification?.title ?? "",
