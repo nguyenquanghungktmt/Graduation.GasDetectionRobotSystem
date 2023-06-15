@@ -200,4 +200,17 @@ router.post("/logout", function (req, res) {
   console.log("===========");
 });
 
+
+// api check device connection status and set session  //
+router.post("/connectDevice", function (req, res) {
+  console.log("Client request - sendDeviceConnectStatus: ", req.body)
+  logger.info(`Client request - sendDeviceConnectStatus= ${ req.body.status}`);
+
+  let username = req.body.username ?? '';
+  let password = req.body.password ?? '';
+  let deviceNumber = req.body.device_serial_number ?? '';
+
+  res.json({ message: `Server busy` });
+});
+
 module.exports = router;

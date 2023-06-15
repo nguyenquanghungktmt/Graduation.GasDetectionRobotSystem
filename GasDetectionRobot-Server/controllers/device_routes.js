@@ -49,4 +49,22 @@ router.post("/getDeviceInfo", function (req, res) {
     console.log("===========");
 });
 
+
+// api send device connection status to server //
+router.post("/sendDeviceConnectStatus", function (req, res) {
+  console.log("Client request - sendDeviceConnectStatus: ", req.body)
+  logger.info(`Client request - sendDeviceConnectStatus= ${ req.body.status}`);
+
+  res.json({ message: `Server busy` });
+});
+
+
+// api check device connection status //
+router.post("/checkConnectDevice", function (req, res) {
+  console.log("Client request - sendDeviceConnectStatus: ", req.body)
+  logger.info(`Client request - sendDeviceConnectStatus= ${ req.body.status}`);
+
+  res.json({ message: `Server busy` });
+});
+
 module.exports = router;
