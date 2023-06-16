@@ -51,8 +51,6 @@ router.post("/login", function (req, res) {
         password,
       ]
 
-      console.log(values);
-
       conn.query(updateQuery, values, function(err){
         if(err) {
           res.status(404).json(response.createResponse(0, 404, "Server Error !"))

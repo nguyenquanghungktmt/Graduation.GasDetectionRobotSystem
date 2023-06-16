@@ -22,7 +22,9 @@ create table device (
     model_name varchar(100),
     image_url varchar(50),
     device_status varchar(100),
-    description text
+    description text,
+    created_time datetime,
+    modified_time datetime
 );
 
 create table room (
@@ -99,5 +101,9 @@ SELECT COUNT(*) as count FROM user WHERE device_serial_number = "RB23GD1708";
 /* edit: add field firebase_token to user */
 ALTER TABLE user ADD firebase_token varchar(200) NOT NULL;
 
+/* edit: add field created_time, modified_time to device table */
+ALTER TABLE device ADD created_time datetime;
+ALTER TABLE device ADD modified_time datetime;
+    
 
 

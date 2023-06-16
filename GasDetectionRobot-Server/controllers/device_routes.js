@@ -1,9 +1,9 @@
 const express = require("express");
-const uuid = require("uuid")
 const database = require("../common/connect.js");
 const logger = require("../common/log.js");
 const datetime = require("../common/datetime.js");
 const response = require("../common/response.js");
+const device_status = require('../enum').DEVICE_STATUS
 
 // define a router
 let router = express.Router();
@@ -53,7 +53,55 @@ router.post("/getDeviceInfo", function (req, res) {
 // api send device connection status to server //
 router.post("/pingConnectionDevice", function (req, res) {
   console.log("Client request - pingConnectionDevice: ", req.body)
-  logger.info(`Client request - pingConnectionDevice= ${ req.body.status}`);
+  logger.info(`Client request - pingConnectionDevice= ${JSON.stringify(req.body)}`);
+
+  let serial_number = req.body.device_serial_number ?? '';
+  let connect_azure_hub = req.body.connect_azure_hub ?? false;
+  var query = `SELECT * FROM device WHERE serial_number='${serial_number}';`;
+
+
+  const conn = database.createConnection();
+  conn.query(query, function (err, result) {
+    if (err) {
+      res.status(404).json(response.createResponse(0, 404, "Server Error !"));
+    } else {
+      if (!result.length) {
+        res.status(200).json(response.createResponse(1, 400, "Cannot recognize your device in system. Please try again."));
+        conn.end();
+      } 
+      else {
+        let updateQuery = `UPDATE device SET device_status=?, modified_time=? WHERE serial_number=?;`;
+
+        let status = connect_azure_hub ? device_status.ACTIVE : device_status.INACTIVE;
+        let values = [
+          status,
+          datetime.getDatetimeNow(),
+          serial_number,
+        ]
+
+        // update status of device to db
+        conn.query(updateQuery, values, function(err){
+          if(err) {
+            res.status(404).json(response.createResponse(0, 404, "Server Error !"))
+            throw err
+          }
+          res.status(200).json(response.createResponse(1, 200, "Success"));
+          conn.end()
+        })
+
+      }
+    }
+  });
+
+  console.log("===========");
+});
+
+
+
+// api send device disconnection status to server //
+router.post("/pingDisconnectionDevice", function (req, res) {
+  console.log("Client request - pingDisconnectionDevice: ", req.body)
+  logger.info(`Client request - pingDisconnectionDevice= ${JSON.stringify(req.body)}`);
 
   let serial_number = req.body.device_serial_number ?? '';
   var query = `SELECT * FROM device WHERE serial_number='${serial_number}';`;
@@ -65,25 +113,33 @@ router.post("/pingConnectionDevice", function (req, res) {
       res.status(404).json(response.createResponse(0, 404, "Server Error !"));
     } else {
       if (!result.length) {
-          res.status(200).json(response.createResponse(1, 400, "Cannot recognize your device in system. Please try again."));
-        } 
-        else {
+        res.status(200).json(response.createResponse(1, 400, "Cannot recognize your device in system. Please try again."));
+        conn.end();
+      } 
+      else {
+        let updateQuery = `UPDATE device SET device_status=?, modified_time=? WHERE serial_number=?;`;
+
+        let values = [
+          device_status.INACTIVE,
+          datetime.getDatetimeNow(),
+          serial_number,
+        ]
+
+        // update status of device to db
+        conn.query(updateQuery, values, function(err){
+          if(err) {
+            res.status(404).json(response.createResponse(0, 404, "Server Error !"))
+            throw err
+          }
           res.status(200).json(response.createResponse(1, 200, "Success"));
-        }
+          conn.end()
+        })
+
+      }
     }
-    conn.end();
   });
 
   console.log("===========");
-});
-
-
-// api check device connection status //
-router.post("/checkConnectDevice", function (req, res) {
-  console.log("Client request - sendDeviceConnectStatus: ", req.body)
-  logger.info(`Client request - sendDeviceConnectStatus= ${ req.body.status}`);
-
-  res.json({ message: `Server busy` });
 });
 
 module.exports = router;
