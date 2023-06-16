@@ -8,7 +8,6 @@ const response = require("../common/response.js");
 var router = express.Router();
 
 router.post('/pushNotification', (req, res)=>{
-    console.log("Client request: ", req.body);
     logger.info(`Client request: push_notification - ${JSON.stringify(req.body)}`);
 
     const  registrationToken = req.body.registrationToken
@@ -34,7 +33,6 @@ router.post('/pushNotification', (req, res)=>{
 
 
 router.get('/pingFirebase', (req, res)=>{
-    console.log("Client request: ", req.body);
     logger.info(`Client request: ping_firebase - ${JSON.stringify(req.body)}`);
 
     let message = {

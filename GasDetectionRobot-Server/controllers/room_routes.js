@@ -12,7 +12,6 @@ var router = express.Router();
 
 // get list room api //
 router.post("/getListRoom", function (req, res) {
-  console.log("Client request: ", req.body)
   logger.info(`Client request: getListRoom - ${JSON.stringify(req.body)}`);
 
   let owner_uuid = req.body.owner_uuid ?? '';
@@ -38,7 +37,6 @@ router.post("/getListRoom", function (req, res) {
 
 // API delete room //
 router.post("/deleteRoom", function (req, res) {
-  console.log("Client request: ", req.body)
   logger.info(`Client request: deleteRoom - ${JSON.stringify(req.body)}`);
 
   let room_id = req.body.room_id ?? '';

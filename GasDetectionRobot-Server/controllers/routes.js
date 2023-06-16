@@ -16,7 +16,6 @@ router.get("/", function (req, res) {
 
 // login api //
 router.post("/login", function (req, res) {
-  console.log("Client request: ", req.body)
   logger.info(`Client request: login - ${JSON.stringify(req.body)}`);
 
   let username = req.body.username ?? '';
@@ -69,8 +68,7 @@ router.post("/login", function (req, res) {
 
 // registration
 router.post('/register', upload.single('image'), async function (req, res){
-  console.log("Client request: ", req.body)
-  // logger.info(`Client request: registration - ${JSON.stringify(req.body)}`);
+  logger.info(`Client request: registration - ${JSON.stringify(req.body)}`);
 
   let first_name = req.body.first_name ?? '';
   let last_name = req.body.last_name ?? '';
@@ -175,7 +173,6 @@ router.post('/register', upload.single('image'), async function (req, res){
 
 // logout //
 router.post("/logout", function (req, res) {
-  console.log("Client request: ", req.body)
   logger.info(`Client request: logout - ${JSON.stringify(req.body)}`);
 
   let uuid = req.body.uuid ?? '';
@@ -199,10 +196,9 @@ router.post("/logout", function (req, res) {
 });
 
 
-// api check device connection status and set session  //
-router.post("/connectDevice", function (req, res) {
-  console.log("Client request - sendDeviceConnectStatus: ", req.body)
-  logger.info(`Client request - sendDeviceConnectStatus= ${ req.body.status}`);
+// api check app-device connection status and set session  //
+router.post("/pingConnectA2D", function (req, res) {
+  logger.info(`Client request - pingConnectA2D= ${ JSON.stringify(req.body) }`);
 
   let username = req.body.username ?? '';
   let password = req.body.password ?? '';

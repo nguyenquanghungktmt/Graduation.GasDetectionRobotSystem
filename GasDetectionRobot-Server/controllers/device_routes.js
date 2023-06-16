@@ -18,7 +18,6 @@ router.get("/getStatusDevice", function (req, res) {
 });
 
 router.post("/sendRobotStatus", function (req, res) {
-  console.log("Client request: ", req.body)
   logger.info(`Client request - status= ${ req.body.status}`);
 
   res.json({ message: `Server busy - id = ${ req.body.id}` });
@@ -26,7 +25,6 @@ router.post("/sendRobotStatus", function (req, res) {
 
 // get list room api //
 router.post("/getDeviceInfo", function (req, res) {
-    console.log("Client request: ", req.body)
     logger.info(`Client request: getDeviceInfo - ${JSON.stringify(req.body)}`);
   
     let serial_number = req.body.serial_number ?? '';
@@ -52,7 +50,6 @@ router.post("/getDeviceInfo", function (req, res) {
 
 // api send device connection status to server //
 router.post("/pingConnectionDevice", function (req, res) {
-  console.log("Client request - pingConnectionDevice: ", req.body)
   logger.info(`Client request - pingConnectionDevice= ${JSON.stringify(req.body)}`);
 
   let serial_number = req.body.device_serial_number ?? '';
@@ -97,10 +94,8 @@ router.post("/pingConnectionDevice", function (req, res) {
 });
 
 
-
 // api send device disconnection status to server //
 router.post("/pingDisconnectionDevice", function (req, res) {
-  console.log("Client request - pingDisconnectionDevice: ", req.body)
   logger.info(`Client request - pingDisconnectionDevice= ${JSON.stringify(req.body)}`);
 
   let serial_number = req.body.device_serial_number ?? '';
