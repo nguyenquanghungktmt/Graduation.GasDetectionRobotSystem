@@ -1,14 +1,19 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:gallery_saver/gallery_saver.dart';
 import 'package:gas_detek/common/alert_helper.dart';
+import 'package:gas_detek/common/loading/loading_screen.dart';
 import 'package:gas_detek/model/device_model.dart';
 import 'package:gas_detek/model/room_model.dart';
 import 'package:gas_detek/screens/device_info_screen.dart';
 import 'package:gas_detek/services/device_db_helper.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
 
 import '../constant.dart';
 
@@ -28,10 +33,11 @@ class _RoomDetailState extends State<RoomDetail> {
   String _roomName = "";
   String _robotName = "";
   String _robotSN = "";
+  bool _isConnectA2D = false;
 
   final TextEditingController _roomNameController = TextEditingController();
 
-  late StreamSubscription _fcmListener;
+  // late StreamSubscription _fcmListener;
 
   Future<void> _fetchDataRoom() async {
     // TODO: Call api get device of user
@@ -45,6 +51,68 @@ class _RoomDetailState extends State<RoomDetail> {
               _robotSN = device.serialNumber;
             }
           }));
+    }
+  }
+
+  Future<void> _requestConnectA2D() async {
+    // Call LoadingScreen().show() to show Loading Dialog
+    LoadingScreen().show(
+      context: context,
+      text: 'Please wait a moment',
+    );
+
+    try {
+      String apiUrl = "$domain/pingConnectA2D";
+      final response = await http.post(
+        Uri.parse(apiUrl),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(<String, String?>{
+          "user_uuid": _room.ownerUUID,
+          "room_id": _room.roomId,
+          "device_serial_number": _robotSN
+        }),
+      );
+
+      print(response.statusCode);
+      LoadingScreen().hide();
+
+      if (response.statusCode == 200) {
+        // If the server did return a 200 CREATED response, then parse the JSON.
+        final body = json.decode(response.body);
+
+        final status = body['status'] as int;
+        final code = body['code'] as int;
+        final message = body['message'] as String;
+
+        if (status == 1 && code == 200 ) {
+          setState(() {
+            _isConnectA2D = true;
+          });
+          Alert.dialogSuccess(context, message);
+          Alert.closeDialog(context,
+              durationBeforeClose: const Duration(seconds: 1));
+        } else {
+          Alert.dialogError(context, message);
+          Alert.closeDialog(context,
+              durationBeforeClose: const Duration(milliseconds: 1500));
+        }
+      } else {
+        // If the server did not return a 201 CREATED response,
+        // then throw an exception.
+
+        Alert.dialogError(context, 'Connect failed');
+        Alert.closeDialog(context,
+            durationBeforeClose: const Duration(milliseconds: 1500));
+      }
+    } on Exception {
+      // catch exception
+      LoadingScreen().hide();
+
+      Alert.dialogError(context, 'Connect error');
+      Alert.closeDialog(context,
+          durationBeforeClose: const Duration(milliseconds: 1500));
     }
   }
 
@@ -75,6 +143,7 @@ class _RoomDetailState extends State<RoomDetail> {
     });
   }
 
+  /*
   Future<void> _initializeFCM() async {
     await FirebaseMessaging.instance
         .subscribeToTopic(firebaseTopic)
@@ -85,6 +154,7 @@ class _RoomDetailState extends State<RoomDetail> {
       print('message: $message');
     });
   }
+  */
 
   @override
   void initState() {
@@ -93,14 +163,14 @@ class _RoomDetailState extends State<RoomDetail> {
     _roomName = _room.roomName;
     _roomNameController.text = _room.roomName;
     _roomNameController.addListener(_updateRoomName);
-    _initializeFCM();
+    // _initializeFCM();
     _fetchDataRoom();
   }
 
   @override
   void dispose() {
     _roomNameController.dispose();
-    _fcmListener.cancel();
+    // _fcmListener.cancel();
     super.dispose();
   }
 
@@ -355,31 +425,31 @@ class _RoomDetailState extends State<RoomDetail> {
                                   overflow: TextOverflow.ellipsis,
                                 ),
                                 const SizedBox(height: 4.0),
-                                const Row(
+                                Row(
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
                                     Icon(
                                       Icons.circle,
-                                      color: kGreen,
+                                      color: _isConnectA2D ? kGreen : kOrange,
                                       size: 12.0,
                                     ),
-                                    SizedBox(
+                                    const SizedBox(
                                       width: 4.0,
                                     ),
                                     Text(
-                                      "Online",
+                                      _isConnectA2D ? "Connected" : "Disconnect",
                                       style: TextStyle(
                                           fontSize: 14.0,
-                                          fontWeight: FontWeight.w400,
-                                          color: Colors.black),
+                                          fontWeight: FontWeight.w500,
+                                          color: _isConnectA2D ? kGreen : kOrange),
                                     ),
                                   ],
                                 ),
                               ],
                             ),
                             ElevatedButton(
-                              onPressed: () {},
+                              onPressed: () => _requestConnectA2D(),
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: kDarkBlue,
                               ),
@@ -441,7 +511,7 @@ class _RoomDetailState extends State<RoomDetail> {
                     child: SizedBox(
                       width: double.infinity,
                       child: Container(
-                        height: 80.0,
+                        height: 100.0,
                         padding: const EdgeInsets.symmetric(
                             vertical: 16.0, horizontal: 20.0),
                         decoration: BoxDecoration(
@@ -460,7 +530,7 @@ class _RoomDetailState extends State<RoomDetail> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             ElevatedButton(
-                              onPressed: () {},
+                              onPressed: _isConnectA2D ? () {} : null,
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: kDarkBlue,
                                 fixedSize: const Size(50, 50),
@@ -472,7 +542,7 @@ class _RoomDetailState extends State<RoomDetail> {
                               ),
                             ),
                             ElevatedButton(
-                              onPressed: () {},
+                              onPressed: _isConnectA2D ? () {} : null,
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: kDarkBlue,
                                 fixedSize: const Size(50, 50),
@@ -484,7 +554,7 @@ class _RoomDetailState extends State<RoomDetail> {
                               ),
                             ),
                             ElevatedButton(
-                              onPressed: () {},
+                              onPressed: _isConnectA2D ? () {} : null,
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: kDarkBlue,
                                 fixedSize: const Size(50, 50),
@@ -496,7 +566,7 @@ class _RoomDetailState extends State<RoomDetail> {
                               ),
                             ),
                             ElevatedButton(
-                              onPressed: () {},
+                              onPressed: _isConnectA2D ? () {} : null,
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: kDarkBlue,
                                 fixedSize: const Size(50, 50),
@@ -508,7 +578,7 @@ class _RoomDetailState extends State<RoomDetail> {
                               ),
                             ),
                             ElevatedButton(
-                              onPressed: () {},
+                              onPressed: _isConnectA2D ? () {} : null,
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: kDarkBlue,
                                 fixedSize: const Size(50, 50),

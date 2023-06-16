@@ -221,7 +221,7 @@ class _DeviceInfoState extends State<DeviceInfo> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const Text(
-                      "Warranty Status:",
+                      "Device Status:",
                       style: TextStyle(
                           fontSize: 14.0,
                           fontWeight: FontWeight.w400,
