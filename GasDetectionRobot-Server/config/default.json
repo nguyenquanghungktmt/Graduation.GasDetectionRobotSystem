@@ -13,5 +13,6 @@
   },
   "firebase": {
     "token_default": "dJOShBouRW2Mj6ISocM3WE:APA91bFZUzGhzdwSghMITo_Yqbj4c4YTVAjuUWRmJIiZpQFnC_LPzP3hgEslyyNMlfdj4u6g-BHc5CqpjwMtR8o6TERQUAbtY3TOcPeTt7wSA9980beJUY9RfJwGjLB8Qxkb_1bHH6W6"
-  }
+  },
+  "session_id_default": "6930ac8e-0c16-11ee-be56-0242ac120002"
 }

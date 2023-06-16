@@ -38,9 +38,19 @@ create table room (
     modified_time datetime
 );
 
+create table session (
+	session_id varchar(36) primary key not null,
+	user_uuid varchar(36) not null,
+	room_id varchar(36) not null,
+	serial_number varchar(15) not null,
+    created_time datetime,
+    modified_time datetime
+);
+
 select * from user;
 select * from device;
 select * from room;
+select * from session;
 
 -- check mysql version --
 select version();

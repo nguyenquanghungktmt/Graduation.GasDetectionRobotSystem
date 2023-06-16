@@ -1,11 +1,13 @@
 const express = require("express");
-const uuid = require("uuid")
+const uuid = require("uuid");
+const config = require('config');
 const database = require("../common/connect.js");
 const logger = require("../common/log.js");
 const datetime = require("../common/datetime.js");
 const response = require("../common/response.js");
 const upload = require('../common/upload');
 const Resize = require('../common/resize');
+const device_status = require('../enum').DEVICE_STATUS;
 
 // define a router
 var router = express.Router();
@@ -200,11 +202,53 @@ router.post("/logout", function (req, res) {
 router.post("/pingConnectA2D", function (req, res) {
   logger.info(`Client request - pingConnectA2D= ${ JSON.stringify(req.body) }`);
 
-  let username = req.body.username ?? '';
-  let password = req.body.password ?? '';
-  let deviceNumber = req.body.device_serial_number ?? '';
+  let userId = req.body.user_uuid ?? '';
+  let roomId = req.body.room_id ?? '';
+  let serial_number = req.body.device_serial_number ?? '';
 
-  res.json({ message: `Server busy` });
+  var query = `SELECT COUNT(*) as count FROM device WHERE serial_number=? AND device_status=?;`;
+  let querryValues = [
+      serial_number,
+      device_status.ACTIVE
+  ]
+
+  const conn = database.createConnection();
+  conn.query(query, querryValues, function (err, result) {
+    if (err) {
+      res.status(404).json(response.createResponse(0, 404, "Server Error !"));
+      conn.end()
+    } else {
+      if (result[0].count > 0) {
+
+        let updateQuery = `UPDATE session SET user_uuid=?, room_id=?, serial_number=?, created_time=?, modified_time=? WHERE session_id=?;`;
+        
+        let time_now = datetime.getDatetimeNow();
+        let values = [
+          userId,
+          roomId,
+          serial_number,
+          time_now,
+          time_now,
+          config.get("session_id_default")
+        ]
+
+        // update status of device to db
+        conn.query(updateQuery, values, function(err){
+          if(err) {
+            res.status(404).json(response.createResponse(0, 404, "Server Error !"))
+            throw err
+          }
+          res.status(200).json(response.createResponse(1, 200, "Connect success!"));
+          conn.end()
+        })
+      } 
+      else {
+        res.status(200).json(response.createResponse(1, 200, "Your device is inactive. Try again."));
+        conn.end();
+      }
+    }
+  });
+  console.log("===========");
 });
 
 module.exports = router;

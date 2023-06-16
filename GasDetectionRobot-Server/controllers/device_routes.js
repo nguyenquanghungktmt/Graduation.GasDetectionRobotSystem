@@ -106,6 +106,7 @@ router.post("/pingDisconnectionDevice", function (req, res) {
   conn.query(query, function (err, result) {
     if (err) {
       res.status(404).json(response.createResponse(0, 404, "Server Error !"));
+      conn.end()
     } else {
       if (!result.length) {
         res.status(200).json(response.createResponse(1, 400, "Cannot recognize your device in system. Please try again."));
