@@ -1,7 +1,7 @@
 import 'dart:ui';
 
 // chang domain here //
-const String domain = "https://gas-detekt-system.azurewebsites.net";
+const String domain = 'https://gas-detekt-system.azurewebsites.net';
 
 // firebase app-device connection public //
 const String firebaseTopic = 'connect-device-app';

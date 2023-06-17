@@ -31,10 +31,9 @@ class _RoomDetailState extends State<RoomDetail> {
 
   final TextEditingController _roomNameController = TextEditingController();
 
-  late StreamSubscription _fcmListener;
+  // late StreamSubscription _fcmListener;
 
   Future<void> _fetchDataRoom() async {
-    // TODO: Call api get device of user
     SharedPreferences prefs = await SharedPreferences.getInstance();
     final serialNumber = prefs.getString('device_serial_number');
     if (serialNumber != null) {
@@ -75,6 +74,7 @@ class _RoomDetailState extends State<RoomDetail> {
     });
   }
 
+  /*
   Future<void> _initializeFCM() async {
     await FirebaseMessaging.instance
         .subscribeToTopic(firebaseTopic)
@@ -85,6 +85,7 @@ class _RoomDetailState extends State<RoomDetail> {
       print('message: $message');
     });
   }
+  */
 
   @override
   void initState() {
@@ -93,14 +94,14 @@ class _RoomDetailState extends State<RoomDetail> {
     _roomName = _room.roomName;
     _roomNameController.text = _room.roomName;
     _roomNameController.addListener(_updateRoomName);
-    _initializeFCM();
+    // _initializeFCM();
     _fetchDataRoom();
   }
 
   @override
   void dispose() {
     _roomNameController.dispose();
-    _fcmListener.cancel();
+    // _fcmListener.cancel();
     super.dispose();
   }
 

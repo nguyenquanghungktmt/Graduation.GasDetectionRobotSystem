@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:gas_detek/model/device_model.dart';
 import 'package:gas_detek/model/room_model.dart';
+import 'package:gas_detek/screens/room_detail_screen.dart';
 import 'package:gas_detek/services/device_db_helper.dart';
 import 'package:gas_detek/services/room_db_helper.dart';
 import 'package:gas_detek/widgets/room_widget/room_grid_widget.dart';
@@ -277,6 +278,83 @@ class _MainScreenState extends State<MainScreen> {
     }
   }
 
+  Future<void> _requestCreateRoom(String userUUID) async {
+    LoadingScreen().show(
+      context: context,
+      text: 'Please wait a moment',
+    );
+
+    if (userUUID.isEmpty) {
+      LoadingScreen().hide();
+      Alert.dialogError(context, "User is null.\nCannot create new room.");
+      Alert.closeDialog(context,
+          durationBeforeClose: const Duration(seconds: 1));
+    }
+
+    try {
+      String apiUrl = "$domain/room/createRoom";
+      final response = await http.post(
+        Uri.parse(apiUrl),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(<String, String?>{"owner_uuid": userUUID}),
+      );
+
+      print(response.statusCode);
+      LoadingScreen().hide();
+
+      if (response.statusCode == 200) {
+        // If the server did return a 200 CREATED response, then parse the JSON.
+        final body = json.decode(response.body);
+
+        final status = body['status'] as int;
+        final code = body['code'] as int;
+        final message = body['message'] as String;
+        final data = body['data'];
+
+        if (status == 1 && (code == 200 || code == 201)) {
+          Room room = Room.fromJson(data);
+
+          setState(() {
+            _totalRecord++;
+            _listRoom?.add(room);
+          });
+
+          // Save to sqflite db
+          RoomDBHelper.addRoom(room);
+
+          Navigator.push(context,
+            MaterialPageRoute(
+                builder: (context) =>
+                    RoomDetail(room: room)));
+
+          Alert.toastSuccess("Created new room");
+          Alert.closeToast(
+              durationBeforeClose: const Duration(milliseconds: 1500));
+        } else {
+          Alert.dialogError(context, message);
+          Alert.closeDialog(context,
+              durationBeforeClose: const Duration(seconds: 1));
+        }
+      } else {
+        // If the server did not return a 201 CREATED response,
+        // then throw an exception.
+
+        Alert.dialogError(context, 'Create Room Failed');
+        Alert.closeDialog(context,
+            durationBeforeClose: const Duration(seconds: 1));
+      }
+    } on Exception {
+      // catch exception
+      LoadingScreen().hide();
+
+      Alert.dialogError(context, 'Error');
+      Alert.closeDialog(context,
+          durationBeforeClose: const Duration(milliseconds: 1500));
+    }
+  }
+
   Future<void> _saveListRoomData(List<Room> rooms, Device device) async {
     // RoomDBHelper
     RoomDBHelper.deleteAllRooms();
@@ -331,9 +409,7 @@ class _MainScreenState extends State<MainScreen> {
         ),
         actions: [
           IconButton(
-            onPressed: () {
-              print("add scan room");
-            },
+            onPressed: () => _requestCreateRoom(_user?.uuid ?? ""),
             icon: const Icon(
               Icons.add,
               size: 36,
@@ -395,7 +471,7 @@ class _MainScreenState extends State<MainScreen> {
                   height: 10,
                 ),
                 RoomGrid(
-                  listRoom: _listRoom ?? [],
+                  listRoom: (_listRoom ?? []).reversed.toList(),
                   totalRoom: _totalRecord,
                   deleteRoom: (room) => _requestDeleteRoom(room),
                 ),
