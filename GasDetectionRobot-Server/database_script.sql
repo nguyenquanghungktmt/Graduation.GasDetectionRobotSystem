@@ -82,6 +82,10 @@ values ('2', 'Room 2', 'b8950f09-50dc-4269-baea-6594e993e9a2', true, "Danger", n
 insert into room (room_id, room_name, owner_uuid, is_gas_detect, room_status, map2d_url)
 values ('4', 'Living Room', 'b8950f09-50dc-4269-baea-6594e993e9a2', false, "Normal", null);
 
+INSERT INTO room (room_id, room_name, owner_uuid, is_gas_detekt, rom_status, map2d_url, created_time, modified_time) 
+VALUES (?, ?, ?, ?, ?, ?, ?, ?);
+
+select * from room where owner_uuid='12c94f41-0c3c-4a1e-914c-212565d17695' ORDER BY created_time DESC;
 
 /* select querry */
 select * from user where username='hungnq' and password='123';
