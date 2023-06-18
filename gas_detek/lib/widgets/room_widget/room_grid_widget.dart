@@ -10,12 +10,14 @@ class RoomGrid extends StatelessWidget {
   late List<Room> listRoom;
   late int totalRoom;
   final void Function(Room) deleteRoom;
+  final void Function(Room) updateRoom;
 
   RoomGrid(
       {Key? key,
       required this.listRoom,
       required this.totalRoom,
-      required this.deleteRoom})
+      required this.deleteRoom,
+      required this.updateRoom})
       : super(key: key);
 
   Future<void> _deleteRoomActionHandler(BuildContext context, Room room) async {
@@ -62,7 +64,10 @@ class RoomGrid extends StatelessWidget {
                     context,
                     MaterialPageRoute(
                         builder: (context) =>
-                            RoomDetail(room: listRoom[index])));
+                            RoomDetail(
+                              room: listRoom[index], 
+                              updateRoom: (room) => updateRoom(room),
+                            )));
               },
               onLongPress: () =>
                   _deleteRoomActionHandler(context, listRoom[index]),

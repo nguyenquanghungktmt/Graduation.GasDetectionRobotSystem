@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:async';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -14,7 +16,9 @@ import '../constant.dart';
 
 class RoomDetail extends StatefulWidget {
   final Room room;
-  const RoomDetail({Key? key, required this.room}) : super(key: key);
+  final void Function(Room) updateRoom;
+  const RoomDetail({Key? key, required this.room, required this.updateRoom})
+      : super(key: key);
 
   @override
   State<StatefulWidget> createState() {
@@ -74,6 +78,31 @@ class _RoomDetailState extends State<RoomDetail> {
     });
   }
 
+  Future<void> _saveRoom() async {
+    if (_roomName == _room.roomName) {
+      return Navigator.pop(context);
+    }
+
+    bool? isYes = await Alert.dialogConfirmation(
+      context,
+      'Save Update?',
+      'You sure update edit this room?',
+    );
+    if (isYes ?? false) {
+      // back to main screen
+      Navigator.pop(context);
+
+      // update room with new name
+      final newRoom = Room(
+          roomId: _room.roomId,
+          roomName: _roomName,
+          ownerUUID: _room.ownerUUID,
+          isGasDetect: _room.isGasDetect,
+          roomStatus: _room.roomStatus);
+      widget.updateRoom(newRoom);
+    }
+  }
+
   /*
   Future<void> _initializeFCM() async {
     await FirebaseMessaging.instance
@@ -113,7 +142,8 @@ class _RoomDetailState extends State<RoomDetail> {
 
     return WillPopScope(
       onWillPop: () async {
-        FirebaseMessaging.instance.unsubscribeFromTopic(firebaseTopic);
+        // FirebaseMessaging.instance.unsubscribeFromTopic(firebaseTopic);
+        _saveRoom();
         return true;
       },
       child: Scaffold(
@@ -139,14 +169,14 @@ class _RoomDetailState extends State<RoomDetail> {
             ),
           ),
           actions: [
-            IconButton(
-              onPressed: () {},
-              icon: const Icon(
-                Icons.check_rounded,
-                size: 36,
-                color: Colors.white,
-              ),
-            ),
+            // IconButton(
+            //   onPressed: () {},
+            //   icon: const Icon(
+            //     Icons.check_rounded,
+            //     size: 36,
+            //     color: Colors.white,
+            //   ),
+            // ),
             PopupMenuButton(
                 icon: const Icon(
                   Icons.more_vert_outlined,
@@ -161,6 +191,19 @@ class _RoomDetailState extends State<RoomDetail> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
+                          Text('Save Room'),
+                          SizedBox(width: 5),
+                          Icon(Icons.check_outlined,
+                              size: 20, color: Colors.black87),
+                        ],
+                      ),
+                    ),
+                    const PopupMenuItem(
+                      padding: EdgeInsets.only(right: 10, left: 20),
+                      value: 1,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
                           Text('Save Map 2D'),
                           SizedBox(width: 5),
                           Icon(Icons.save_alt_outlined,
@@ -168,31 +211,17 @@ class _RoomDetailState extends State<RoomDetail> {
                         ],
                       ),
                     ),
-                    // const PopupMenuItem(
-                    //     padding: EdgeInsets.only(right: 10, left: 20),
-                    //     value: 1,
-                    //     child: Row(
-                    //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    //       children: [
-                    //         Text(
-                    //           'Delete Room',
-                    //           style: TextStyle(color: Colors.red),
-                    //         ),
-                    //         SizedBox(width: 5),
-                    //         Icon(Icons.delete_rounded,
-                    //             size: 20, color: Colors.red),
-                    //       ],
-                    //     )),
                   ];
                 },
                 onSelected: (value) {
                   switch (value) {
                     case 0:
-                      print("Save Image selected.");
-                      _saveImage(map2dUrl);
+                      debugPrint("Save Room selected.");
+                      _saveRoom();
                       break;
                     case 1:
-                      print("Delete Room selected.");
+                      debugPrint("Save Image selected.");
+                      _saveImage(map2dUrl);
                       break;
                   }
                 }),

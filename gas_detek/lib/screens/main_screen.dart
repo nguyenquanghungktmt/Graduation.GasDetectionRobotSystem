@@ -217,6 +217,78 @@ class _MainScreenState extends State<MainScreen> {
     }
   }
 
+  Future<void> _requestUpdateRoom(Room updatedRoom) async {
+    LoadingScreen().show(
+      context: context,
+      text: 'Updating...',
+    );
+
+    // request update room name
+    try {
+      String apiUrl = "$domain/room/updateRoom";
+      final response = await http.post(
+        Uri.parse(apiUrl),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(<String, String>{
+          "room_id": updatedRoom.roomId,
+          "room_name": updatedRoom.roomName,
+          "is_gas_detect": '${updatedRoom.isGasDetect}',
+          "room_status": updatedRoom.roomStatus
+        }),
+      );
+
+      print(response.statusCode);
+      LoadingScreen().hide();
+
+      if (response.statusCode == 200) {
+        // If the server did return a 200 CREATED response, then parse the JSON.
+        final body = json.decode(response.body);
+
+        final status = body['status'] as int;
+        final code = body['code'] as int;
+        final message = body['message'] as String;
+
+        if (status == 1 && code == 200) {
+          // delete room success
+          // delete in db local
+          RoomDBHelper.updateRoom(updatedRoom);
+
+          // refresh state
+          setState(() {
+            var index = _listRoom
+                ?.indexWhere((element) => element.roomId == updatedRoom.roomId);
+            if (index != null) {
+              _listRoom?[index] = updatedRoom;
+            }
+          });
+
+          Alert.toastSuccess(message);
+          Alert.closeToast(
+              durationBeforeClose: const Duration(milliseconds: 1500));
+        } else {
+          // delete faild
+          Alert.toastError(message);
+          Alert.closeToast(
+              durationBeforeClose: const Duration(milliseconds: 1500));
+        }
+      } else {
+        // If the server did not return a 201 CREATED response,
+        // then throw an exception.
+
+        Alert.toastError('Delete room failed');
+        Alert.closeToast(
+            durationBeforeClose: const Duration(milliseconds: 1500));
+      }
+    } on Exception {
+      // catch exception
+      LoadingScreen().hide();
+      Alert.toastError('Server error!');
+      Alert.closeToast(durationBeforeClose: const Duration(milliseconds: 1500));
+    }
+  }
+
   Future<void> _requestDeleteRoom(Room room) async {
     // request delete room
     try {
@@ -324,10 +396,13 @@ class _MainScreenState extends State<MainScreen> {
           // Save to sqflite db
           RoomDBHelper.addRoom(room);
 
-          Navigator.push(context,
-            MaterialPageRoute(
-                builder: (context) =>
-                    RoomDetail(room: room)));
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => RoomDetail(
+                        room: room,
+                        updateRoom: (room) => _requestUpdateRoom(room),
+                      )));
 
           Alert.toastSuccess("Created new room");
           Alert.closeToast(
@@ -474,6 +549,7 @@ class _MainScreenState extends State<MainScreen> {
                   listRoom: (_listRoom ?? []).reversed.toList(),
                   totalRoom: _totalRecord,
                   deleteRoom: (room) => _requestDeleteRoom(room),
+                  updateRoom: (room) => _requestUpdateRoom(room),
                 ),
                 // const SizedBox(
                 //   height: 20,
