@@ -11,6 +11,14 @@
     "password": "HuyenAnh@123",
     "path_ssl_cert": "./DigiCertGlobalRootCA.crt.pem"
   },
+  "devices_info": {
+    "RB23GD1708": {
+      "host_name"         : "gas-detekt-iot-hub.azure-devices.net",
+      "device_name"       : "Gas Detection Robot",
+      "device_id"         : "RB23GD1708",
+      "share_access_key"  : "c2ZaJFWTC1wMNDJGoMCdoNrbRNlp5NzY6U9YmQfACGM="
+    }
+  },
   "firebase": {
     "token_default": "dJOShBouRW2Mj6ISocM3WE:APA91bFZUzGhzdwSghMITo_Yqbj4c4YTVAjuUWRmJIiZpQFnC_LPzP3hgEslyyNMlfdj4u6g-BHc5CqpjwMtR8o6TERQUAbtY3TOcPeTt7wSA9980beJUY9RfJwGjLB8Qxkb_1bHH6W6"
   },

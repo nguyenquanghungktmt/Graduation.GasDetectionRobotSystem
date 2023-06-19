@@ -2,6 +2,8 @@
 // const http = require("http");
 const express = require("express");
 const bodyParser = require("body-parser");
+const config = require("config");
+const mqttUtils = require('./mqtt_utils')
 
 // setup express
 const app = express();
@@ -20,6 +22,21 @@ app.use("/firebase", firebase_routes);
 
 // public folder public to access
 app.use('/images', express.static('./public/images'));
+
+// create connect client to azure iot hub
+const listDevices = config.get("devices_info");
+const device = listDevices["RB23GD1708"];
+const client = mqttUtils.getMQTTClient(device);
+
+client.on('message', function (msg) {
+  // Receive data from Azure Hub
+  const message = msg.data.toString()
+
+  console.log('----');
+  console.log(message);
+  console.log('----');
+
+});
 
 // start server
 // const server = http.createServer(app);
