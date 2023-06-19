@@ -3,7 +3,8 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const config = require("config");
-const mqttUtils = require('./mqtt_utils')
+const mqttUtils = require('./mqtt_utils');
+const send_warning = require('./common/send_warning');
 
 // setup express
 const app = express();
@@ -36,6 +37,14 @@ client.on('message', function (msg) {
   console.log(message);
   console.log('----');
 
+  let jsonParse = JSON.parse(message);
+  let gas = jsonParse.gas ?? 0;
+  let device_id = jsonParse.device_id ?? '';
+
+
+  if (gas == 1) {
+    send_warning.send();
+  }
 });
 
 // start server

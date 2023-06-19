@@ -115,6 +115,9 @@ SELECT COUNT(*) as count FROM user WHERE device_serial_number = "RB23GD1708";
 /* edit: add field firebase_token to user */
 ALTER TABLE user ADD firebase_token varchar(200) NOT NULL;
 
+/* edit: add field firebase_token to session */
+ALTER TABLE session ADD firebase_token varchar(200) NOT NULL;
+
 /* edit: add field created_time, modified_time to device table */
 ALTER TABLE device ADD created_time datetime;
 ALTER TABLE device ADD modified_time datetime;

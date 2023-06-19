@@ -13,10 +13,10 @@
   },
   "devices_info": {
     "RB23GD1708": {
-      "host_name"         : "gas-detekt-iot-hub.azure-devices.net",
+      "host_name"         : "gas-detekt-hub.azure-devices.net",
       "device_name"       : "Gas Detection Robot",
       "device_id"         : "RB23GD1708",
-      "share_access_key"  : "c2ZaJFWTC1wMNDJGoMCdoNrbRNlp5NzY6U9YmQfACGM="
+      "share_access_key"  : "LdPfpJaBE2nZNUqiEB5PbCLBZRKqHLbv6gvetdzvOrA="
     }
   },
   "firebase": {

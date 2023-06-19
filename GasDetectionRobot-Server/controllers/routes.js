@@ -204,6 +204,7 @@ router.post("/pingConnectA2D", function (req, res) {
 
   let userId = req.body.user_uuid ?? '';
   let roomId = req.body.room_id ?? '';
+  let firebaseToken = req.body.firebase_token ?? '';
   let serial_number = req.body.device_serial_number ?? '';
 
   var query = `SELECT COUNT(*) as count FROM device WHERE serial_number=? AND device_status=?;`;
@@ -220,11 +221,12 @@ router.post("/pingConnectA2D", function (req, res) {
     } else {
       if (result[0].count > 0) {
 
-        let updateQuery = `UPDATE session SET user_uuid=?, room_id=?, serial_number=?, created_time=?, modified_time=? WHERE session_id=?;`;
+        let updateQuery = `UPDATE session SET user_uuid=?, firebase_token=?, room_id=?, serial_number=?, created_time=?, modified_time=? WHERE session_id=?;`;
         
         let time_now = datetime.getDatetimeNow();
         let values = [
           userId,
+          firebaseToken,
           roomId,
           serial_number,
           time_now,
