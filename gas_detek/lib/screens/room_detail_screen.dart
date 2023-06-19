@@ -56,6 +56,10 @@ class _RoomDetailState extends State<RoomDetail> {
   }
 
   Future<void> _requestConnectA2D() async {
+    // Get token
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? firebaseToken = prefs.getString('firebase_token');
+    
     // Call LoadingScreen().show() to show Loading Dialog
     LoadingScreen().show(
       context: context,
@@ -72,6 +76,7 @@ class _RoomDetailState extends State<RoomDetail> {
         body: jsonEncode(<String, String?>{
           "user_uuid": _room.ownerUUID,
           "room_id": _room.roomId,
+          "firebase_token": firebaseToken,
           "device_serial_number": _robotSN
         }),
       );
