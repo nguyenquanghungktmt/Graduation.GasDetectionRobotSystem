@@ -1,7 +1,7 @@
 import requests
 import json
 
-DOMAIN = "http://localhost:3000"
+DOMAIN = "https://29db-1-55-210-215.ngrok-free.app"
 FILE_PATH = "./config.json"
 NUM_RETRIES = 3
 

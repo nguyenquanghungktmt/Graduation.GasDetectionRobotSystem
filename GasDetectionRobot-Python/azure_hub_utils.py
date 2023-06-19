@@ -2,13 +2,16 @@ import json
 import uuid
 import random
 import asyncio
-from azure.iot.device.aio import IoTHubDeviceClient
-from azure.iot.device import Message
+import time
+from azure.iot.hub import IoTHubRegistryManager
+from datetime import datetime
 
 
+CONNECTION_STRING_SERVER = "HostName=gas-detekt-hub.azure-devices.net;SharedAccessKeyName=iothubowner;SharedAccessKey=9qwm+d1a2tA9z6NNniEiQv25EnCkQ5O/QBMPdDP1vJ4="
+DEVICE_ID = "RB23GD1708"
 FILE_PATH = "./config.json"
 MESSAGE_TIMEOUT = 10000
-INTERVAL = 1
+INTERVAL = 5
 NUM_RETRIES = 3
 
 # Define the JSON message to send to IoT Hub.
@@ -18,51 +21,43 @@ MSG_TXT = "{\"temperature\": %.2f,\"humidity\": %.2f}"
 
 class AzureIoTHubUtils(object):
     def __init__(self):
-        f = open(FILE_PATH)
-        data = json.load(f)
-        self.connectionString = data['connection_string']
-        self.deviceName = data['device_name']
+        self.connectionServerString = CONNECTION_STRING_SERVER
+        self.deviceId = DEVICE_ID
 
-
-    async def connectHub(self):
+    def connectHub(self):
         for i in range(NUM_RETRIES):
             try:
-                self.client = IoTHubDeviceClient.create_from_connection_string(self.connectionString)
-                await self.client.connect()
+                self.client = IoTHubRegistryManager(self.connectionServerString)
                 return True
             except:
                 # Clean up in the event of failure
-                await self.client.shutdown()
                 print('Try connect azure hub again ...')
-                await asyncio.sleep(1)
+                time.sleep(1)
                 if i == (NUM_RETRIES - 1) :
                     return False
                 pass
 
-
     async def sendMessage(self, data=None):
         # Build the message with simulated telemetry values.
-        temperature = TEMPERATURE + (random.random() * 15)
-        humidity = HUMIDITY + (random.random() * 20)
-        msg_txt_formatted = MSG_TXT % (temperature, humidity)
-        message = Message(msg_txt_formatted)
+        data = {
+            "timestamp": datetime.now().strftime("%H:%M:%S"),
+            "gas": 0,
+            "device_id": DEVICE_ID,
+        }
 
         # Add standard message properties
-        message.message_id = uuid.uuid4()
-        message.content_encoding = "utf-8"
-        message.content_type = "application/json"
+        message = json.dumps(data)
 
         # Send the message.
-        print("Sending message: %s" % message.data)
+        print("Sending message: %s" % message)
         try:
-            await self.client.send_message(message)
+            self.client.send_c2d_message(self.deviceId, message)
         except Exception as ex:
             print("Error sending message from device: {}".format(ex))
             
-        await asyncio.sleep(0.05)
+        await asyncio.sleep(INTERVAL)
 
 
 if __name__ == '__main__':
     azure_hub_utils = AzureIoTHubUtils()
-    asyncio.run(azure_hub_utils.connectHub())
     asyncio.run(azure_hub_utils.sendMessage())

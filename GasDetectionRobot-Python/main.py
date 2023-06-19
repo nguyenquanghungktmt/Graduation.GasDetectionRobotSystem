@@ -21,7 +21,7 @@ def main():
 
     print('========================')
     print('Connect to azure iot hub ....')
-    if asyncio.run(azure_hub_utils.connectHub()) == False:
+    if azure_hub_utils.connectHub() == False:
         print('Cannot connect to azure hub!')
         quit()
     time.sleep(1)
@@ -40,7 +40,8 @@ def main():
     # Connection Done
     print('========================')
     print('Let\'s start !')
-    asyncio.run(azure_hub_utils.sendMessage())
+    while True:
+        asyncio.run(azure_hub_utils.sendMessage())
 
     """
     try:
@@ -104,4 +105,4 @@ if __name__ == '__main__':
     finally:
         print("Shutting down robot. Dispose all resource.")
         if azure_hub_utils.client is None :
-            asyncio.run(azure_hub_utils.client.shutdown())
+            azure_hub_utils.client.shutdown()
