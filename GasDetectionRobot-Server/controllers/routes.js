@@ -243,7 +243,7 @@ router.post("/pingConnectA2D", function (req, res) {
         })
       } 
       else {
-        res.status(200).json(response.createResponse(1, 200, "Your device is inactive. Try again."));
+        res.status(200).json(response.createResponse(1, 400, "Your device is inactive. Try again."));
         conn.end();
       }
     }
