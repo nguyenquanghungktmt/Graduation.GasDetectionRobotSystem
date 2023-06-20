@@ -1,7 +1,7 @@
 import requests
 import json
 
-DOMAIN = "https://29db-1-55-210-215.ngrok-free.app"
+DOMAIN = "https://gas-detekt-system.azurewebsites.net/"
 FILE_PATH = "./config.json"
 NUM_RETRIES = 3
 
