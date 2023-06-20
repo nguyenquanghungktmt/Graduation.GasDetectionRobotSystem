@@ -3,10 +3,11 @@
 import 'dart:async';
 import 'dart:convert';
 
-// import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:gallery_saver/gallery_saver.dart';
 import 'package:gas_detek/common/alert_helper.dart';
+import 'package:gas_detek/common/enum_helper.dart';
 import 'package:gas_detek/common/loading/loading_screen.dart';
 import 'package:gas_detek/model/device_model.dart';
 import 'package:gas_detek/model/room_model.dart';
@@ -39,7 +40,7 @@ class _RoomDetailState extends State<RoomDetail> {
 
   final TextEditingController _roomNameController = TextEditingController();
 
-  // late StreamSubscription _fcmListener;
+  late StreamSubscription? _fcmListener;
 
   Future<void> _fetchDataRoom() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -59,7 +60,7 @@ class _RoomDetailState extends State<RoomDetail> {
     // Get token
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? firebaseToken = prefs.getString('firebase_token');
-    
+
     // Call LoadingScreen().show() to show Loading Dialog
     LoadingScreen().show(
       context: context,
@@ -92,7 +93,7 @@ class _RoomDetailState extends State<RoomDetail> {
         final code = body['code'] as int;
         final message = body['message'] as String;
 
-        if (status == 1 && code == 200 ) {
+        if (status == 1 && code == 200) {
           setState(() {
             _isConnectA2D = true;
           });
@@ -174,18 +175,29 @@ class _RoomDetailState extends State<RoomDetail> {
     }
   }
 
-  /*
   Future<void> _initializeFCM() async {
-    await FirebaseMessaging.instance
-        .subscribeToTopic(firebaseTopic)
-        .then((value) => print("Firebase subcribe topic $firebaseTopic"));
+    _fcmListener =
+        FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
+      debugPrint('Room detail: Got a message whilst in the foreground!');
+      final data = message.data;
 
-    _fcmListener = FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-      print('Got a message whilst in the foreground!');
-      print('message: $message');
+      final target = data['target'];
+      if (target == Target.room.value) {
+        // Update for list room
+        debugPrint("Receive push notify update list_room");
+        final roomId = data['room_id'];
+        final isGasDetect = data['is_gas_detect'];
+        final roomStatus = data['room_status'];
+
+        if (roomId == _room.roomId) {
+          setState(() {
+            _room.isGasDetect = int.parse(isGasDetect);
+            _room.roomStatus = roomStatus;
+          });
+        }
+      }
     });
   }
-  */
 
   @override
   void initState() {
@@ -194,14 +206,16 @@ class _RoomDetailState extends State<RoomDetail> {
     _roomName = _room.roomName;
     _roomNameController.text = _room.roomName;
     _roomNameController.addListener(_updateRoomName);
-    // _initializeFCM();
+    _initializeFCM();
     _fetchDataRoom();
   }
 
   @override
   void dispose() {
     _roomNameController.dispose();
-    // _fcmListener.cancel();
+    if (_fcmListener != null) {
+      _fcmListener!.cancel();
+    }
     super.dispose();
   }
 
@@ -469,11 +483,14 @@ class _RoomDetailState extends State<RoomDetail> {
                                       width: 4.0,
                                     ),
                                     Text(
-                                      _isConnectA2D ? "Connected" : "Disconnect",
+                                      _isConnectA2D
+                                          ? "Connected"
+                                          : "Disconnect",
                                       style: TextStyle(
                                           fontSize: 14.0,
                                           fontWeight: FontWeight.w500,
-                                          color: _isConnectA2D ? kGreen : kOrange),
+                                          color:
+                                              _isConnectA2D ? kGreen : kOrange),
                                     ),
                                   ],
                                 ),

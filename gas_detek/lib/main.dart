@@ -26,35 +26,35 @@ void _registerNotification() async {
     }
   });
 
-  FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
-    print('main - onMessageOpenedApp');
+  // FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
+  //   print('main - onMessageOpenedApp');
 
-    if (message.from == '/topics/$firebaseTopic') {
-      return;
-    }
+  //   if (message.from == '/topics/$firebaseTopic') {
+  //     return;
+  //   }
 
-    await NotificationService.showNotification(
-      title: message.notification?.title ?? "",
-      body: message.notification?.body ?? "",
-    );
+  //   await NotificationService.showNotification(
+  //     title: message.notification?.title ?? "",
+  //     body: message.notification?.body ?? "",
+  //   );
 
-    // Navigator.pushNamed(navigatorKey.currentState!.context, '/room-detail',
-    //     arguments: {'message', json.encode(message.data)});
-  });
+  //   // Navigator.pushNamed(navigatorKey.currentState!.context, '/room-detail',
+  //   //     arguments: {'message', json.encode(message.data)});
+  // });
 
-  FirebaseMessaging.instance
-      .getInitialMessage()
-      .then((RemoteMessage? message) async => {
-            if (message != null)
-              {
-                await NotificationService.showNotification(
-                  title: message.notification?.title ?? "",
-                  body: message.notification?.body ?? "",
-                )
-                // Navigator.pushNamed(navigatorKey.currentState!.context, '/room-detail',
-                // arguments: {'message', json.encode(message.data)});
-              }
-          });
+  // FirebaseMessaging.instance
+  //     .getInitialMessage()
+  //     .then((RemoteMessage? message) async => {
+  //           if (message != null)
+  //             {
+  //               await NotificationService.showNotification(
+  //                 title: message.notification?.title ?? "",
+  //                 body: message.notification?.body ?? "",
+  //               )
+  //               // Navigator.pushNamed(navigatorKey.currentState!.context, '/room-detail',
+  //               // arguments: {'message', json.encode(message.data)});
+  //             }
+  //         });
 
   FirebaseMessaging.onBackgroundMessage(_firebaseMessageBackgroundHandler);
 }

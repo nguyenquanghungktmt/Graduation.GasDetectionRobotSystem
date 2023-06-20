@@ -1,10 +1,14 @@
 // ignore_for_file: no_logic_in_create_state, use_build_context_synchronously, must_be_immutable
+import 'dart:async';
 import 'dart:convert';
 
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:gas_detek/common/enum_helper.dart';
 import 'package:gas_detek/model/device_model.dart';
 import 'package:gas_detek/model/room_model.dart';
 import 'package:gas_detek/screens/room_detail_screen.dart';
 import 'package:gas_detek/services/device_db_helper.dart';
+import 'package:gas_detek/services/notification_service.dart';
 import 'package:gas_detek/services/room_db_helper.dart';
 import 'package:gas_detek/widgets/room_widget/room_grid_widget.dart';
 import 'package:flutter/material.dart';
@@ -31,6 +35,8 @@ class _MainScreenState extends State<MainScreen> {
   User? _user;
   List<Room>? _listRoom;
   int _totalRecord = 0;
+
+  StreamSubscription? _fcmListener;
 
   Future<void> _fetchData() async {
     // SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -443,6 +449,44 @@ class _MainScreenState extends State<MainScreen> {
     DeviceDBHelper.addDevice(device);
   }
 
+  Future<void> _initializeFCM() async {
+    // await FirebaseMessaging.instance
+    //     .subscribeToTopic(firebaseTopic)
+    //     .then((value) => print("Firebase subcribe topic $firebaseTopic"));
+
+    _fcmListener =
+        FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
+      debugPrint('Got a message whilst in the foreground!');
+      final data = message.data;
+
+      final target = data['target'];
+      if (target == Target.room.value) {
+        // Update for list room
+        debugPrint("Receive push notify update list_room");
+        final roomId = data['room_id'];
+        final isGasDetect = data['is_gas_detect'];
+        final roomStatus = data['room_status'];
+
+        var index =
+            _listRoom?.indexWhere((element) => element.roomId == roomId);
+        if (index != null) {
+          setState(() {
+            _listRoom?[index].isGasDetect = int.parse(isGasDetect);
+            _listRoom?[index].roomStatus = roomStatus;
+          });
+
+          // update in DB local
+          RoomDBHelper.updateRoom(_listRoom![index]);
+        }
+      }
+
+      await NotificationService.showNotification(
+        title: message.notification?.title ?? "",
+        body: message.notification?.body ?? "",
+      );
+    });
+  }
+
   @override
   void initState() {
     super.initState();
@@ -450,6 +494,17 @@ class _MainScreenState extends State<MainScreen> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _fetchData();
     });
+    _initializeFCM();
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+
+    if (_fcmListener != null){
+      _fcmListener!.cancel();
+    }
   }
 
   @override

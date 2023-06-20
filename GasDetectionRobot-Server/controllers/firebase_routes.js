@@ -19,7 +19,7 @@ router.post('/pushNotification', (req, res)=>{
             body: "Room Scanned. No gas leak detect."
         },
         data: {
-            target: target_enum.LIST_ROOM,
+            target: target_enum.ROOM,
             room_id: "d4c386d0-0d2c-11ee-9b29-65bc2cd4889c",
             is_gas_detect: "1",
             room_status: "Very Danger"
