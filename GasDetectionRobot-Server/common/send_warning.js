@@ -3,6 +3,7 @@ const { firebase_admin } = require('./firebase_admin');
 const database = require("./connect.js");
 const datetime = require("./datetime.js");
 const logger = require("./log.js");
+const target_enum = require('../enum').TARGET;
 
 module.exports = {
     send: function (){
@@ -20,24 +21,6 @@ module.exports = {
             let serial_number = result[0].serial_number;
             let is_gas_detect = '1';
             let room_status = "Gas Leak. Very Danger.";
-
-
-            // Push notification throw firebase
-            let message = {
-                notification: {
-                    title: "Gas Detekt Warning",
-                    body: room_status
-                },
-                data: {
-                    room_id: room_id,
-                    user_uuid: user_uuid,
-                    serial_number: serial_number,
-                    is_gas_detect: is_gas_detect,
-                    room_status: room_status
-                },
-                token: firebaseToken,
-            }
-            firebase_admin.messaging().send(message);
 
             // Save to DB
             let updateQuery = `UPDATE room SET is_gas_detect=?, room_status=?, modified_time=? WHERE room_id=?;`;
@@ -58,6 +41,30 @@ module.exports = {
                     }
                     conn.end();
                 }
+            });
+
+            // Push notification throw firebase
+            let message = {
+                notification: {
+                    title: "Gas Detekt Warning",
+                    body: room_status
+                },
+                data: {
+                    target: target_enum.ROOM,
+                    room_id: room_id,
+                    user_uuid: user_uuid,
+                    serial_number: serial_number,
+                    is_gas_detect: is_gas_detect,
+                    room_status: room_status
+                },
+                token: firebaseToken,
+            }
+            firebase_admin.messaging().send(message)
+            .then(function (response) {
+                console.log('Success firebase sent message:', response);
+            })
+            .catch(function (error) {
+                console.log(`Error firebase push notification ${error}`);
             });
 
         });

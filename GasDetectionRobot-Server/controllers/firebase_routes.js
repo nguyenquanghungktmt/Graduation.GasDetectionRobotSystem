@@ -3,6 +3,7 @@ const config = require('config');
 const express = require("express");
 const logger = require("../common/log.js");
 const response = require("../common/response.js");
+const target_enum = require('../enum').TARGET;
 
 // define a router
 var router = express.Router();
@@ -18,7 +19,10 @@ router.post('/pushNotification', (req, res)=>{
             body: "Room Scanned. No gas leak detect."
         },
         data: {
-            id: "12321",
+            target: target_enum.LIST_ROOM,
+            room_id: "d4c386d0-0d2c-11ee-9b29-65bc2cd4889c",
+            is_gas_detect: "1",
+            room_status: "Very Danger"
         },
         token: registrationToken,
     }
@@ -29,6 +33,8 @@ router.post('/pushNotification', (req, res)=>{
     .catch( error => {
         return res.status(500).send(response.createResponse(0, 500, `Error ${error}`));
     });
+
+    console.log("===========");
 })
 
 
@@ -49,6 +55,8 @@ router.get('/pingFirebase', (req, res)=>{
     .catch( error => {
         return res.status(500).send(response.createResponse(0, 500, `Ping Error ${error}`));
     });
+
+    console.log("===========");
 })
 
 module.exports = router;

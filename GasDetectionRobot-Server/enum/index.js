@@ -5,12 +5,12 @@ const DEVICE_STATUS = {
     UNDEFINED: 'undefined'
 }
 
-const ANOTHER = {
-    A: 'ABC',
-    X: 'XYZ'
+const TARGET = {
+    GENERAL: 'general',
+    ROOM: 'room'
 }
 
 module.exports = {
     DEVICE_STATUS: DEVICE_STATUS,
-    ANOTHER: ANOTHER
+    TARGET: TARGET
 };

@@ -285,3 +285,97 @@
 [6/19/2023, 10:15:31 PM][INFO] Server detects gas leak. Send notify.
 [6/19/2023, 11:58:16 PM][INFO] Client request: getDeviceInfo - {"serial_number":"RB23GD1708"}
 [6/19/2023, 11:58:16 PM][INFO] Client request: getListRoom - {"owner_uuid":"12c94f41-0c3c-4a1e-914c-212565d17695"}
+[6/20/2023, 9:34:45 AM][INFO] Client request: push_notification - {"registrationToken":"c3xBAl6mSG-scKWX6mDu9Q:APA91bE5kkaWPzkL4szzCp87WsaFe262CsFIJYeF6oMp5SpHCLrjKRVgTUfZwdyat_vvxG-kuspKhCB4VyxBgCsk9Svtz5bk0gwNTxdOCBoe8eUgascnoTT6LV8tQH_ys_dtraNBwIpJ"}
+[6/20/2023, 9:36:30 AM][INFO] Client request: push_notification - {"registrationToken":"c3xBAl6mSG-scKWX6mDu9Q:APA91bE5kkaWPzkL4szzCp87WsaFe262CsFIJYeF6oMp5SpHCLrjKRVgTUfZwdyat_vvxG-kuspKhCB4VyxBgCsk9Svtz5bk0gwNTxdOCBoe8eUgascnoTT6LV8tQH_ys_dtraNBwIpJ"}
+[6/20/2023, 9:39:26 AM][INFO] Client request: push_notification - {"registrationToken":"c3xBAl6mSG-scKWX6mDu9Q:APA91bE5kkaWPzkL4szzCp87WsaFe262CsFIJYeF6oMp5SpHCLrjKRVgTUfZwdyat_vvxG-kuspKhCB4VyxBgCsk9Svtz5bk0gwNTxdOCBoe8eUgascnoTT6LV8tQH_ys_dtraNBwIpJ"}
+[6/20/2023, 9:44:57 AM][INFO] Client request: getDeviceInfo - {"serial_number":"RB23GD1708"}
+[6/20/2023, 9:44:57 AM][INFO] Client request: getListRoom - {"owner_uuid":"12c94f41-0c3c-4a1e-914c-212565d17695"}
+[6/20/2023, 9:48:06 AM][INFO] Client request: push_notification - {"registrationToken":"c3xBAl6mSG-scKWX6mDu9Q:APA91bE5kkaWPzkL4szzCp87WsaFe262CsFIJYeF6oMp5SpHCLrjKRVgTUfZwdyat_vvxG-kuspKhCB4VyxBgCsk9Svtz5bk0gwNTxdOCBoe8eUgascnoTT6LV8tQH_ys_dtraNBwIpJ"}
+[6/20/2023, 9:48:55 AM][INFO] Client request: push_notification - {"registrationToken":"c3xBAl6mSG-scKWX6mDu9Q:APA91bE5kkaWPzkL4szzCp87WsaFe262CsFIJYeF6oMp5SpHCLrjKRVgTUfZwdyat_vvxG-kuspKhCB4VyxBgCsk9Svtz5bk0gwNTxdOCBoe8eUgascnoTT6LV8tQH_ys_dtraNBwIpJ"}
+[6/20/2023, 9:50:12 AM][INFO] Client request: push_notification - {"registrationToken":"c3xBAl6mSG-scKWX6mDu9Q:APA91bE5kkaWPzkL4szzCp87WsaFe262CsFIJYeF6oMp5SpHCLrjKRVgTUfZwdyat_vvxG-kuspKhCB4VyxBgCsk9Svtz5bk0gwNTxdOCBoe8eUgascnoTT6LV8tQH_ys_dtraNBwIpJ"}
+[6/20/2023, 9:50:36 AM][INFO] Client request: getDeviceInfo - {"serial_number":"RB23GD1708"}
+[6/20/2023, 9:50:36 AM][INFO] Client request: getListRoom - {"owner_uuid":"12c94f41-0c3c-4a1e-914c-212565d17695"}
+[6/20/2023, 9:50:42 AM][INFO] Client request: push_notification - {"registrationToken":"c3xBAl6mSG-scKWX6mDu9Q:APA91bE5kkaWPzkL4szzCp87WsaFe262CsFIJYeF6oMp5SpHCLrjKRVgTUfZwdyat_vvxG-kuspKhCB4VyxBgCsk9Svtz5bk0gwNTxdOCBoe8eUgascnoTT6LV8tQH_ys_dtraNBwIpJ"}
+[6/20/2023, 9:56:35 AM][INFO] Client request: getListRoom - {"owner_uuid":"12c94f41-0c3c-4a1e-914c-212565d17695"}
+[6/20/2023, 9:56:35 AM][INFO] Client request: getDeviceInfo - {"serial_number":"RB23GD1708"}
+[6/20/2023, 9:56:56 AM][INFO] Client request: push_notification - {"registrationToken":"c3xBAl6mSG-scKWX6mDu9Q:APA91bE5kkaWPzkL4szzCp87WsaFe262CsFIJYeF6oMp5SpHCLrjKRVgTUfZwdyat_vvxG-kuspKhCB4VyxBgCsk9Svtz5bk0gwNTxdOCBoe8eUgascnoTT6LV8tQH_ys_dtraNBwIpJ"}
+[6/20/2023, 9:59:10 AM][INFO] Client request: push_notification - {"registrationToken":"c3xBAl6mSG-scKWX6mDu9Q:APA91bE5kkaWPzkL4szzCp87WsaFe262CsFIJYeF6oMp5SpHCLrjKRVgTUfZwdyat_vvxG-kuspKhCB4VyxBgCsk9Svtz5bk0gwNTxdOCBoe8eUgascnoTT6LV8tQH_ys_dtraNBwIpJ"}
+[6/20/2023, 10:00:20 AM][INFO] Client request: getDeviceInfo - {"serial_number":"RB23GD1708"}
+[6/20/2023, 10:00:20 AM][INFO] Client request: getListRoom - {"owner_uuid":"12c94f41-0c3c-4a1e-914c-212565d17695"}
+[6/20/2023, 10:00:24 AM][INFO] Client request: push_notification - {"registrationToken":"c3xBAl6mSG-scKWX6mDu9Q:APA91bE5kkaWPzkL4szzCp87WsaFe262CsFIJYeF6oMp5SpHCLrjKRVgTUfZwdyat_vvxG-kuspKhCB4VyxBgCsk9Svtz5bk0gwNTxdOCBoe8eUgascnoTT6LV8tQH_ys_dtraNBwIpJ"}
+[6/20/2023, 10:01:26 AM][INFO] Client request: getDeviceInfo - {"serial_number":"RB23GD1708"}
+[6/20/2023, 10:01:26 AM][INFO] Client request: getListRoom - {"owner_uuid":"12c94f41-0c3c-4a1e-914c-212565d17695"}
+[6/20/2023, 10:01:33 AM][INFO] Client request: push_notification - {"registrationToken":"c3xBAl6mSG-scKWX6mDu9Q:APA91bE5kkaWPzkL4szzCp87WsaFe262CsFIJYeF6oMp5SpHCLrjKRVgTUfZwdyat_vvxG-kuspKhCB4VyxBgCsk9Svtz5bk0gwNTxdOCBoe8eUgascnoTT6LV8tQH_ys_dtraNBwIpJ"}
+[6/20/2023, 10:02:10 AM][INFO] Client request: getListRoom - {"owner_uuid":"12c94f41-0c3c-4a1e-914c-212565d17695"}
+[6/20/2023, 10:02:10 AM][INFO] Client request: getDeviceInfo - {"serial_number":"RB23GD1708"}
+[6/20/2023, 10:02:18 AM][INFO] Client request: push_notification - {"registrationToken":"c3xBAl6mSG-scKWX6mDu9Q:APA91bE5kkaWPzkL4szzCp87WsaFe262CsFIJYeF6oMp5SpHCLrjKRVgTUfZwdyat_vvxG-kuspKhCB4VyxBgCsk9Svtz5bk0gwNTxdOCBoe8eUgascnoTT6LV8tQH_ys_dtraNBwIpJ"}
+[6/20/2023, 10:03:02 AM][INFO] Client request: getDeviceInfo - {"serial_number":"RB23GD1708"}
+[6/20/2023, 10:03:03 AM][INFO] Client request: getListRoom - {"owner_uuid":"12c94f41-0c3c-4a1e-914c-212565d17695"}
+[6/20/2023, 10:03:15 AM][INFO] Client request: push_notification - {"registrationToken":"c3xBAl6mSG-scKWX6mDu9Q:APA91bE5kkaWPzkL4szzCp87WsaFe262CsFIJYeF6oMp5SpHCLrjKRVgTUfZwdyat_vvxG-kuspKhCB4VyxBgCsk9Svtz5bk0gwNTxdOCBoe8eUgascnoTT6LV8tQH_ys_dtraNBwIpJ"}
+[6/20/2023, 10:04:42 AM][INFO] Client request: getDeviceInfo - {"serial_number":"RB23GD1708"}
+[6/20/2023, 10:04:42 AM][INFO] Client request: getListRoom - {"owner_uuid":"12c94f41-0c3c-4a1e-914c-212565d17695"}
+[6/20/2023, 10:04:46 AM][INFO] Client request: push_notification - {"registrationToken":"c3xBAl6mSG-scKWX6mDu9Q:APA91bE5kkaWPzkL4szzCp87WsaFe262CsFIJYeF6oMp5SpHCLrjKRVgTUfZwdyat_vvxG-kuspKhCB4VyxBgCsk9Svtz5bk0gwNTxdOCBoe8eUgascnoTT6LV8tQH_ys_dtraNBwIpJ"}
+[6/20/2023, 10:05:13 AM][INFO] Client request: getListRoom - {"owner_uuid":"12c94f41-0c3c-4a1e-914c-212565d17695"}
+[6/20/2023, 10:05:13 AM][INFO] Client request: getDeviceInfo - {"serial_number":"RB23GD1708"}
+[6/20/2023, 10:14:45 AM][INFO] Client request: getListRoom - {"owner_uuid":"12c94f41-0c3c-4a1e-914c-212565d17695"}
+[6/20/2023, 10:14:45 AM][INFO] Client request: getDeviceInfo - {"serial_number":"RB23GD1708"}
+[6/20/2023, 10:14:52 AM][INFO] Client request: push_notification - {"registrationToken":"c3xBAl6mSG-scKWX6mDu9Q:APA91bE5kkaWPzkL4szzCp87WsaFe262CsFIJYeF6oMp5SpHCLrjKRVgTUfZwdyat_vvxG-kuspKhCB4VyxBgCsk9Svtz5bk0gwNTxdOCBoe8eUgascnoTT6LV8tQH_ys_dtraNBwIpJ"}
+[6/20/2023, 10:15:19 AM][INFO] Client request: getDeviceInfo - {"serial_number":"RB23GD1708"}
+[6/20/2023, 10:15:20 AM][INFO] Client request: getListRoom - {"owner_uuid":"12c94f41-0c3c-4a1e-914c-212565d17695"}
+[6/20/2023, 10:15:28 AM][INFO] Client request: push_notification - {"registrationToken":"c3xBAl6mSG-scKWX6mDu9Q:APA91bE5kkaWPzkL4szzCp87WsaFe262CsFIJYeF6oMp5SpHCLrjKRVgTUfZwdyat_vvxG-kuspKhCB4VyxBgCsk9Svtz5bk0gwNTxdOCBoe8eUgascnoTT6LV8tQH_ys_dtraNBwIpJ"}
+[6/20/2023, 10:15:36 AM][INFO] Client request: getDeviceInfo - {"serial_number":"RB23GD1708"}
+[6/20/2023, 10:15:36 AM][INFO] Client request: getListRoom - {"owner_uuid":"12c94f41-0c3c-4a1e-914c-212565d17695"}
+[6/20/2023, 10:15:40 AM][INFO] Client request: push_notification - {"registrationToken":"c3xBAl6mSG-scKWX6mDu9Q:APA91bE5kkaWPzkL4szzCp87WsaFe262CsFIJYeF6oMp5SpHCLrjKRVgTUfZwdyat_vvxG-kuspKhCB4VyxBgCsk9Svtz5bk0gwNTxdOCBoe8eUgascnoTT6LV8tQH_ys_dtraNBwIpJ"}
+[6/20/2023, 10:15:50 AM][INFO] Client request: push_notification - {"registrationToken":"c3xBAl6mSG-scKWX6mDu9Q:APA91bE5kkaWPzkL4szzCp87WsaFe262CsFIJYeF6oMp5SpHCLrjKRVgTUfZwdyat_vvxG-kuspKhCB4VyxBgCsk9Svtz5bk0gwNTxdOCBoe8eUgascnoTT6LV8tQH_ys_dtraNBwIpJ"}
+[6/20/2023, 10:16:46 AM][INFO] Client request: getListRoom - {"owner_uuid":"12c94f41-0c3c-4a1e-914c-212565d17695"}
+[6/20/2023, 10:16:46 AM][INFO] Client request: getDeviceInfo - {"serial_number":"RB23GD1708"}
+[6/20/2023, 10:16:58 AM][INFO] Client request: push_notification - {"registrationToken":"c3xBAl6mSG-scKWX6mDu9Q:APA91bE5kkaWPzkL4szzCp87WsaFe262CsFIJYeF6oMp5SpHCLrjKRVgTUfZwdyat_vvxG-kuspKhCB4VyxBgCsk9Svtz5bk0gwNTxdOCBoe8eUgascnoTT6LV8tQH_ys_dtraNBwIpJ"}
+[6/20/2023, 10:17:15 AM][INFO] Client request: getListRoom - {"owner_uuid":"12c94f41-0c3c-4a1e-914c-212565d17695"}
+[6/20/2023, 10:17:15 AM][INFO] Client request: getDeviceInfo - {"serial_number":"RB23GD1708"}
+[6/20/2023, 10:18:10 AM][INFO] Client request - pingConnectA2D= {"user_uuid":"12c94f41-0c3c-4a1e-914c-212565d17695","room_id":"d4c386d0-0d2c-11ee-9b29-65bc2cd4889c","firebase_token":"c3xBAl6mSG-scKWX6mDu9Q:APA91bE5kkaWPzkL4szzCp87WsaFe262CsFIJYeF6oMp5SpHCLrjKRVgTUfZwdyat_vvxG-kuspKhCB4VyxBgCsk9Svtz5bk0gwNTxdOCBoe8eUgascnoTT6LV8tQH_ys_dtraNBwIpJ","device_serial_number":"RB23GD1708"}
+[6/20/2023, 10:19:48 AM][INFO] Server detects gas leak. Send notify.
+[6/20/2023, 10:20:20 AM][INFO] Client request: getListRoom - {"owner_uuid":"12c94f41-0c3c-4a1e-914c-212565d17695"}
+[6/20/2023, 10:20:20 AM][INFO] Client request: getDeviceInfo - {"serial_number":"RB23GD1708"}
+[6/20/2023, 10:22:06 AM][INFO] Client request: getDeviceInfo - {"serial_number":"RB23GD1708"}
+[6/20/2023, 10:22:06 AM][INFO] Client request: getListRoom - {"owner_uuid":"12c94f41-0c3c-4a1e-914c-212565d17695"}
+[6/20/2023, 10:23:18 AM][INFO] Client request: getDeviceInfo - {"serial_number":"RB23GD1708"}
+[6/20/2023, 10:23:18 AM][INFO] Client request: getListRoom - {"owner_uuid":"12c94f41-0c3c-4a1e-914c-212565d17695"}
+[6/20/2023, 10:23:48 AM][INFO] Server detects gas leak. Send notify.
+[6/20/2023, 10:25:42 AM][INFO] Server detects gas leak. Send notify.
+[6/20/2023, 10:26:28 AM][INFO] Server detects gas leak. Send notify.
+[6/20/2023, 10:26:44 AM][INFO] Server detects gas leak. Send notify.
+[6/20/2023, 10:27:30 AM][INFO] Server detects gas leak. Send notify.
+[6/20/2023, 10:30:13 AM][INFO] Server detects gas leak. Send notify.
+[6/20/2023, 10:31:09 AM][INFO] Server detects gas leak. Send notify.
+[6/20/2023, 10:32:36 AM][INFO] Server detects gas leak. Send notify.
+[6/20/2023, 10:35:29 AM][INFO] Server detects gas leak. Send notify.
+[6/20/2023, 10:37:12 AM][INFO] Server detects gas leak. Send notify.
+[6/20/2023, 10:37:36 AM][INFO] Client request: getDeviceInfo - {"serial_number":"RB23GD1708"}
+[6/20/2023, 10:37:36 AM][INFO] Client request: getListRoom - {"owner_uuid":"12c94f41-0c3c-4a1e-914c-212565d17695"}
+[6/20/2023, 10:37:44 AM][INFO] Server detects gas leak. Send notify.
+[6/20/2023, 10:37:59 AM][INFO] Server detects gas leak. Send notify.
+[6/20/2023, 10:38:08 AM][INFO] Server detects gas leak. Send notify.
+[6/20/2023, 10:38:17 AM][INFO] Client request: getListRoom - {"owner_uuid":"12c94f41-0c3c-4a1e-914c-212565d17695"}
+[6/20/2023, 10:38:17 AM][INFO] Client request: getDeviceInfo - {"serial_number":"RB23GD1708"}
+[6/20/2023, 10:39:50 AM][INFO] Client request: getDeviceInfo - {"serial_number":"RB23GD1708"}
+[6/20/2023, 10:39:50 AM][INFO] Client request: getListRoom - {"owner_uuid":"12c94f41-0c3c-4a1e-914c-212565d17695"}
+[6/20/2023, 10:39:57 AM][INFO] Server detects gas leak. Send notify.
+[6/20/2023, 10:40:06 AM][INFO] Server detects gas leak. Send notify.
+[6/20/2023, 10:40:17 AM][INFO] Server detects gas leak. Send notify.
+[6/20/2023, 10:40:26 AM][INFO] Client request: getDeviceInfo - {"serial_number":"RB23GD1708"}
+[6/20/2023, 10:40:26 AM][INFO] Client request: getListRoom - {"owner_uuid":"12c94f41-0c3c-4a1e-914c-212565d17695"}
+[6/20/2023, 10:40:31 AM][INFO] Server detects gas leak. Send notify.
+[6/20/2023, 10:40:46 AM][INFO] Server detects gas leak. Send notify.
+[6/20/2023, 10:44:48 AM][INFO] Client request: getDeviceInfo - {"serial_number":"RB23GD1708"}
+[6/20/2023, 10:44:48 AM][INFO] Client request: getListRoom - {"owner_uuid":"12c94f41-0c3c-4a1e-914c-212565d17695"}
+[6/20/2023, 10:45:01 AM][INFO] Server detects gas leak. Send notify.
+[6/20/2023, 10:47:53 AM][INFO] Client request: getDeviceInfo - {"serial_number":"RB23GD1708"}
+[6/20/2023, 10:47:53 AM][INFO] Client request: getListRoom - {"owner_uuid":"12c94f41-0c3c-4a1e-914c-212565d17695"}
+[6/20/2023, 10:48:04 AM][INFO] Client request - pingConnectA2D= {"user_uuid":"12c94f41-0c3c-4a1e-914c-212565d17695","room_id":"6a464cdb-6243-4597-b26b-7bf790eaa684","firebase_token":"c3xBAl6mSG-scKWX6mDu9Q:APA91bE5kkaWPzkL4szzCp87WsaFe262CsFIJYeF6oMp5SpHCLrjKRVgTUfZwdyat_vvxG-kuspKhCB4VyxBgCsk9Svtz5bk0gwNTxdOCBoe8eUgascnoTT6LV8tQH_ys_dtraNBwIpJ","device_serial_number":"RB23GD1708"}
+[6/20/2023, 10:48:13 AM][INFO] Server detects gas leak. Send notify.
+[6/20/2023, 10:49:25 AM][INFO] Client request: getListRoom - {"owner_uuid":"12c94f41-0c3c-4a1e-914c-212565d17695"}
+[6/20/2023, 10:49:25 AM][INFO] Client request: getDeviceInfo - {"serial_number":"RB23GD1708"}
+[6/20/2023, 10:49:38 AM][INFO] Client request - pingConnectA2D= {"user_uuid":"12c94f41-0c3c-4a1e-914c-212565d17695","room_id":"8d888250-d268-40e0-b43b-554fad7bb422","firebase_token":"c3xBAl6mSG-scKWX6mDu9Q:APA91bE5kkaWPzkL4szzCp87WsaFe262CsFIJYeF6oMp5SpHCLrjKRVgTUfZwdyat_vvxG-kuspKhCB4VyxBgCsk9Svtz5bk0gwNTxdOCBoe8eUgascnoTT6LV8tQH_ys_dtraNBwIpJ","device_serial_number":"RB23GD1708"}
+[6/20/2023, 10:49:46 AM][INFO] Server detects gas leak. Send notify.
+[6/20/2023, 10:55:45 AM][INFO] Server detects gas leak. Send notify.
+[6/20/2023, 10:56:04 AM][INFO] Server detects gas leak. Send notify.
