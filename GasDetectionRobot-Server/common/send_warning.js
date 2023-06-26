@@ -19,8 +19,11 @@ module.exports = {
             let firebaseToken = result[0].firebase_token;
             let room_id = result[0].room_id;
             let serial_number = result[0].serial_number;
-            let is_gas_detect = '1';
-            let room_status = "Gas Leak. Very Danger.";
+
+            let gas_index = Math.floor(Math.random() * 200) + 50;
+
+            let is_gas_detect = `${gas_index}`;
+            let room_status = gas_index < 150 ? "Gas Leak. Careful." : "Gas Leak. Very Danger.";
 
             // Save to DB
             let updateQuery = `UPDATE room SET is_gas_detect=?, room_status=?, modified_time=? WHERE room_id=?;`;

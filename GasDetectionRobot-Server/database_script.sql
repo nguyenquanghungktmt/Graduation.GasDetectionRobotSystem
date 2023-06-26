@@ -31,7 +31,7 @@ create table room (
 	room_id varchar(36) primary key not null,
     room_name varchar(100),
     owner_uuid varchar(36) not null,
-    is_gas_detect boolean,
+    is_gas_detect smallint,
     room_status varchar(100),
     map2d_url varchar(50),
     created_time datetime,

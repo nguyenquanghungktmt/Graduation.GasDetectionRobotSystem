@@ -21,7 +21,7 @@ router.post('/pushNotification', (req, res)=>{
         data: {
             target: target_enum.ROOM,
             room_id: "d4c386d0-0d2c-11ee-9b29-65bc2cd4889c",
-            is_gas_detect: "1",
+            is_gas_detect: `${Math.floor(Math.random() * 200) + 50}`,
             room_status: "Very Danger"
         },
         token: registrationToken,
