@@ -283,7 +283,7 @@ class _MainScreenState extends State<MainScreen> {
         // If the server did not return a 201 CREATED response,
         // then throw an exception.
 
-        Alert.toastError('Delete room failed');
+        Alert.toastError('Update room failed');
         Alert.closeToast(
             durationBeforeClose: const Duration(milliseconds: 1500));
       }

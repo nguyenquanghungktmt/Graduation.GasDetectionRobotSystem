@@ -56,7 +56,7 @@ class RoomGrid extends StatelessWidget {
         physics: const NeverScrollableScrollPhysics(),
         shrinkWrap: true,
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            childAspectRatio: 16 / 7, crossAxisCount: 1, mainAxisSpacing: 30),
+            childAspectRatio: 2, crossAxisCount: 1, mainAxisSpacing: 30),
         itemBuilder: (context, index) => RoomCellWidget(
               room: listRoom[index],
               onTap: () {

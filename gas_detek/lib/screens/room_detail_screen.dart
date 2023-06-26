@@ -320,7 +320,7 @@ class _RoomDetailState extends State<RoomDetail> {
               children: [
                 // container room name
                 Container(
-                  height: 50.0,
+                  height: 44.0,
                   width: maxWidth - 20.0,
                   margin: const EdgeInsets.symmetric(horizontal: 10.0),
                   padding: const EdgeInsets.all(10.0),
@@ -371,20 +371,35 @@ class _RoomDetailState extends State<RoomDetail> {
                       borderRadius:
                           BorderRadius.vertical(bottom: Radius.circular(10)),
                     ),
-                    child: Text.rich(
-                      TextSpan(children: [
+                    child: RichText(
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      text: TextSpan(children: [
                         const TextSpan(
                             text: 'Status: ',
                             style: TextStyle(
-                                fontSize: 16.0, fontWeight: FontWeight.w500)),
+                                color: Colors.black, fontSize: 16.0, fontWeight: FontWeight.w500)),
                         TextSpan(
                             text: _room.roomStatus,
                             style: TextStyle(
-                                color: _room.isGasDetect == 1
+                                color: _room.isGasDetect > 0
                                     ? Colors.red
                                     : Colors.green,
                                 fontSize: 16.0,
-                                fontWeight: FontWeight.w400))
+                                fontWeight: FontWeight.w400)),
+                        const TextSpan(
+                            text: '  Sensor: ',
+                            style: TextStyle(
+                                color: Colors.black, fontSize: 16.0, fontWeight: FontWeight.w500)),
+                        TextSpan(
+                            text: '${_room.isGasDetect}',
+                            style: TextStyle(
+                                color: _room.isGasDetect > 0
+                                    ? Colors.red
+                                    : Colors.green,
+                                overflow: TextOverflow.ellipsis,
+                                fontSize: 16.0,
+                                fontWeight: FontWeight.w400)),
                       ]),
                     )),
                 const SizedBox(

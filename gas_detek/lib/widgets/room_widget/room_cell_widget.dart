@@ -17,10 +17,10 @@ class RoomCellWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final colorConcept = room.isGasDetect == 1 ? Colors.red : Colors.green;
-    final colorGasIcon = room.isGasDetect == 1 ? Colors.orange : Colors.blue;
-    final textGasStatus =
-        room.isGasDetect == 1 ? "Warning! Gas Leak Detection" : "No Gas Leak";
+    final colorConcept = room.isGasDetect > 0 ? Colors.red : Colors.green;
+    final colorGasIcon = room.isGasDetect > 0 ? Colors.orange : Colors.blue;
+    final textGasStatus = 
+        room.isGasDetect > 0 ? "Warning! Gas Leak Detection" : "No Gas Leak";
 
     return Container(
       decoration: BoxDecoration(
@@ -38,64 +38,87 @@ class RoomCellWidget extends StatelessWidget {
         color: colorConcept.shade100,
         borderRadius: const BorderRadius.all(Radius.circular(20.0)),
         child: InkWell(
-          splashColor: kDarkBlue.withOpacity(0.5),
-          highlightColor: kDarkBlue.withOpacity(0.5),
-          onLongPress: onLongPress,
-          onTap: onTap,
-          borderRadius: BorderRadius.circular(20.0),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 16.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(room.roomName,
-                    style: const TextStyle(
-                        fontSize: 18, fontWeight: FontWeight.bold)),
-                Divider(
-                  color: Colors.black,
-                  thickness: 1,
-                ),
-                const SizedBox(height: 10.0),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.center,
+            splashColor: kDarkBlue.withOpacity(0.5),
+            highlightColor: kDarkBlue.withOpacity(0.5),
+            onLongPress: onLongPress,
+            onTap: onTap,
+            borderRadius: BorderRadius.circular(20.0),
+            child: Padding(
+                padding: const EdgeInsets.symmetric(
+                    horizontal: 24.0, vertical: 16.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Icon(
-                      Icons.local_fire_department,
-                      size: 24.0,
-                      color: colorGasIcon.shade800,
+                    Text(room.roomName,
+                        style: const TextStyle(
+                            fontSize: 18, fontWeight: FontWeight.bold)),
+                    Divider(
+                      color: Colors.black,
+                      thickness: 1,
                     ),
-                    SizedBox(width: 10),
-                    Text(textGasStatus,
-                      softWrap: false,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis
+                    const SizedBox(height: 5.0),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.local_fire_department,
+                          size: 24.0,
+                          color: colorGasIcon.shade800,
+                        ),
+                        SizedBox(width: 10),
+                        Text(textGasStatus,
+                            softWrap: false,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis),
+                      ],
+                    ),
+                    const SizedBox(height: 5.0),
+                    Row(
+                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.circle,
+                          size: 24.0,
+                          color: colorConcept.shade600,
+                        ),
+                        SizedBox(width: 10),
+                        Text(
+                          room.roomStatus,
+                          maxLines: 1,
+                          textDirection: TextDirection.ltr,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 5.0),
+                    Row(
+                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.numbers_outlined,
+                          size: 24.0,
+                          color: colorConcept.shade700,
+                        ),
+                        SizedBox(width: 10),
+                        Text(
+                          'Sensor: ',
+                          style: TextStyle(fontWeight: FontWeight.w600),
+                        ),
+                        Text('${room.isGasDetect}',
+                            style: TextStyle(
+                                color: colorConcept.shade900,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500)),
+                      ],
                     ),
                   ],
-                ),
-                const SizedBox(height: 5.0),
-                Row(
-                  mainAxisSize: MainAxisSize.min,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Icon(
-                      Icons.circle,
-                      size: 24.0,
-                      color: colorConcept.shade600,
-                    ),
-                    SizedBox(width: 10),
-                    Text(room.roomStatus,
-                      maxLines: 1,
-                      textDirection: TextDirection.ltr,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ],
-                ),
-              ],
-            ))
-        ),
+                ))),
       ),
     );
   }
