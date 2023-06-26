@@ -7,6 +7,7 @@ import 'package:gas_detek/screens/login_screen.dart';
 import 'package:gas_detek/screens/user_profile_sreen.dart';
 import 'package:gas_detek/services/database_helper.dart';
 import 'package:gas_detek/services/user_db_helper.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:ternav_icons/ternav_icons.dart';
 import 'package:http/http.dart' as http;
@@ -101,10 +102,13 @@ class SideMenu extends StatelessWidget {
   }
 
   Future<void> _aboutUs(BuildContext context) async {
+    PackageInfo packageInfo = await PackageInfo.fromPlatform();
+    String version = packageInfo.version;
+
     Alert.dialogNotification(
       context,
       'About Us',
-      'This application created by Nguyễn Quang Hưng.\nAll right reserved.\nVersion: 1.2.6',
+      'This application created by Nguyễn Quang Hưng.\nAll right reserved.\nVersion: $version',
     );
   }
 
