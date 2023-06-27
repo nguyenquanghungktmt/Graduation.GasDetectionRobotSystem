@@ -181,20 +181,25 @@ class _RoomDetailState extends State<RoomDetail> {
       debugPrint('Room detail: Got a message whilst in the foreground!');
       final data = message.data;
 
-      final target = data['target'];
-      if (target == Target.room.value) {
-        // Update for list room
-        debugPrint("Receive push notify update list_room");
-        final roomId = data['room_id'];
-        final isGasDetect = data['is_gas_detect'];
-        final roomStatus = data['room_status'];
+      final target = EnumTargetHelper.parse(data['target']);
+      switch (target) {
+        case Target.room:
+          // Update for room detail
+          debugPrint("Receive push notify update room detail");
+          final roomId = data['room_id'];
+          final isGasDetect = data['is_gas_detect'];
+          final roomStatus = data['room_status'];
 
-        if (roomId == _room.roomId) {
-          setState(() {
-            _room.isGasDetect = int.parse(isGasDetect);
-            _room.roomStatus = roomStatus;
-          });
-        }
+          if (roomId == _room.roomId) {
+            setState(() {
+              _room.isGasDetect = int.parse(isGasDetect);
+              _room.roomStatus = roomStatus;
+            });
+          }
+          break;
+          
+        case Target.general:
+          break;
       }
     });
   }
@@ -378,7 +383,9 @@ class _RoomDetailState extends State<RoomDetail> {
                         const TextSpan(
                             text: 'Status: ',
                             style: TextStyle(
-                                color: Colors.black, fontSize: 16.0, fontWeight: FontWeight.w500)),
+                                color: Colors.black,
+                                fontSize: 16.0,
+                                fontWeight: FontWeight.w500)),
                         TextSpan(
                             text: _room.roomStatus,
                             style: TextStyle(
@@ -390,7 +397,9 @@ class _RoomDetailState extends State<RoomDetail> {
                         const TextSpan(
                             text: '  Sensor: ',
                             style: TextStyle(
-                                color: Colors.black, fontSize: 16.0, fontWeight: FontWeight.w500)),
+                                color: Colors.black,
+                                fontSize: 16.0,
+                                fontWeight: FontWeight.w500)),
                         TextSpan(
                             text: '${_room.isGasDetect}',
                             style: TextStyle(

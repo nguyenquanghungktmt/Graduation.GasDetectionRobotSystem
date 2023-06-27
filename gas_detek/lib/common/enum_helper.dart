@@ -15,3 +15,16 @@ extension TargetExtension on Target {
     }
   }
 }
+
+class EnumTargetHelper{
+  static Target parse(String value) {
+    switch (value) {
+      case 'general':
+        return Target.general;
+      case 'room':
+        return Target.room;
+      default:
+        return Target.general;
+    }
+  }
+}

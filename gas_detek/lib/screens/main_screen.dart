@@ -459,34 +459,42 @@ class _MainScreenState extends State<MainScreen> {
       debugPrint('Got a message whilst in the foreground!');
       final data = message.data;
 
-      final target = data['target'];
-      if (target == Target.room.value) {
-        // Update for list room
-        debugPrint("Receive push notify update list_room");
-        final roomId = data['room_id'];
-        final isGasDetect = data['is_gas_detect'];
-        final roomStatus = data['room_status'];
+      final target = EnumTargetHelper.parse(data['target']);
+      switch (target) {
+        case Target.room:
+          // Update for list room
+          debugPrint("Receive push notify update list_room");
+          final roomId = data['room_id'];
+          final isGasDetect = data['is_gas_detect'];
+          final roomStatus = data['room_status'];
 
-        var index =
-            _listRoom?.indexWhere((element) => element.roomId == roomId);
-        if (index != null) {
-          setState(() {
-            _listRoom?[index].isGasDetect = int.parse(isGasDetect);
-            _listRoom?[index].roomStatus = roomStatus;
-          });
+          var index =
+              _listRoom?.indexWhere((element) => element.roomId == roomId);
+          if (index != null) {
+            setState(() {
+              _listRoom?[index].isGasDetect = int.parse(isGasDetect);
+              _listRoom?[index].roomStatus = roomStatus;
+            });
 
-          // update in DB local
-          RoomDBHelper.updateRoom(_listRoom![index]);
-        }
+            // update in DB local
+            RoomDBHelper.updateRoom(_listRoom![index]);
+          }
 
-        final title =  message.notification?.title ?? "";
-        final body = message.notification?.body ?? "";
-        await NotificationService.showNotification(
-          title: title,
-          body: "$body -- index = $isGasDetect",
-        );
+          final title = message.notification?.title ?? "";
+          final body = message.notification?.body ?? "";
+          await NotificationService.showNotification(
+            title: title,
+            body: "$body -- index = $isGasDetect",
+          );
+          break;
+
+        case Target.general:
+          await NotificationService.showNotification(
+            title: message.notification?.title ?? "",
+            body: message.notification?.body ?? "",
+          );
+          break;
       }
-
     });
   }
 
@@ -505,7 +513,7 @@ class _MainScreenState extends State<MainScreen> {
     // TODO: implement dispose
     super.dispose();
 
-    if (_fcmListener != null){
+    if (_fcmListener != null) {
       _fcmListener!.cancel();
     }
   }
