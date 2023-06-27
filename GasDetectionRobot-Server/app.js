@@ -42,8 +42,8 @@ client.on('message', function (msg) {
   let device_id = jsonParse.device_id ?? '';
 
 
-  if (gas == 1) {
-    send_warning.send();
+  if (gas > 0) {
+    send_warning.send(gas);
   }
 });
 

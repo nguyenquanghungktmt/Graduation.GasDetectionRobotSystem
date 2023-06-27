@@ -1,7 +1,7 @@
 import requests
 import json
 
-DOMAIN = "https://gas-detekt-system.azurewebsites.net/"
+DOMAIN = "https://a7a3-58-187-228-248.ngrok-free.app"
 FILE_PATH = "./config.json"
 NUM_RETRIES = 3
 
@@ -56,7 +56,32 @@ class NetworkUtils(object):
                 pass
 
         return False
+    
+    def pingDisconnectToServer(self):
+        domain_tail = "/device/pingConnectionDevice"
+        link_api = self.domain + domain_tail
+
+        headers = {'content-type': 'application/json'}
+        data = {
+            "device_serial_number": self.deviceId
+        }
+        for _ in range(NUM_RETRIES):
+            try:
+                response = requests.post(link_api, data=json.dumps(data), headers=headers)
+
+                if response.status_code == 200:
+                    body = json.loads(response.text)
+                    print('Server response:', body['message'])
+                    return (body['code'] == 200)
+                else :
+                    print('Server error with code', response.status_code)
+                    return False
+            except requests.exceptions.ConnectionError:
+                print('Try connect server again ...')
+                pass
+
+        return False
 
 if __name__ == '__main__':
     network_utils = NetworkUtils()
-    print(network_utils.pingConnectToServer())
+    print(network_utils.pingDisconnectToServer())

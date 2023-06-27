@@ -6,7 +6,7 @@ const logger = require("./log.js");
 const target_enum = require('../enum').TARGET;
 
 module.exports = {
-    send: function (){
+    send: function (gas_index){
         logger.info(`Server detects gas leak. Send notify.`);
 
         // Get session
@@ -19,8 +19,6 @@ module.exports = {
             let firebaseToken = result[0].firebase_token;
             let room_id = result[0].room_id;
             let serial_number = result[0].serial_number;
-
-            let gas_index = Math.floor(Math.random() * 200) + 50;
 
             let is_gas_detect = `${gas_index}`;
             let room_status = gas_index < 150 ? "Gas Leak. Careful." : "Gas Leak. Very Danger.";

@@ -37,11 +37,11 @@ class AzureIoTHubUtils(object):
                     return False
                 pass
 
-    async def sendMessage(self, data=None):
+    async def sendMessage(self, gas_index=0,):
         # Build the message with simulated telemetry values.
         data = {
             "timestamp": datetime.now().strftime("%H:%M:%S"),
-            "gas": 0,
+            "gas": gas_index,
             "device_id": DEVICE_ID,
         }
 
@@ -60,4 +60,5 @@ class AzureIoTHubUtils(object):
 
 if __name__ == '__main__':
     azure_hub_utils = AzureIoTHubUtils()
+    azure_hub_utils.connectHub()
     asyncio.run(azure_hub_utils.sendMessage())

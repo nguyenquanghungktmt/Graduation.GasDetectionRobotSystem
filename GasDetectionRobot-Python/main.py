@@ -1,6 +1,8 @@
 # from engines_controller import EnginesController
 # from ultrasonic_sensors_controller import UltrasonicSensorsController
+# from gas_sensor_controller import GasSensorController
 import asyncio
+import random
 from network_utils import NetworkUtils
 from azure_hub_utils import AzureIoTHubUtils
 # import RPi.GPIO as GPIO
@@ -12,6 +14,8 @@ MIN_DISTANCE = 15   # khoang cach gioi han den vat can
 # define global variable
 # robot_controller = EnginesController()
 # us_sensor_controller = UltrasonicSensorsController()
+# gas_sensor_controller = GasSensorController()
+
 network_util = NetworkUtils()
 azure_hub_utils = AzureIoTHubUtils()
 
@@ -40,8 +44,14 @@ def main():
     # Connection Done
     print('========================')
     print('Let\'s start !')
-    while True:
-        asyncio.run(azure_hub_utils.sendMessage())
+    
+    gas_index = random.randint(50, 250)
+    asyncio.run(azure_hub_utils.sendMessage(gas_index))
+    # while True:
+    #     if gas_sensor_controller.isGasDetected() :
+    #         asyncio.run(azure_hub_utils.sendMessage(124))
+    #     else :
+    #         asyncio.run(azure_hub_utils.sendMessage())
 
     """
     try:
@@ -106,3 +116,8 @@ if __name__ == '__main__':
         print("Shutting down robot. Dispose all resource.")
         if azure_hub_utils.client is None :
             azure_hub_utils.client.shutdown()
+
+        if network_util.pingDisconnectToServer() == False:
+            print('Cannot disconnect!')
+            quit()
+        print('Disconnected\n')

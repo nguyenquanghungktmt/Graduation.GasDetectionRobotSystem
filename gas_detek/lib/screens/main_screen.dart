@@ -478,12 +478,15 @@ class _MainScreenState extends State<MainScreen> {
           // update in DB local
           RoomDBHelper.updateRoom(_listRoom![index]);
         }
+
+        final title =  message.notification?.title ?? "";
+        final body = message.notification?.body ?? "";
+        await NotificationService.showNotification(
+          title: title,
+          body: "$body -- index = $isGasDetect",
+        );
       }
 
-      await NotificationService.showNotification(
-        title: message.notification?.title ?? "",
-        body: message.notification?.body ?? "",
-      );
     });
   }
 

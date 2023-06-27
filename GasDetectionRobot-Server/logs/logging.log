@@ -379,3 +379,137 @@
 [6/20/2023, 10:49:46 AM][INFO] Server detects gas leak. Send notify.
 [6/20/2023, 10:55:45 AM][INFO] Server detects gas leak. Send notify.
 [6/20/2023, 10:56:04 AM][INFO] Server detects gas leak. Send notify.
+[6/26/2023, 9:21:22 PM][INFO] Client request: login - {"username":"hungnq123","password":"123456","firebase_token":"d05C9pDzTler0o3wpg7-hI:APA91bHavUrmGBdz4xjoWLnereJ4_kEcvQK7Dmx1eI_9Y8p-mhxcmVycieWhYlTx6Ue12aimmSJui2kMVGnVCfCC-jGraF6UC2vNGs94aS-teaiNjlBbvRXLNc6AxOpPTnkEWFOtkMEV"}
+[6/26/2023, 9:21:23 PM][INFO] Client request: getListRoom - {"owner_uuid":"12c94f41-0c3c-4a1e-914c-212565d17695"}
+[6/26/2023, 9:21:23 PM][INFO] Client request: getDeviceInfo - {"serial_number":"RB23GD1708"}
+[6/26/2023, 9:24:01 PM][INFO] Client request - pingConnectionDevice= {"device_serial_number":"RB23GD1708"}
+[6/26/2023, 9:25:53 PM][INFO] Client request - pingConnectionDevice= {"device_serial_number":"RB23GD1708","connect_azure_hub":true}
+[6/26/2023, 9:26:01 PM][INFO] Client request - pingConnectionDevice= {"device_serial_number":"RB23GD1708"}
+[6/26/2023, 9:26:28 PM][INFO] Client request - pingConnectionDevice= {"device_serial_number":"RB23GD1708","connect_azure_hub":true}
+[6/26/2023, 9:26:35 PM][INFO] Client request - pingConnectionDevice= {"device_serial_number":"RB23GD1708"}
+[6/26/2023, 9:30:48 PM][INFO] Client request - pingConnectionDevice= {"device_serial_number":"RB23GD1708","connect_azure_hub":true}
+[6/26/2023, 9:30:52 PM][INFO] Server detects gas leak. Send notify.
+[6/26/2023, 9:30:58 PM][INFO] Client request - pingConnectionDevice= {"device_serial_number":"RB23GD1708"}
+[6/26/2023, 9:31:45 PM][INFO] Client request: createRoom - {"owner_uuid":"12c94f41-0c3c-4a1e-914c-212565d17695"}
+[6/26/2023, 9:31:49 PM][INFO] Client request - pingConnectA2D= {"user_uuid":"12c94f41-0c3c-4a1e-914c-212565d17695","room_id":"2d1e84d0-142e-11ee-8347-b75a5886f9e4","firebase_token":"d05C9pDzTler0o3wpg7-hI:APA91bHavUrmGBdz4xjoWLnereJ4_kEcvQK7Dmx1eI_9Y8p-mhxcmVycieWhYlTx6Ue12aimmSJui2kMVGnVCfCC-jGraF6UC2vNGs94aS-teaiNjlBbvRXLNc6AxOpPTnkEWFOtkMEV","device_serial_number":"RB23GD1708"}
+[6/26/2023, 9:32:26 PM][INFO] Client request - pingConnectionDevice= {"device_serial_number":"RB23GD1708","connect_azure_hub":true}
+[6/26/2023, 9:32:28 PM][INFO] Server detects gas leak. Send notify.
+[6/26/2023, 9:32:33 PM][INFO] Client request - pingConnectA2D= {"user_uuid":"12c94f41-0c3c-4a1e-914c-212565d17695","room_id":"2d1e84d0-142e-11ee-8347-b75a5886f9e4","firebase_token":"d05C9pDzTler0o3wpg7-hI:APA91bHavUrmGBdz4xjoWLnereJ4_kEcvQK7Dmx1eI_9Y8p-mhxcmVycieWhYlTx6Ue12aimmSJui2kMVGnVCfCC-jGraF6UC2vNGs94aS-teaiNjlBbvRXLNc6AxOpPTnkEWFOtkMEV","device_serial_number":"RB23GD1708"}
+[6/26/2023, 9:32:46 PM][INFO] Client request - pingConnectionDevice= {"device_serial_number":"RB23GD1708","connect_azure_hub":true}
+[6/26/2023, 9:32:48 PM][INFO] Server detects gas leak. Send notify.
+[6/26/2023, 9:33:13 PM][INFO] Client request - pingConnectionDevice= {"device_serial_number":"RB23GD1708","connect_azure_hub":true}
+[6/26/2023, 9:33:15 PM][INFO] Server detects gas leak. Send notify.
+[6/26/2023, 9:34:50 PM][INFO] Client request: getListRoom - {"owner_uuid":"12c94f41-0c3c-4a1e-914c-212565d17695"}
+[6/26/2023, 9:34:50 PM][INFO] Client request: getDeviceInfo - {"serial_number":"RB23GD1708"}
+[6/26/2023, 9:36:35 PM][INFO] Client request - pingConnectionDevice= {"device_serial_number":"RB23GD1708","connect_azure_hub":true}
+[6/26/2023, 9:36:39 PM][INFO] Server detects gas leak. Send notify.
+[6/26/2023, 9:36:45 PM][INFO] Client request - pingConnectionDevice= {"device_serial_number":"RB23GD1708"}
+[6/26/2023, 9:41:52 PM][INFO] Client request: getListRoom - {"owner_uuid":"12c94f41-0c3c-4a1e-914c-212565d17695"}
+[6/26/2023, 9:41:52 PM][INFO] Client request: getDeviceInfo - {"serial_number":"RB23GD1708"}
+[6/26/2023, 9:42:02 PM][INFO] Client request - pingConnectionDevice= {"device_serial_number":"RB23GD1708","connect_azure_hub":true}
+[6/26/2023, 9:42:07 PM][INFO] Server detects gas leak. Send notify.
+[6/26/2023, 9:42:12 PM][INFO] Client request - pingConnectionDevice= {"device_serial_number":"RB23GD1708"}
+[6/26/2023, 9:42:28 PM][INFO] Client request - pingConnectionDevice= {"device_serial_number":"RB23GD1708","connect_azure_hub":true}
+[6/26/2023, 9:42:33 PM][INFO] Server detects gas leak. Send notify.
+[6/26/2023, 9:42:38 PM][INFO] Client request - pingConnectionDevice= {"device_serial_number":"RB23GD1708"}
+[6/26/2023, 9:42:48 PM][INFO] Client request: getListRoom - {"owner_uuid":"12c94f41-0c3c-4a1e-914c-212565d17695"}
+[6/26/2023, 9:42:48 PM][INFO] Client request: getDeviceInfo - {"serial_number":"RB23GD1708"}
+[6/26/2023, 9:42:58 PM][INFO] Client request - pingConnectA2D= {"user_uuid":"12c94f41-0c3c-4a1e-914c-212565d17695","room_id":"2d1e84d0-142e-11ee-8347-b75a5886f9e4","firebase_token":"d05C9pDzTler0o3wpg7-hI:APA91bHavUrmGBdz4xjoWLnereJ4_kEcvQK7Dmx1eI_9Y8p-mhxcmVycieWhYlTx6Ue12aimmSJui2kMVGnVCfCC-jGraF6UC2vNGs94aS-teaiNjlBbvRXLNc6AxOpPTnkEWFOtkMEV","device_serial_number":"RB23GD1708"}
+[6/26/2023, 9:43:06 PM][INFO] Client request - pingConnectionDevice= {"device_serial_number":"RB23GD1708","connect_azure_hub":true}
+[6/26/2023, 9:43:09 PM][INFO] Server detects gas leak. Send notify.
+[6/26/2023, 9:43:14 PM][INFO] Client request - pingConnectionDevice= {"device_serial_number":"RB23GD1708"}
+[6/26/2023, 9:44:04 PM][INFO] Client request - pingConnectionDevice= {"device_serial_number":"RB23GD1708","connect_azure_hub":true}
+[6/26/2023, 9:44:06 PM][INFO] Server detects gas leak. Send notify.
+[6/26/2023, 9:44:11 PM][INFO] Client request - pingConnectionDevice= {"device_serial_number":"RB23GD1708"}
+[6/26/2023, 9:45:15 PM][INFO] Client request: getListRoom - {"owner_uuid":"12c94f41-0c3c-4a1e-914c-212565d17695"}
+[6/26/2023, 9:45:15 PM][INFO] Client request: getDeviceInfo - {"serial_number":"RB23GD1708"}
+[6/26/2023, 9:45:17 PM][INFO] Client request: getListRoom - {"owner_uuid":"12c94f41-0c3c-4a1e-914c-212565d17695"}
+[6/26/2023, 9:45:17 PM][INFO] Client request: getDeviceInfo - {"serial_number":"RB23GD1708"}
+[6/26/2023, 9:45:27 PM][INFO] Client request: getListRoom - {"owner_uuid":"12c94f41-0c3c-4a1e-914c-212565d17695"}
+[6/26/2023, 9:45:27 PM][INFO] Client request: getDeviceInfo - {"serial_number":"RB23GD1708"}
+[6/26/2023, 9:45:34 PM][INFO] Client request - pingConnectionDevice= {"device_serial_number":"RB23GD1708","connect_azure_hub":true}
+[6/26/2023, 9:45:38 PM][INFO] Server detects gas leak. Send notify.
+[6/26/2023, 9:45:44 PM][INFO] Client request - pingConnectionDevice= {"device_serial_number":"RB23GD1708"}
+[6/26/2023, 9:47:32 PM][INFO] Client request: getDeviceInfo - {"serial_number":"RB23GD1708"}
+[6/26/2023, 9:47:32 PM][INFO] Client request: getListRoom - {"owner_uuid":"12c94f41-0c3c-4a1e-914c-212565d17695"}
+[6/26/2023, 9:47:44 PM][INFO] Client request - pingConnectionDevice= {"device_serial_number":"RB23GD1708","connect_azure_hub":true}
+[6/26/2023, 9:47:49 PM][INFO] Server detects gas leak. Send notify.
+[6/26/2023, 9:47:54 PM][INFO] Client request - pingConnectionDevice= {"device_serial_number":"RB23GD1708"}
+[6/26/2023, 9:49:27 PM][INFO] Client request: getListRoom - {"owner_uuid":"12c94f41-0c3c-4a1e-914c-212565d17695"}
+[6/26/2023, 9:49:27 PM][INFO] Client request: getDeviceInfo - {"serial_number":"RB23GD1708"}
+[6/26/2023, 9:49:39 PM][INFO] Client request: getListRoom - {"owner_uuid":"12c94f41-0c3c-4a1e-914c-212565d17695"}
+[6/26/2023, 9:49:39 PM][INFO] Client request: getDeviceInfo - {"serial_number":"RB23GD1708"}
+[6/26/2023, 9:49:42 PM][INFO] Client request - pingConnectionDevice= {"device_serial_number":"RB23GD1708","connect_azure_hub":true}
+[6/26/2023, 9:49:44 PM][INFO] Server detects gas leak. Send notify.
+[6/26/2023, 9:49:49 PM][INFO] Client request - pingConnectionDevice= {"device_serial_number":"RB23GD1708"}
+[6/26/2023, 9:49:55 PM][INFO] Client request: getListRoom - {"owner_uuid":"12c94f41-0c3c-4a1e-914c-212565d17695"}
+[6/26/2023, 9:49:55 PM][INFO] Client request: getDeviceInfo - {"serial_number":"RB23GD1708"}
+[6/26/2023, 9:57:05 PM][INFO] Client request - pingConnectionDevice= {"device_serial_number":"RB23GD1708","connect_azure_hub":true}
+[6/26/2023, 9:57:17 PM][INFO] Client request - pingConnectionDevice= {"device_serial_number":"RB23GD1708"}
+[6/26/2023, 9:58:09 PM][INFO] Client request - pingConnectionDevice= {"device_serial_number":"RB23GD1708","connect_azure_hub":true}
+[6/26/2023, 9:58:20 PM][INFO] Client request - pingConnectionDevice= {"device_serial_number":"RB23GD1708"}
+[6/26/2023, 10:00:20 PM][INFO] Client request - pingConnectionDevice= {"device_serial_number":"RB23GD1708","connect_azure_hub":true}
+[6/26/2023, 10:00:29 PM][INFO] Client request - pingConnectionDevice= {"device_serial_number":"RB23GD1708"}
+[6/26/2023, 10:01:01 PM][INFO] Client request: getDeviceInfo - {"serial_number":"RB23GD1708"}
+[6/26/2023, 10:01:01 PM][INFO] Client request: getListRoom - {"owner_uuid":"12c94f41-0c3c-4a1e-914c-212565d17695"}
+[6/26/2023, 10:01:12 PM][INFO] Server detects gas leak. Send notify.
+[6/26/2023, 10:01:12 PM][INFO] Server detects gas leak. Send notify.
+[6/26/2023, 10:01:12 PM][INFO] Server detects gas leak. Send notify.
+[6/26/2023, 10:01:27 PM][INFO] Client request - pingConnectionDevice= {"device_serial_number":"RB23GD1708","connect_azure_hub":true}
+[6/26/2023, 10:01:33 PM][INFO] Server detects gas leak. Send notify.
+[6/26/2023, 10:01:38 PM][INFO] Client request - pingConnectionDevice= {"device_serial_number":"RB23GD1708"}
+[6/26/2023, 10:01:53 PM][INFO] Client request - pingConnectionDevice= {"device_serial_number":"RB23GD1708","connect_azure_hub":true}
+[6/26/2023, 10:01:57 PM][INFO] Server detects gas leak. Send notify.
+[6/26/2023, 10:02:02 PM][INFO] Client request - pingConnectionDevice= {"device_serial_number":"RB23GD1708"}
+[6/26/2023, 10:04:01 PM][INFO] Client request: deleteRoom - {"room_id":"2d1e84d0-142e-11ee-8347-b75a5886f9e4","owner_uuid":"12c94f41-0c3c-4a1e-914c-212565d17695"}
+[6/26/2023, 10:04:05 PM][INFO] Client request - pingConnectA2D= {"user_uuid":"12c94f41-0c3c-4a1e-914c-212565d17695","room_id":"a3d11a40-0f59-11ee-870b-cdc068cb21f9","firebase_token":"d05C9pDzTler0o3wpg7-hI:APA91bHavUrmGBdz4xjoWLnereJ4_kEcvQK7Dmx1eI_9Y8p-mhxcmVycieWhYlTx6Ue12aimmSJui2kMVGnVCfCC-jGraF6UC2vNGs94aS-teaiNjlBbvRXLNc6AxOpPTnkEWFOtkMEV","device_serial_number":"RB23GD1708"}
+[6/26/2023, 10:05:38 PM][INFO] Client request - pingConnectionDevice= {"device_serial_number":"RB23GD1708","connect_azure_hub":true}
+[6/26/2023, 10:05:42 PM][INFO] Server detects gas leak. Send notify.
+[6/26/2023, 10:05:47 PM][INFO] Server detects gas leak. Send notify.
+[6/26/2023, 10:05:52 PM][INFO] Server detects gas leak. Send notify.
+[6/26/2023, 10:07:19 PM][INFO] Client request - pingConnectionDevice= {"device_serial_number":"RB23GD1708","connect_azure_hub":true}
+[6/26/2023, 10:07:23 PM][INFO] Server detects gas leak. Send notify.
+[6/26/2023, 10:07:25 PM][INFO] Client request: createRoom - {"owner_uuid":"12c94f41-0c3c-4a1e-914c-212565d17695"}
+[6/26/2023, 10:07:26 PM][INFO] Server detects gas leak. Send notify.
+[6/26/2023, 10:07:29 PM][INFO] Server detects gas leak. Send notify.
+[6/26/2023, 10:07:32 PM][INFO] Server detects gas leak. Send notify.
+[6/26/2023, 10:08:14 PM][INFO] Client request - pingConnectionDevice= {"device_serial_number":"RB23GD1708","connect_azure_hub":true}
+[6/26/2023, 10:08:24 PM][INFO] Server detects gas leak. Send notify.
+[6/26/2023, 10:08:28 PM][INFO] Server detects gas leak. Send notify.
+[6/26/2023, 10:08:50 PM][INFO] Server detects gas leak. Send notify.
+[6/26/2023, 10:08:53 PM][INFO] Server detects gas leak. Send notify.
+[6/26/2023, 10:08:56 PM][INFO] Server detects gas leak. Send notify.
+[6/26/2023, 10:08:59 PM][INFO] Server detects gas leak. Send notify.
+[6/26/2023, 10:09:03 PM][INFO] Server detects gas leak. Send notify.
+[6/26/2023, 10:09:06 PM][INFO] Server detects gas leak. Send notify.
+[6/26/2023, 10:09:09 PM][INFO] Server detects gas leak. Send notify.
+[6/26/2023, 10:09:12 PM][INFO] Server detects gas leak. Send notify.
+[6/26/2023, 10:09:15 PM][INFO] Server detects gas leak. Send notify.
+[6/26/2023, 10:09:18 PM][INFO] Client request - pingConnectionDevice= {"device_serial_number":"RB23GD1708"}
+[6/26/2023, 10:09:27 PM][INFO] Client request - pingConnectionDevice= {"device_serial_number":"RB23GD1708","connect_azure_hub":true}
+[6/26/2023, 10:09:59 PM][INFO] Client request - pingConnectA2D= {"user_uuid":"12c94f41-0c3c-4a1e-914c-212565d17695","room_id":"28cf0e90-1433-11ee-80a1-f950a6eda91f","firebase_token":"d05C9pDzTler0o3wpg7-hI:APA91bHavUrmGBdz4xjoWLnereJ4_kEcvQK7Dmx1eI_9Y8p-mhxcmVycieWhYlTx6Ue12aimmSJui2kMVGnVCfCC-jGraF6UC2vNGs94aS-teaiNjlBbvRXLNc6AxOpPTnkEWFOtkMEV","device_serial_number":"RB23GD1708"}
+[6/26/2023, 10:10:22 PM][INFO] Server detects gas leak. Send notify.
+[6/26/2023, 10:10:25 PM][INFO] Server detects gas leak. Send notify.
+[6/26/2023, 10:10:43 PM][INFO] Client request - pingConnectionDevice= {"device_serial_number":"RB23GD1708"}
+[6/26/2023, 10:10:54 PM][INFO] Client request: deleteRoom - {"room_id":"28cf0e90-1433-11ee-80a1-f950a6eda91f","owner_uuid":"12c94f41-0c3c-4a1e-914c-212565d17695"}
+[6/26/2023, 10:11:23 PM][INFO] Client request: createRoom - {"owner_uuid":"12c94f41-0c3c-4a1e-914c-212565d17695"}
+[6/26/2023, 10:11:39 PM][INFO] Client request: deleteRoom - {"room_id":"b656e620-1433-11ee-80a1-f950a6eda91f","owner_uuid":"12c94f41-0c3c-4a1e-914c-212565d17695"}
+[6/26/2023, 10:11:59 PM][INFO] Client request: createRoom - {"owner_uuid":"12c94f41-0c3c-4a1e-914c-212565d17695"}
+[6/26/2023, 10:12:12 PM][INFO] Client request - pingConnectionDevice= {"device_serial_number":"RB23GD1708","connect_azure_hub":true}
+[6/26/2023, 10:12:22 PM][INFO] Client request - pingConnectA2D= {"user_uuid":"12c94f41-0c3c-4a1e-914c-212565d17695","room_id":"cbe76050-1433-11ee-80a1-f950a6eda91f","firebase_token":"d05C9pDzTler0o3wpg7-hI:APA91bHavUrmGBdz4xjoWLnereJ4_kEcvQK7Dmx1eI_9Y8p-mhxcmVycieWhYlTx6Ue12aimmSJui2kMVGnVCfCC-jGraF6UC2vNGs94aS-teaiNjlBbvRXLNc6AxOpPTnkEWFOtkMEV","device_serial_number":"RB23GD1708"}
+[6/26/2023, 10:12:41 PM][INFO] Server detects gas leak. Send notify.
+[6/26/2023, 10:12:44 PM][INFO] Server detects gas leak. Send notify.
+[6/26/2023, 10:13:09 PM][INFO] Client request - pingConnectionDevice= {"device_serial_number":"RB23GD1708","connect_azure_hub":true}
+[6/26/2023, 10:13:44 PM][INFO] Server detects gas leak. Send notify.
+[6/26/2023, 10:14:13 PM][INFO] Server detects gas leak. Send notify.
+[6/26/2023, 10:14:16 PM][INFO] Server detects gas leak. Send notify.
+[6/26/2023, 10:14:19 PM][INFO] Server detects gas leak. Send notify.
+[6/26/2023, 10:14:22 PM][INFO] Server detects gas leak. Send notify.
+[6/26/2023, 10:14:26 PM][INFO] Server detects gas leak. Send notify.
+[6/26/2023, 10:14:29 PM][INFO] Server detects gas leak. Send notify.
+[6/26/2023, 10:14:32 PM][INFO] Server detects gas leak. Send notify.
+[6/26/2023, 10:14:35 PM][INFO] Server detects gas leak. Send notify.
+[6/26/2023, 10:14:38 PM][INFO] Server detects gas leak. Send notify.
+[6/26/2023, 10:14:42 PM][INFO] Server detects gas leak. Send notify.
+[6/26/2023, 10:14:45 PM][INFO] Server detects gas leak. Send notify.
+[6/26/2023, 10:14:46 PM][INFO] Client request - pingConnectionDevice= {"device_serial_number":"RB23GD1708"}
