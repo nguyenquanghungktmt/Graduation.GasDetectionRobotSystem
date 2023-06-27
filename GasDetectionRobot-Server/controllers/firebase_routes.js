@@ -46,6 +46,9 @@ router.get('/pingFirebase', (req, res)=>{
             title: "Test Firebase Notify",
             body: "Testttttttt."
         },
+        data: {
+            target: target_enum.GENERAL,
+        },
         token: config.get('firebase.token_default'),
     }
     

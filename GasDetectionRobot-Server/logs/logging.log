@@ -513,3 +513,7 @@
 [6/26/2023, 10:14:42 PM][INFO] Server detects gas leak. Send notify.
 [6/26/2023, 10:14:45 PM][INFO] Server detects gas leak. Send notify.
 [6/26/2023, 10:14:46 PM][INFO] Client request - pingConnectionDevice= {"device_serial_number":"RB23GD1708"}
+[6/27/2023, 10:50:29 AM][INFO] Client request: push_notification - {"registrationToken":"cU9ZwAo6T92yPKKxJrfOc2:APA91bF67jznltWKO4FgD8yFIt3OqbeFV6Ne1TYrr97pC9Vux9jpf0MLcWCV0Dn3TC1ajBtJ9dcgf-reVHKnVsH72-_Hk6Iu-47ghm0uWYm-udi1zg7f1wKVwVLx6j9LZNUpnUHyh66C"}
+[6/27/2023, 10:51:16 AM][INFO] Client request: push_notification - {"registrationToken":"cU9ZwAo6T92yPKKxJrfOc2:APA91bF67jznltWKO4FgD8yFIt3OqbeFV6Ne1TYrr97pC9Vux9jpf0MLcWCV0Dn3TC1ajBtJ9dcgf-reVHKnVsH72-_Hk6Iu-47ghm0uWYm-udi1zg7f1wKVwVLx6j9LZNUpnUHyh66C"}
+[6/27/2023, 10:51:35 AM][INFO] Client request: getListRoom - {"owner_uuid":"12c94f41-0c3c-4a1e-914c-212565d17695"}
+[6/27/2023, 10:51:35 AM][INFO] Client request: getDeviceInfo - {"serial_number":"RB23GD1708"}
