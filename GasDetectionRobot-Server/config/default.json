@@ -16,8 +16,12 @@
       "host_name"         : "gas-detekt-hub.azure-devices.net",
       "device_name"       : "Gas Detection Robot",
       "device_id"         : "RB23GD1708",
+      "module_id"         : "raspberry-pi3",
       "share_access_key"  : "LdPfpJaBE2nZNUqiEB5PbCLBZRKqHLbv6gvetdzvOrA="
     }
+  },
+  "azure": {
+    "service_connection_string": "HostName=gas-detekt-hub.azure-devices.net;SharedAccessKeyName=service;SharedAccessKey=Td965se6zlTDK+ERMqR+4LbDFjR5E9O5BTeqfhwQyDA="
   },
   "firebase": {
     "token_default": "cU9ZwAo6T92yPKKxJrfOc2:APA91bF67jznltWKO4FgD8yFIt3OqbeFV6Ne1TYrr97pC9Vux9jpf0MLcWCV0Dn3TC1ajBtJ9dcgf-reVHKnVsH72-_Hk6Iu-47ghm0uWYm-udi1zg7f1wKVwVLx6j9LZNUpnUHyh66C"

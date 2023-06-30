@@ -3,6 +3,7 @@ const database = require("../common/connect.js");
 const logger = require("../common/log.js");
 const datetime = require("../common/datetime.js");
 const response = require("../common/response.js");
+const invoke_control_device = require('../common/invoke_direct_method');
 const device_status = require('../enum').DEVICE_STATUS
 
 // define a router
@@ -132,6 +133,35 @@ router.post("/pingDisconnectionDevice", function (req, res) {
         })
 
       }
+    }
+  });
+
+  console.log("===========");
+});
+
+// api send device disconnection status to server //
+router.post("/controlDevice", function (req, res) {
+  logger.info(`Client request - pingDisconnectionDevice= ${JSON.stringify(req.body)}`);
+
+  let deviceId = req.body.device_serial_number ?? '';
+  let moduleId = req.body.module_id ?? '';
+
+  let start = req.body.start ?? 0;
+  let pause = req.body.pause ?? 0;
+  let finish = req.body.finish ?? 0;
+  let speedUp = req.body.speed_up ?? 0;
+  let speedDown = req.body.speed_down ?? 0;
+  let values = [start, pause, finish, speedUp, speedDown]
+
+  invoke_control_device.startControlDevice(deviceId, moduleId, values, function (err, result){
+    if (err) {
+      console.error("Direct method error: " + err.message);
+      console.log("===========");
+      res.status(200).json(response.createResponse(0, 404, "Control device error"))
+    } else {
+      console.log(`Successfully invoked the device: ${JSON.stringify(result)}`);
+      console.log("===========");
+      res.status(200).json(response.createResponse(1, 200, "Successfully invoked the device."));
     }
   });
 

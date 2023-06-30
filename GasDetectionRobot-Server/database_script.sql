@@ -19,6 +19,7 @@ create table user (
 
 create table device (
 	serial_number varchar(15) primary key not null,
+    model_id varchar(15),
     model_name varchar(100),
     image_url varchar(50),
     device_status varchar(100),
