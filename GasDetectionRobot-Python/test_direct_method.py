@@ -1,5 +1,4 @@
 import time
-import datetime
 from azure.iot.device import IoTHubDeviceClient, MethodResponse
 
 CONNECTION_STRING = "HostName=gas-detekt-hub.azure-devices.net;DeviceId=RB23GD1708;ModuleId=raspberry-pi3;SharedAccessKey=mXyfwmNJaVkjhbGg3LZ7y+syYb5oEiEn53WeoNIF2mk="
@@ -14,12 +13,7 @@ def create_client():
         if method_request.name == METHOD_NAME:
             # Act on the method by rebooting the device
             print("Device Control")
-
-            # ...and patching the reported properties
-            current_time = str(datetime.datetime.now())
-            reported_props = {"rebootTime": current_time}
-            client.patch_twin_reported_properties(reported_props)
-            print( "Device twins updated with latest rebootTime")
+            print(method_request.payload)
 
             # Create a method response indicating the method request was resolved
             resp_status = 200
@@ -45,10 +39,9 @@ def create_client():
     return client
 
 def main():
-    print ("Starting the IoT Hub Python sample...")
     client = create_client()
 
-    print ("Waiting for commands, press Ctrl-C to exit")
+    print ("Waiting for direct commands")
     try:
         # Wait for program exit
         while True:
