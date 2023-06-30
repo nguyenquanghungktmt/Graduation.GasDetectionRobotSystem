@@ -2,7 +2,8 @@ import time
 import datetime
 from azure.iot.device import IoTHubDeviceClient, MethodResponse
 
-CONNECTION_STRING = "HostName=gas-detekt-hub.azure-devices.net;DeviceId=RB23GD1708;SharedAccessKey=LdPfpJaBE2nZNUqiEB5PbCLBZRKqHLbv6gvetdzvOrA="
+CONNECTION_STRING = "HostName=gas-detekt-hub.azure-devices.net;DeviceId=RB23GD1708;ModuleId=raspberry-pi3;SharedAccessKey=mXyfwmNJaVkjhbGg3LZ7y+syYb5oEiEn53WeoNIF2mk="
+METHOD_NAME = "device_control"
 
 def create_client():
     # Instantiate the client
@@ -10,11 +11,9 @@ def create_client():
 
     # Define the handler for method requests
     def method_request_handler(method_request):
-        if method_request.name == "rebootDevice":
+        if method_request.name == METHOD_NAME:
             # Act on the method by rebooting the device
-            print("Rebooting device")
-            time.sleep(20)
-            print("Device rebooted")
+            print("Device Control")
 
             # ...and patching the reported properties
             current_time = str(datetime.datetime.now())
