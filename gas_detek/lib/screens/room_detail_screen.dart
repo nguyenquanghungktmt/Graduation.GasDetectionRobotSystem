@@ -37,6 +37,7 @@ class _RoomDetailState extends State<RoomDetail> {
   String _robotName = "";
   String _robotSN = "";
   bool _isConnectA2D = false;
+  bool _isEnableControlDevice = false;
 
   final TextEditingController _roomNameController = TextEditingController();
 
@@ -96,6 +97,7 @@ class _RoomDetailState extends State<RoomDetail> {
         if (status == 1 && code == 200) {
           setState(() {
             _isConnectA2D = true;
+            _isEnableControlDevice = true;
           });
           Alert.dialogSuccess(context, message);
           Alert.closeDialog(context,
@@ -120,6 +122,62 @@ class _RoomDetailState extends State<RoomDetail> {
       Alert.dialogError(context, 'Connect error');
       Alert.closeDialog(context,
           durationBeforeClose: const Duration(milliseconds: 1500));
+    }
+  }
+
+  Future<void> _invokeControlDevice({command = 'start'}) async {
+    setState(() {
+      _isEnableControlDevice = false;
+    });
+    try {
+      String apiUrl = "$domain/device/controlDevice";
+      final response = await http.post(
+        Uri.parse(apiUrl),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(<String, dynamic>{
+          "device_serial_number": _device?.serialNumber,
+          "module_id": _device?.moduleId,
+          command: 1
+        }),
+      );
+
+      print(response.statusCode);
+      if (response.statusCode == 200) {
+        // If the server did return a 200 CREATED response, then parse the JSON.
+        final body = json.decode(response.body);
+
+        final status = body['status'] as int;
+        final code = body['code'] as int;
+        final message = body['message'] as String;
+
+        if (status == 1 && code == 200) {
+          Alert.toastSuccess(message);
+          Alert.closeToast(
+              durationBeforeClose: const Duration(milliseconds: 1500));
+        } else {
+          Alert.dialogError(context, message);
+          Alert.closeDialog(context,
+              durationBeforeClose: const Duration(milliseconds: 1500));
+        }
+      } else {
+        // If the server did not return a 201 CREATED response,
+        // then throw an exception.
+
+        Alert.dialogError(context, 'Connect failed');
+        Alert.closeDialog(context,
+            durationBeforeClose: const Duration(milliseconds: 1500));
+      }
+    } on Exception {
+      // catch exception
+      Alert.dialogError(context, 'Control device error');
+      Alert.closeDialog(context,
+          durationBeforeClose: const Duration(milliseconds: 1500));
+    } finally {
+      setState(() {
+        _isEnableControlDevice = true;
+      });
     }
   }
 
@@ -197,7 +255,7 @@ class _RoomDetailState extends State<RoomDetail> {
             });
           }
           break;
-          
+
         case Target.general:
           break;
       }
@@ -602,7 +660,9 @@ class _RoomDetailState extends State<RoomDetail> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             ElevatedButton(
-                              onPressed: _isConnectA2D ? () {} : null,
+                              onPressed: _isEnableControlDevice
+                                  ? () => _invokeControlDevice(command: 'start')
+                                  : null,
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: kDarkBlue,
                                 fixedSize: const Size(50, 50),
@@ -614,7 +674,9 @@ class _RoomDetailState extends State<RoomDetail> {
                               ),
                             ),
                             ElevatedButton(
-                              onPressed: _isConnectA2D ? () {} : null,
+                              onPressed: _isEnableControlDevice
+                                  ? () => _invokeControlDevice(command: 'pause')
+                                  : null,
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: kDarkBlue,
                                 fixedSize: const Size(50, 50),
@@ -626,7 +688,10 @@ class _RoomDetailState extends State<RoomDetail> {
                               ),
                             ),
                             ElevatedButton(
-                              onPressed: _isConnectA2D ? () {} : null,
+                              onPressed: _isEnableControlDevice
+                                  ? () =>
+                                      _invokeControlDevice(command: 'finish')
+                                  : null,
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: kDarkBlue,
                                 fixedSize: const Size(50, 50),
@@ -638,7 +703,10 @@ class _RoomDetailState extends State<RoomDetail> {
                               ),
                             ),
                             ElevatedButton(
-                              onPressed: _isConnectA2D ? () {} : null,
+                              onPressed: _isEnableControlDevice
+                                  ? () =>
+                                      _invokeControlDevice(command: 'speed_up')
+                                  : null,
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: kDarkBlue,
                                 fixedSize: const Size(50, 50),
@@ -650,7 +718,10 @@ class _RoomDetailState extends State<RoomDetail> {
                               ),
                             ),
                             ElevatedButton(
-                              onPressed: _isConnectA2D ? () {} : null,
+                              onPressed: _isEnableControlDevice
+                                  ? () => _invokeControlDevice(
+                                      command: 'speed_down')
+                                  : null,
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: kDarkBlue,
                                 fixedSize: const Size(50, 50),
