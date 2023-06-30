@@ -139,7 +139,7 @@ router.post("/pingDisconnectionDevice", function (req, res) {
   console.log("===========");
 });
 
-// api send device disconnection status to server //
+// api invoke direct method to control device //
 router.post("/controlDevice", function (req, res) {
   logger.info(`Client request - pingDisconnectionDevice= ${JSON.stringify(req.body)}`);
 
@@ -157,11 +157,11 @@ router.post("/controlDevice", function (req, res) {
     if (err) {
       console.error("Direct method error: " + err.message);
       console.log("===========");
-      res.status(200).json(response.createResponse(0, 404, "Control device error"))
+      res.status(200).json(response.createResponse(0, 400, "Control device error"))
     } else {
       console.log(`Successfully invoked the device: ${JSON.stringify(result)}`);
       console.log("===========");
-      res.status(200).json(response.createResponse(1, 200, "Successfully invoked the device."));
+      res.status(200).json(response.createResponse(1, 200, "Successfully invoked."));
     }
   });
 
