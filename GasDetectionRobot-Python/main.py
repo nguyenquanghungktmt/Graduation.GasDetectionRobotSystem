@@ -5,15 +5,13 @@ import asyncio
 import json
 from network_utils import NetworkUtils
 from azure_hub_utils import AzureIoTHubUtils
-from azure.iot.device import IoTHubDeviceClient, MethodResponse
+from command_direct_utils import CommandDirectUtils
 from command_enum import Command
 
 # import RPi.GPIO as GPIO
 import time
 
 # Define hằng số
-CONNECTION_STRING = "HostName=gas-detekt-hub.azure-devices.net;DeviceId=RB23GD1708;ModuleId=raspberry-pi3;SharedAccessKey=mXyfwmNJaVkjhbGg3LZ7y+syYb5oEiEn53WeoNIF2mk="
-METHOD_NAME = "device_control"
 MIN_DISTANCE = 15   # khoang cach gioi han den vat can
 
 # define global variable
@@ -23,53 +21,7 @@ MIN_DISTANCE = 15   # khoang cach gioi han den vat can
 
 network_util = NetworkUtils()
 azure_hub_utils = AzureIoTHubUtils()
-
-command = Command.START
-
-
-# create func handling direct method
-def create_client_listen_command():
-
-    # Instantiate the client
-    client = IoTHubDeviceClient.create_from_connection_string(CONNECTION_STRING)
-
-    # Define the handler for method requests
-    def method_request_handler(method_request):
-        if method_request.name == METHOD_NAME:
-            # Act on the method by rebooting the device
-            print("Incomming direct command:", METHOD_NAME)
-            payload = method_request.payload
-            print(payload)
-
-            # jsonObject = json.loads(payload)
-            # print(jsonObject)
-
-            command = command
-
-
-            # Create a method response indicating the method request was resolved
-            resp_status = 200
-            resp_payload = {"Response": "This is the response from the device"}
-            method_response = MethodResponse(method_request.request_id, resp_status, resp_payload)
-
-        else:
-            # Create a method response indicating the method request was for an unknown method
-            resp_status = 404
-            resp_payload = {"Response": "Unknown method"}
-            method_response = MethodResponse(method_request.request_id, resp_status, resp_payload)
-
-        # Send the method response
-        client.send_method_response(method_response)
-
-    try:
-        # Attach the handler to the client
-        client.on_method_request_received = method_request_handler
-    except:
-        # In the event of failure, clean up
-        client.shutdown()
-
-    return client
-
+command_utils = CommandDirectUtils()
 
 
 def main():
@@ -94,8 +46,8 @@ def main():
 
     
     # create thread to listen direct command
-    print ("Waiting for direct commands")
-    create_client_listen_command()
+    print ("Ready for direct commands")
+    command_utils.create_command_listener()
 
 
     # Connection Done
@@ -107,7 +59,7 @@ def main():
 
     # main loop
     while True: 
-        if command == Command.START:
+        if command_utils.command == Command.START:
             asyncio.run(azure_hub_utils.sendMessage())
 
 
