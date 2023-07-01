@@ -1,6 +1,7 @@
 'use strict';
 
 const config = require('config');
+const datetime = require('./datetime');
 var Client = require('azure-iothub').Client;
 
 // var connectionString = "HostName=gas-detekt-hub.azure-devices.net;SharedAccessKeyName=service;SharedAccessKey=Td965se6zlTDK+ERMqR+4LbDFjR5E9O5BTeqfhwQyDA=";
@@ -10,17 +11,14 @@ var Client = require('azure-iothub').Client;
 
 
 module.exports = { 
-    startControlDevice: function(deviceId, moduleId, values, callback) {
+    startControlDevice: function(deviceId, moduleId, command, callback) {
         const connectionString = config.get("azure.service_connection_string");
         const client = Client.fromConnectionString(connectionString);
         const methodParams = {
             methodName: "device_control",
             payload: {
-                "start": values[0],
-                "pause": values[1],
-                "finish": values[2],
-                "speed_up": values[3],
-                "speed_down": values[4]
+                "timestamp": datetime.getDatetimeNow(),
+                "command": command
             },
             responseTimeoutInSeconds: 5,
             connectTimeoutInSeconds: 5

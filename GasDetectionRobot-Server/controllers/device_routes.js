@@ -146,14 +146,9 @@ router.post("/controlDevice", function (req, res) {
   let deviceId = req.body.device_serial_number ?? '';
   let moduleId = req.body.module_id ?? '';
 
-  let start = req.body.start ?? 0;
-  let pause = req.body.pause ?? 0;
-  let finish = req.body.finish ?? 0;
-  let speedUp = req.body.speed_up ?? 0;
-  let speedDown = req.body.speed_down ?? 0;
-  let values = [start, pause, finish, speedUp, speedDown]
+  let command = req.body.command ?? '';
 
-  invoke_control_device.startControlDevice(deviceId, moduleId, values, function (err, result){
+  invoke_control_device.startControlDevice(deviceId, moduleId, command, function (err, result){
     if (err) {
       console.error("Direct method error: " + err.message);
       console.log("===========");
