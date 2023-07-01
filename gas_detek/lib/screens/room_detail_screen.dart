@@ -139,7 +139,7 @@ class _RoomDetailState extends State<RoomDetail> {
         body: jsonEncode(<String, dynamic>{
           "device_serial_number": _device?.serialNumber,
           "module_id": _device?.moduleId,
-          command: 1
+          "command": command
         }),
       );
 
