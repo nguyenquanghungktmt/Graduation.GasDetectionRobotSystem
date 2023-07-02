@@ -1,8 +1,6 @@
-# from engines_controller import EnginesController
-# from ultrasonic_sensors_controller import UltrasonicSensorsController
-# from gas_sensor_controller import GasSensorController
-import asyncio
-import json
+from engines_controller import EnginesController
+from ultrasonic_sensors_controller import UltrasonicSensorsController
+from gas_sensor_controller import GasSensorController
 from network_utils import NetworkUtils
 from azure_hub_utils import AzureIoTHubUtils
 from command_direct_utils import CommandDirectUtils
@@ -10,14 +8,16 @@ from command_enum import Command
 
 # import RPi.GPIO as GPIO
 import time
+import random
+import asyncio
 
 # Define hằng số
 MIN_DISTANCE = 15   # khoang cach gioi han den vat can
 
 # define global variable
-# robot_controller = EnginesController()
-# us_sensor_controller = UltrasonicSensorsController()
-# gas_sensor_controller = GasSensorController()
+robot_controller = EnginesController()
+us_sensor_controller = UltrasonicSensorsController()
+gas_sensor_controller = GasSensorController()
 
 network_util = NetworkUtils()
 azure_hub_utils = AzureIoTHubUtils()
@@ -59,8 +59,43 @@ def main():
 
     # main loop
     while True: 
-        if command_utils.command == Command.START:
-            asyncio.run(azure_hub_utils.sendMessage())
+
+        match command_utils.command:
+            case Command.START:
+                # run the algorithm and send status to server
+                if gas_sensor_controller.isGasDetected() :
+                    gas_index = random.randint(50, 250)
+                    asyncio.run(azure_hub_utils.sendMessage(gas_index))
+                asyncio.run(azure_hub_utils.sendMessage())
+
+                
+            case Command.PAUSE:
+                # Robot tam dung
+                pass
+                
+                
+            case Command.FINISH:
+                # Robot finish, draw image and send to server
+                pass
+                
+                
+            case Command.SPEED_UP:
+                # speed up robot to 5
+                # then continue running
+                command_utils.command = Command.START
+                pass
+
+                
+                
+            case Command.SPEED_DOWN:
+                # speed down robot to 5
+                # then continue running
+                command_utils.command = Command.START
+                pass
+
+            case _:
+                pass
+       
 
 
     # while True:
