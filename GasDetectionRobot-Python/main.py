@@ -1,6 +1,6 @@
-from engines_controller import EnginesController
-from ultrasonic_sensors_controller import UltrasonicSensorsController
-from gas_sensor_controller import GasSensorController
+# from engines_controller import EnginesController
+# from ultrasonic_sensors_controller import UltrasonicSensorsController
+# from gas_sensor_controller import GasSensorController
 from network_utils import NetworkUtils
 from azure_hub_utils import AzureIoTHubUtils
 from command_direct_utils import CommandDirectUtils
@@ -15,9 +15,9 @@ import asyncio
 MIN_DISTANCE = 15   # khoang cach gioi han den vat can
 
 # define global variable
-robot_controller = EnginesController()
-us_sensor_controller = UltrasonicSensorsController()
-gas_sensor_controller = GasSensorController()
+# robot_controller = EnginesController()
+# us_sensor_controller = UltrasonicSensorsController()
+# gas_sensor_controller = GasSensorController()
 
 network_util = NetworkUtils()
 azure_hub_utils = AzureIoTHubUtils()
@@ -58,43 +58,41 @@ def main():
     # asyncio.run(azure_hub_utils.sendMessage(gas_index))
 
     # main loop
-    while True: 
+    while True:
+        if command_utils.command == Command.START:
+            # run the algorithm and send status to server
+            # if gas_sensor_controller.isGasDetected() :
+            #     gas_index = random.randint(50, 250)
+            #     asyncio.run(azure_hub_utils.sendMessage(gas_index))
+            asyncio.run(azure_hub_utils.sendMessage())
 
-        match command_utils.command:
-            case Command.START:
-                # run the algorithm and send status to server
-                if gas_sensor_controller.isGasDetected() :
-                    gas_index = random.randint(50, 250)
-                    asyncio.run(azure_hub_utils.sendMessage(gas_index))
-                asyncio.run(azure_hub_utils.sendMessage())
-
-                
-            case Command.PAUSE:
-                # Robot tam dung
-                pass
-                
-                
-            case Command.FINISH:
-                # Robot finish, draw image and send to server
-                pass
-                
-                
-            case Command.SPEED_UP:
-                # speed up robot to 5
-                # then continue running
-                command_utils.command = Command.START
-                pass
+            pass
 
                 
-                
-            case Command.SPEED_DOWN:
-                # speed down robot to 5
-                # then continue running
-                command_utils.command = Command.START
-                pass
+        if command_utils.command == Command.PAUSE:
+            # Robot tam dung
+            pass
+            
+            
+        if command_utils.command == Command.FINISH:
+            # Robot finish, draw image and send to server
+            pass
+            
+            
+        if command_utils.command == Command.SPEED_UP:
+            # speed up robot to 5
+            # then continue running
+            command_utils.command = Command.START
+            pass
 
-            case _:
-                pass
+            
+            
+        if command_utils.command == Command.SPEED_DOWN:
+            # speed down robot to 5
+            # then continue running
+            command_utils.command = Command.START
+            pass
+
        
 
 

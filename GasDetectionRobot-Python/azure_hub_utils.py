@@ -11,7 +11,7 @@ CONNECTION_STRING_SERVER = "HostName=gas-detekt-hub.azure-devices.net;SharedAcce
 DEVICE_ID = "RB23GD1708"
 FILE_PATH = "./config.json"
 MESSAGE_TIMEOUT = 10000
-INTERVAL = 5
+INTERVAL = 3
 NUM_RETRIES = 3
 
 # Define the JSON message to send to IoT Hub.
