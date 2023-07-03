@@ -1,9 +1,10 @@
 import requests
 import json
 
-DOMAIN = "https://gas-detekt-system.azurewebsites.net/"
+DOMAIN = "https://gas-detekt-system.azurewebsites.net"
 FILE_PATH = "./config.json"
 NUM_RETRIES = 3
+IMAGE_PATH = "./map2d-{deviceId}.png"
 
 class NetworkUtils(object):
 
@@ -81,7 +82,28 @@ class NetworkUtils(object):
                 pass
 
         return False
+    
+    def uploadMapImage(self):
+        domain_tail = "/uploadMapImage"
+        link_api = self.domain + domain_tail
+
+        # headers = {'content-type': 'application/json'}
+        files = {'image': open(IMAGE_PATH.format(deviceId=self.deviceId), 'rb')}
+        data = {
+            "device_serial_number": self.deviceId,
+        }
+            
+        try:
+            response = requests.post(link_api, files=files, data=data)
+
+            if response.status_code == 200:
+                print('Server response:', response.text)
+            else :
+                print('Server error with code', response.status_code)
+        except requests.exceptions.ConnectionError:
+            print('Try connect server again ...')
+            pass
 
 if __name__ == '__main__':
     network_utils = NetworkUtils()
-    print(network_utils.pingDisconnectToServer())
+    network_utils.uploadMapImage()

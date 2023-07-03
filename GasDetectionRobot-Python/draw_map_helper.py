@@ -24,9 +24,9 @@ class DrawMapHelper:
     def drawImg(self):
         points = self.listPoint
         plt.rc('figure', figsize=(8, 8))
-        plt.axis('equal')
+        plt.axis('off')
         plt.tick_params(axis='both', labelsize=0, length = 0)
-        plt.plot(points[:,0], points[:,1], '.',color='r')
+        plt.plot(points[:,0], points[:,1], '.',color='r', markersize=10)
         plt.savefig(IMAGE_PATH.format(deviceId=self.deviceId), bbox_inches="tight")
         # plt.show()
 
@@ -35,7 +35,7 @@ class DrawMapHelper:
 
 
 if __name__ == "__main__":
-    points = np.random.uniform(-100, 100, size=(100,2))
+    points = np.random.uniform(-100, 100, size=(200,2))
     drawer = DrawMapHelper(points)
     drawer.drawImg()
     # print(points)
