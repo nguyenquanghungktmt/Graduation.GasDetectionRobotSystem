@@ -20,6 +20,18 @@ class Resize {
         return filename;
     }
 
+    // func save avtar to folder /public/images
+    async saveMapImage(roomId, buffer) {
+        const filename = `map2d-${roomId}.png`;
+        const filepath = this.filepath(filename);
+
+        const image = await jimp.read(buffer);
+        image.resize(720, jimp.AUTO)
+            .write(filepath);
+
+        return filename;
+    }
+
     filepath(filename) {
         return path.resolve(`${this.folder}/${filename}`)
     }

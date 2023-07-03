@@ -2,12 +2,14 @@ const express = require("express");
 const uuid = require("uuid");
 const config = require('config');
 const database = require("../common/connect.js");
+const { firebase_admin } = require('../common/firebase_admin');
 const logger = require("../common/log.js");
 const datetime = require("../common/datetime.js");
 const response = require("../common/response.js");
 const upload = require('../common/upload');
 const Resize = require('../common/resize');
-const device_status = require('../enum').DEVICE_STATUS;
+const enums = require('../enum');
+// const target_enum = require('../enum').TARGET;
 
 // define a router
 var router = express.Router();
@@ -210,7 +212,7 @@ router.post("/pingConnectA2D", function (req, res) {
   var query = `SELECT COUNT(*) as count FROM device WHERE serial_number=? AND device_status=?;`;
   let querryValues = [
       serial_number,
-      device_status.ACTIVE
+      enums.DEVICE_STATUS.ACTIVE
   ]
 
   const conn = database.createConnection();
@@ -250,6 +252,121 @@ router.post("/pingConnectA2D", function (req, res) {
       }
     }
   });
+  console.log("===========");
+});
+
+// api upload map 2d image //
+router.post('/uploadMapImage', async function (req, res) {
+  logger.info(`Client request: uploadImage - ${JSON.stringify(req.body)}`)
+
+  let serialNumber = req.body.device_serial_number ?? '';
+
+  // Get session
+  const session_id = config.get("session_id_default");
+  const query = `SELECT * FROM session WHERE session_id='${session_id}';`;
+
+  const conn = database.createConnection();
+  conn.query(query, async function (err, result) {
+    if (err) {
+      res.status(404).json(response.createResponse(0, 404, "Server Error !"));
+      throw err
+    }
+
+    let user_uuid = result[0].user_uuid ?? '';
+    let firebaseToken = result[0].firebase_token ?? '';
+    let room_id = result[0].room_id ?? '';
+    let session_serial_number = result[0].serial_number ?? '';
+
+
+    if (serialNumber != session_serial_number) {
+      // Neu khong khop serial number
+      res.status(200).json(response.createResponse(1, 400, "Upload image error"));
+      conn.end();
+      return;
+    }
+
+    // Save image    
+    const imagePath = './public/images';
+    const fileUpload = new Resize(imagePath);
+
+    if (!req.files.image) {
+      conn.end();
+      res.status(200).json(response.createResponse(1, 400, "No image attach"));
+    }
+    const mapFilename = await fileUpload.saveMapImage(room_id, req.files.image.data);
+
+
+    // Search room
+    let searchQuery = `SELECT * FROM room WHERE room_id='${room_id}';`;
+
+
+    conn.query(searchQuery, function (err, result) {
+      if(err) {
+        res.status(404).json(response.createResponse(0, 404, "Server Error !"))
+        throw err
+      }
+      
+      if (!result.length) {
+        res.status(200).json(response.createResponse(1, 400, "Username or Password wrong!"));
+        conn.end();
+      }
+      else {
+        let room_name = result[0].room_name
+        console.log(room_name);
+        
+        // Save to DB
+        let updateQuery = `UPDATE room SET map2d_url=?, modified_time=? WHERE room_id=?;`;
+        let values = [
+          mapFilename,
+          datetime.getDatetimeNow(),
+          room_id
+        ]
+        
+        conn.query(updateQuery, values, function(err, result){
+          if(err) {
+            res.status(404).json(response.createResponse(0, 404, "Server Error !"))
+            throw err
+          }
+
+          if (result.affectedRows){
+            console.log("Update image success");
+            res.status(200).json(response.createResponse(1, 201, 'Update image success'))
+          } else {
+            console.log("Update image failed");
+            res.status(200).json(response.createResponse(1, 201, 'Update image success'))
+          }
+          conn.end();
+        })
+
+        // Push notification throw firebase
+        let message = {
+          notification: {
+            title: `${room_name} scan finished"`,
+            body: "Here is room's map"
+          },
+          data: {
+            target: enums.TARGET.MAP,
+            room_id: room_id,
+            user_uuid: user_uuid,
+            serial_number: session_serial_number,
+            map2dUrl: mapFilename
+          },
+          token: firebaseToken,
+        }
+        firebase_admin.messaging().send(message)
+        .then(function (response) {
+            console.log('Success firebase sent message:', response);
+            console.log("===========");
+        })
+        .catch(function (error) {
+            console.log(`Error firebase push notification\n${error}`);
+            console.log("===========");
+        });        
+      }
+    });
+  });
+
+
   console.log("===========");
 });
 

@@ -7,7 +7,8 @@ const DEVICE_STATUS = {
 
 const TARGET = {
     GENERAL: 'general',
-    ROOM: 'room'
+    ROOM: 'room',
+    MAP: 'map'
 }
 
 module.exports = {
