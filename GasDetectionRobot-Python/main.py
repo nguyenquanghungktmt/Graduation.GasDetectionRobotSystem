@@ -1,12 +1,12 @@
-# from engines_controller import EnginesController
-# from ultrasonic_sensors_controller import UltrasonicSensorsController
-# from gas_sensor_controller import GasSensorController
+from engines_controller import EnginesController
+from ultrasonic_sensors_controller import UltrasonicSensorsController
+from gas_sensor_controller import GasSensorController
 from network_utils import NetworkUtils
 from azure_hub_utils import AzureIoTHubUtils
 from command_direct_utils import CommandDirectUtils
 from command_enum import Command
 
-# import RPi.GPIO as GPIO
+import RPi.GPIO as GPIO
 import time
 import random
 import asyncio
@@ -15,9 +15,9 @@ import asyncio
 MIN_DISTANCE = 15   # khoang cach gioi han den vat can
 
 # define global variable
-# robot_controller = EnginesController()
-# us_sensor_controller = UltrasonicSensorsController()
-# gas_sensor_controller = GasSensorController()
+robot_controller = EnginesController()
+us_sensor_controller = UltrasonicSensorsController()
+gas_sensor_controller = GasSensorController()
 
 network_util = NetworkUtils()
 azure_hub_utils = AzureIoTHubUtils()
@@ -66,22 +66,59 @@ def main():
             #     asyncio.run(azure_hub_utils.sendMessage(gas_index))
             asyncio.run(azure_hub_utils.sendMessage())
 
+
+            distance_front = 0
+
+            # print('front distance: ', us_sensor_controller.get_front_distance())
+            # print('left distance: ', us_sensor_controller.get_left_distance())
+            # print('right distance: ', us_sensor_controller.get_right_distance())
+            distance_front = us_sensor_controller.get_front_distance()
+            time.sleep(0.001)
+
+            if distance_front <= MIN_DISTANCE :
+                robot_controller.stop()
+                time.sleep(0.1)
+
+                # đo khoảng cách 2 bên
+                distance_left = us_sensor_controller.get_left_distance()
+                time.sleep(0.001)
+                distance_right = us_sensor_controller.get_right_distance()
+                time.sleep(0.001)
+
+                if distance_right <= MIN_DISTANCE & distance_left <= MIN_DISTANCE :
+                    robot_controller.move_back()
+                    time.sleep(0.5)
+                elif distance_right >= distance_left :
+                    robot_controller.stop_left()
+                    robot_controller.turn_right()
+                    time.sleep(0.8)
+                else :
+                    robot_controller.stop_right()
+                    robot_controller.turn_left()
+                    time.sleep(0.8)
+
+            else :
+                robot_controller.move_forward()
+
             pass
 
                 
         if command_utils.command == Command.PAUSE:
             # Robot tam dung
+            robot_controller.stop()
             pass
             
             
         if command_utils.command == Command.FINISH:
             # Robot finish, draw image and send to server
+            robot_controller.stop()
             pass
             
             
         if command_utils.command == Command.SPEED_UP:
             # speed up robot to 5
             # then continue running
+            robot_controller.set_speed_up()
             command_utils.command = Command.START
             pass
 
@@ -90,6 +127,7 @@ def main():
         if command_utils.command == Command.SPEED_DOWN:
             # speed down robot to 5
             # then continue running
+            robot_controller.set_speed_down()
             command_utils.command = Command.START
             pass
 
@@ -168,6 +206,9 @@ if __name__ == '__main__':
         
         # if command_listener is not None :
         #     command_listener.shutdown()
+
+        # clean gpio
+        GPIO.cleanup()
 
         if network_util.pingDisconnectToServer() == False:
             print('Cannot disconnect!')

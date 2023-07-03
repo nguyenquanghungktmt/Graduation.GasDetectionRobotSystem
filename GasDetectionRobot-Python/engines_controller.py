@@ -8,11 +8,14 @@ MIN_SPEED = 0
 class EnginesController(object):
 
  
-    def __init__(self, left_pwm=12, left_out=16, right_pwm=13, right_out=26):
+    def __init__(self, left_pwm=12, left_out=16, right_pwm=13, right_out=19):
         self.left_pwm = left_pwm
         self.left_out = left_out
         self.right_pwm = right_pwm
         self.right_out = right_out
+
+        self.move_speed = MOVE_SPEED
+        self.turn_speed = TURN_SPEED
  
  
         GPIO.setmode(GPIO.BCM)
@@ -73,29 +76,37 @@ class EnginesController(object):
 
     # Define robot controller functions 
     def move_forward(self):
-        print("move forwward")
-        self.move_left(MOVE_SPEED)
-        self.move_right(MOVE_SPEED)
+        # print("move forwward")
+        self.move_left(self.move_speed)
+        self.move_right(self.move_speed)
     
 
     def turn_right(self):
-        print("turn right")
+        # print("turn right")
         self.move_right(MIN_SPEED)
-        self.move_left(TURN_SPEED)
+        self.move_left(self.turn_speed)
     
 
     def turn_left(self):
-        print("turn left")
+        # print("turn left")
         self.move_left(MIN_SPEED)
-        self.move_right(TURN_SPEED)
+        self.move_right(self.turn_speed)
     
 
     def move_back(self):
-        self.back_left(MOVE_SPEED)
-        self.back_right(MOVE_SPEED)
+        self.back_left(self.move_speed)
+        self.back_right(self.move_speed)
     
 
     def stop(self):
-        print('stop')
+        # print('stop')
         self.stop_left()
         self.stop_right()
+
+    def set_speed_up(self):
+        self.move_speed += 5
+        self.turn_speed += 5
+
+    def set_speed_down(self):
+        self.move_speed -= 5
+        self.turn_speed -= 5
