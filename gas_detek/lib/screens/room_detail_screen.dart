@@ -2,6 +2,7 @@
 
 import 'dart:async';
 import 'dart:convert';
+import 'package:flutter/services.dart';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -36,6 +37,7 @@ class _RoomDetailState extends State<RoomDetail> {
   String _roomName = "";
   String _robotName = "";
   String _robotSN = "";
+  String _map2dUrl = "";
   bool _isConnectA2D = false;
   bool _isEnableControlDevice = false;
 
@@ -256,6 +258,21 @@ class _RoomDetailState extends State<RoomDetail> {
           }
           break;
 
+        case Target.map:
+          // Update map for room detail
+          debugPrint("Receive push notify map image update room detail");
+          final roomId = data['room_id'];
+          final map2dUrl = data['map2dUrl'];
+
+          // bug no clean cache img network
+          if (roomId == _room.roomId) {
+            setState(() {
+              _room.map2dUrl = map2dUrl;
+              _map2dUrl = "$domain/images/$map2dUrl";
+            });
+          }
+          break;
+
         case Target.general:
           break;
       }
@@ -271,6 +288,7 @@ class _RoomDetailState extends State<RoomDetail> {
     _roomNameController.addListener(_updateRoomName);
     _initializeFCM();
     _fetchDataRoom();
+    _map2dUrl = "$domain/images/${_room.map2dUrl}";
   }
 
   @override
@@ -285,12 +303,12 @@ class _RoomDetailState extends State<RoomDetail> {
   @override
   Widget build(BuildContext context) {
     double maxWidth = MediaQuery.of(context).size.width;
-    String map2dUrl = "$domain/images/${_room.map2dUrl}";
     // String map2dUrl = 'https://raspberrypi.vn/wp-content/uploads/2016/10/raspberry_pi_3.jpg';
 
     return WillPopScope(
       onWillPop: () async {
         // FirebaseMessaging.instance.unsubscribeFromTopic(firebaseTopic);
+        imageCache.clear();
         _saveRoom();
         return true;
       },
@@ -369,7 +387,7 @@ class _RoomDetailState extends State<RoomDetail> {
                       break;
                     case 1:
                       debugPrint("Save Image selected.");
-                      _saveImage(map2dUrl);
+                      _saveImage(_map2dUrl);
                       break;
                   }
                 }),
@@ -618,7 +636,8 @@ class _RoomDetailState extends State<RoomDetail> {
                   ),
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(14.0),
-                    child: Image.network(map2dUrl, fit: BoxFit.cover,
+                    child: Image.network(_map2dUrl,
+                        fit: BoxFit.cover, key: const ValueKey(123),
                         errorBuilder: (context, error, stackTrace) {
                       return Image.asset(
                         'assets/images/icon_404_not_found.png',

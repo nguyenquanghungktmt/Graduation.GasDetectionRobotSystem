@@ -2,6 +2,7 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:gas_detek/common/enum_helper.dart';
 import 'package:gas_detek/model/device_model.dart';
@@ -460,6 +461,7 @@ class _MainScreenState extends State<MainScreen> {
       final data = message.data;
 
       final target = EnumTargetHelper.parse(data['target']);
+      print(target);
       switch (target) {
         case Target.room:
           // Update for list room
@@ -485,6 +487,33 @@ class _MainScreenState extends State<MainScreen> {
           await NotificationService.showNotification(
             title: title,
             body: "$body -- index = $isGasDetect",
+          );
+          break;
+
+        case Target.map:
+          // update map for room
+          debugPrint("Receive push notify update map");
+          final roomId = data['room_id'];
+          final map2dUrl = data['map2dUrl'];
+
+          var index =
+              _listRoom?.indexWhere((element) => element.roomId == roomId);
+          if (index != null) {
+            setState(() {
+              _listRoom?[index].map2dUrl = map2dUrl;
+            });
+
+            // update in DB local
+            RoomDBHelper.updateRoom(_listRoom![index]);
+          }
+
+          final title = message.notification?.title ?? "";
+          final body = message.notification?.body ?? "";
+          await NotificationService.showNotification(
+            title: title,
+            body: body,
+            notificationLayout: NotificationLayout.BigPicture,
+            bigPicture: "$domain/images/$map2dUrl",
           );
           break;
 

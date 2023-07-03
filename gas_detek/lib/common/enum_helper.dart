@@ -1,6 +1,7 @@
 enum Target {
   general,
-  room
+  room,
+  map
 }
 
 extension TargetExtension on Target {
@@ -10,6 +11,8 @@ extension TargetExtension on Target {
         return 'general';
       case Target.room:
         return 'room';
+      case Target.map:
+        return 'map';
       default:
         return 'general';
     }
@@ -23,6 +26,8 @@ class EnumTargetHelper{
         return Target.general;
       case 'room':
         return Target.room;
+      case 'map':
+        return Target.map;
       default:
         return Target.general;
     }

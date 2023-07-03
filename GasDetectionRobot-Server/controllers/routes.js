@@ -342,7 +342,7 @@ router.post('/uploadMapImage', async function (req, res) {
         let message = {
           notification: {
             title: `${room_name} scan finished"`,
-            body: "Here is room's map"
+            body: "Here is map image"
           },
           data: {
             target: enums.TARGET.MAP,
