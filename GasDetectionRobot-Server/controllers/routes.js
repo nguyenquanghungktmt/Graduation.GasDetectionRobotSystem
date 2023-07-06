@@ -1,6 +1,5 @@
 const express = require("express");
 const uuid = require("uuid");
-const config = require('config');
 const database = require("../common/connect.js");
 const { firebase_admin } = require('../common/firebase_admin');
 const logger = require("../common/log.js");
@@ -222,22 +221,19 @@ router.post("/pingConnectA2D", function (req, res) {
       conn.end()
     } else {
       if (result[0].count > 0) {
-
-        let updateQuery = `UPDATE session SET user_uuid=?, firebase_token=?, room_id=?, serial_number=?, created_time=?, modified_time=? WHERE session_id=?;`;
-        
-        let time_now = datetime.getDatetimeNow();
+        let insertQuery = 'INSERT INTO session (session_id, user_uuid, room_id, firebase_token, serial_number, created_time) VALUES (?, ?, ?, ?, ?, ?)';
+      
         let values = [
+          uuid.v1(),
           userId,
-          firebaseToken,
           roomId,
+          firebaseToken,
           serial_number,
-          time_now,
-          time_now,
-          config.get("session_id_default")
+          datetime.getDatetimeNow(),
         ]
 
-        // update status of device to db
-        conn.query(updateQuery, values, function(err){
+        // insert session of device to db
+        conn.query(insertQuery, values, function(err){
           if(err) {
             res.status(404).json(response.createResponse(0, 404, "Server Error !"))
             throw err
@@ -261,15 +257,19 @@ router.post('/uploadMapImage', async function (req, res) {
 
   let serialNumber = req.body.device_serial_number ?? '';
 
-  // Get session
-  const session_id = config.get("session_id_default");
-  const query = `SELECT * FROM session WHERE session_id='${session_id}';`;
+  // Get newest session connect to device
+  const query = 'SELECT * FROM session ORDER BY created_time DESC LIMIT 1;';
 
   const conn = database.createConnection();
   conn.query(query, async function (err, result) {
     if (err) {
       res.status(404).json(response.createResponse(0, 404, "Server Error !"));
       throw err
+    }
+
+    if (!result.length) {
+      res.status(200).json(response.createResponse(1, 400, "No device app connect to robot"));
+      conn.end();
     }
 
     let user_uuid = result[0].user_uuid ?? '';

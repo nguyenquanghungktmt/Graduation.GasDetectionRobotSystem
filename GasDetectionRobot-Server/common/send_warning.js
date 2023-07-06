@@ -1,4 +1,3 @@
-const config = require('config');
 const { firebase_admin } = require('./firebase_admin');
 const database = require("./connect.js");
 const datetime = require("./datetime.js");
@@ -9,12 +8,22 @@ module.exports = {
     send: function (gas_index){
         logger.info(`Server detects gas leak. Send notify.`);
 
-        // Get session
-        const session_id = config.get("session_id_default");
-        const query = `SELECT * FROM session WHERE session_id='${session_id}';`;
+        // TODO: fix session here
+        // Get the newest session connect to robot
+        const query = 'SELECT * FROM session ORDER BY created_time DESC LIMIT 1;';
 
         const conn = database.createConnection();
         conn.query(query, function (err, result) {
+            if (err) {
+              throw err
+            }
+        
+            if (!result.length) {
+              console.log("No device app connect to robot");
+              conn.end();
+              return;
+            } 
+
             let user_uuid = result[0].user_uuid;
             let firebaseToken = result[0].firebase_token;
             let room_id = result[0].room_id;

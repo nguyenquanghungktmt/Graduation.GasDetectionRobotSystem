@@ -11,6 +11,7 @@ create table user (
     last_name varchar(100),
     email varchar(100),
     password varchar(100),
+    firebase_token varchar(200),
     avatar_url varchar(50),
     device_serial_number varchar(15),
     created_time datetime,
@@ -43,6 +44,7 @@ create table session (
 	session_id varchar(36) primary key not null,
 	user_uuid varchar(36) not null,
 	room_id varchar(36) not null,
+    firebase_token varchar(200),
 	serial_number varchar(15) not null,
     created_time datetime,
     modified_time datetime
@@ -123,5 +125,5 @@ ALTER TABLE session ADD firebase_token varchar(200) NOT NULL;
 ALTER TABLE device ADD created_time datetime;
 ALTER TABLE device ADD modified_time datetime;
     
-
+SELECT * FROM session ORDER BY created_time DESC LIMIT 1;
 

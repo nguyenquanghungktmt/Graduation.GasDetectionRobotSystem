@@ -459,9 +459,9 @@ class _MainScreenState extends State<MainScreen> {
         FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
       debugPrint('Got a message whilst in the foreground!');
       final data = message.data;
-
       final target = EnumTargetHelper.parse(data['target']);
-      print(target);
+      debugPrint(data.toString());
+      
       switch (target) {
         case Target.room:
           // Update for list room
@@ -498,7 +498,7 @@ class _MainScreenState extends State<MainScreen> {
 
           var index =
               _listRoom?.indexWhere((element) => element.roomId == roomId);
-          if (index != null) {
+          if (index != null && index >= 0) {
             setState(() {
               _listRoom?[index].map2dUrl = map2dUrl;
             });
