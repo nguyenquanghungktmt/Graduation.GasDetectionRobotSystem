@@ -161,4 +161,29 @@ router.post("/updateRoom", function (req, res) {
   console.log("===========");
 });
 
+// api get list room connection session//
+router.post("/getListSession", function (req, res) {
+  logger.info(`Client request: getListSession - ${JSON.stringify(req.body)}`);
+
+  let room_id = req.body.room_id ?? '';
+  const query = `SELECT * FROM session WHERE room_id='${room_id}' ORDER BY created_time ASC;`;
+
+
+  const conn = database.createConnection();
+  conn.query(query, function (err, result) {
+    if (err) {
+      res.status(404).json(response.createResponse(0, 404, "Server Error !"));
+    } else {
+      let data = {
+        "total_record": result.length,
+        "items": result
+      }
+      res.status(200).json(response.createResponse(1, 200, "Success", data));
+    }
+    conn.end();
+  });
+
+  console.log("===========");
+});
+
 module.exports = router;
