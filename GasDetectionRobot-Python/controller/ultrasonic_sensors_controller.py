@@ -2,6 +2,35 @@ import RPi.GPIO as GPIO
 import time
  
 class UltrasonicSensorsController(object):
+    """
+    class used to control the ultrasonic sensors
+
+    Attributes
+    ----------
+    front_trig : int
+        number of trigger pin defined for front sensor
+    front_echo : int
+        number of echo pin defined for front sensor
+    leftt_trig : int
+        number of trigger pin defined for left sensor
+    left_echo : int
+        number of echo pin defined for left sensor
+    right_trig : int
+        number of trigger pin defined for right sensor
+    right_echo : int
+        number of echo pin defined for right sensor
+
+    Methods
+    -------
+    calculate_distance:
+        calculate the distance from sensor to object
+    get_front_distance:
+        get distance from front sensor to object
+    get_left_distance:
+        get distance from left sensor to object
+    get_right_distance:
+        get distance from right sensor to object
+    """
 
     def __init__(self, front_trig=5, front_echo=6, left_trig=22, left_echo=27, right_trig=23, right_echo=24):
         self.front_trig = front_trig
@@ -27,6 +56,22 @@ class UltrasonicSensorsController(object):
 
     # function calculate distanc from sensor to barrier
     def calculate_distance(self, trigger, echo):
+        """ calculate distance from ultrasonic sensor HC04 to object
+    
+        Parameters
+        ----------
+        self: this object
+        trigger: int
+            Number of trigger pin
+        echo: int
+            Number of echo pin
+    
+        Returns
+        -------
+        int
+            Number of distance 
+        """
+
         # Kích hoạt cảm biến bằng cách ta nháy cho nó tí điện rồi ngắt đi luôn.
         GPIO.output(trigger, True)
         time.sleep(0.00001)

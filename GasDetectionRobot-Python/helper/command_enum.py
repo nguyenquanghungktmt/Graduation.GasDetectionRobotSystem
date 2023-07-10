@@ -1,6 +1,18 @@
 from enum import Enum
  
 class Command(Enum):
+    """
+    A class define command direct enum
+
+    Attributes:
+    ----------
+
+    Methods
+    -------
+    parse(value)
+        convert string value to enum
+    """
+
     START = 'start'
     PAUSE = 'pause'
     FINISH = 'finish'

@@ -7,6 +7,26 @@ FILE_PATH = "./config.json"
 IMAGE_PATH = "map2d-{deviceId}.png"
 
 class DrawMapHelper:
+    """
+    A class used to draw map image from list of point
+
+    Attributes:
+    ----------
+    listPoint : list of (int, int)
+        a list point 
+    deviceId : str
+        the string of device serial number
+    deviceName : str
+        the string of device name
+
+    Methods
+    -------
+    loadDeviceConfig:
+        load device id, device name from config file
+    drawImg:
+        draw image from points
+    """
+        
     def __init__(self) -> None:
         pass
 
@@ -15,12 +35,33 @@ class DrawMapHelper:
         self.loadDeviceConfig()
 
     def loadDeviceConfig(self):
+        """ load information of device from config file
+    
+        Parameters
+        ----------
+        self: this object
+    
+        Returns
+        -------
+        """
+
         f = open(FILE_PATH)
         data = json.load(f)
         self.deviceId = data['device_id']
         self.deviceName = data['device_name']
 
     def drawImg(self):
+        """ draw image from list of points using module matplotlib
+    
+        Parameters
+        ----------
+        self: this object
+    
+        Returns
+        -------
+        No return 
+        """
+
         points = self.listPoint
         plt.rc('figure', figsize=(8, 8))
         plt.axis('off')
@@ -30,6 +71,18 @@ class DrawMapHelper:
         # plt.show()
 
     def uploadImage(self):
+        """ upload map image to server
+    
+        Parameters
+        ----------
+        self: this object
+    
+        Returns
+        -------
+        No return 
+        """
+
+        # TODO: Code here uplaod image using NetworkUtils
         pass
 
 

@@ -6,6 +6,24 @@ TURN_SPEED = 60
 MIN_SPEED = 0
  
 class EnginesController(object):
+    """
+    class used to control the engines to move or stop the robot
+
+    Attributes
+    ----------
+    left_pwm : int
+        number of left pwm pin
+    left_out : int
+        number of left out pin
+    right_pwm : int
+        number of right pwm pin
+    right_out : int
+        number of right out pin
+
+    Methods
+    -------
+    
+    """
 
  
     def __init__(self, left_pwm=12, left_out=16, right_pwm=13, right_out=19):
