@@ -1,6 +1,6 @@
-from engines_controller import EnginesController
-from ultrasonic_sensors_controller import UltrasonicSensorsController
-from gas_sensor_controller import GasSensorController
+from controller.engines_controller import EnginesController
+from controller.ultrasonic_sensors_controller import UltrasonicSensorsController
+from controller.gas_sensor_controller import GasSensorController
 import RPi.GPIO as GPIO
 import time
 

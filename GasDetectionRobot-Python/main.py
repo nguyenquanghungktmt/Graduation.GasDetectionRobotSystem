@@ -1,10 +1,10 @@
-from engines_controller import EnginesController
-from ultrasonic_sensors_controller import UltrasonicSensorsController
-from gas_sensor_controller import GasSensorController
-from network_utils import NetworkUtils
-from azure_hub_utils import AzureIoTHubUtils
-from command_direct_utils import CommandDirectUtils
-from command_enum import Command
+from controller.engines_controller import EnginesController
+from controller.ultrasonic_sensors_controller import UltrasonicSensorsController
+from controller.gas_sensor_controller import GasSensorController
+from utils.network_utils import NetworkUtils
+from utils.azure_hub_utils import AzureIoTHubUtils
+from utils.command_direct_utils import CommandDirectUtils
+from helper.command_enum import Command
 
 import RPi.GPIO as GPIO
 import time
