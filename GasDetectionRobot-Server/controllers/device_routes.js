@@ -12,19 +12,11 @@ let router = express.Router();
 /**
  * API device
  */
-router.get("/getStatusDevice", function (req, res) {
-  logger.info(`Client request`);
 
-  res.json({ message: "Server busy" });
-});
-
-router.post("/sendRobotStatus", function (req, res) {
-  logger.info(`Client request - status= ${ req.body.status}`);
-
-  res.json({ message: `Server busy - id = ${ req.body.id}` });
-});
-
-// get list room api //
+/**
+ * @api {post} /device/getDeviceInfo : get device detail information by serial number
+ * @apiGroup /device
+ */
 router.post("/getDeviceInfo", function (req, res) {
     logger.info(`Client request: getDeviceInfo - ${JSON.stringify(req.body)}`);
   
@@ -49,7 +41,10 @@ router.post("/getDeviceInfo", function (req, res) {
 });
 
 
-// api send device connection status to server //
+/**
+ * @api {post} /device/pingConnectionDevice : ping connection from device to server
+ * @apiGroup /device
+ */
 router.post("/pingConnectionDevice", function (req, res) {
   logger.info(`Client request - pingConnectionDevice= ${JSON.stringify(req.body)}`);
 
@@ -95,7 +90,10 @@ router.post("/pingConnectionDevice", function (req, res) {
 });
 
 
-// api send device disconnection status to server //
+/**
+ * @api {post} /device/pingDisconnectionDevice : ping disconnection from device to server
+ * @apiGroup /device
+ */
 router.post("/pingDisconnectionDevice", function (req, res) {
   logger.info(`Client request - pingDisconnectionDevice= ${JSON.stringify(req.body)}`);
 
@@ -139,7 +137,11 @@ router.post("/pingDisconnectionDevice", function (req, res) {
   console.log("===========");
 });
 
-// api invoke direct method to control device //
+
+/**
+ * @api {post} /device/controlDevice : invoke direct method (azure iot hub) to control device
+ * @apiGroup /device
+ */
 router.post("/controlDevice", function (req, res) {
   logger.info(`Client request - pingDisconnectionDevice= ${JSON.stringify(req.body)}`);
 

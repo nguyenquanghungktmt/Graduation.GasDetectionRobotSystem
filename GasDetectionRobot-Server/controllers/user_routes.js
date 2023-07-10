@@ -1,23 +1,29 @@
 const express = require("express");
 const uuid = require("uuid");
 const database = require("../common/connect.js");
-const { firebase_admin } = require('../common/firebase_admin');
+const { firebase_admin } = require('../common/firebase_admin.js');
 const logger = require("../common/log.js");
 const datetime = require("../common/datetime.js");
 const response = require("../common/response.js");
-const upload = require('../common/upload');
-const Resize = require('../common/resize');
-const enums = require('../enum');
+const upload = require('../common/upload.js');
+const Resize = require('../common/resize.js');
+const enums = require('../enum/index.js');
 // const target_enum = require('../enum').TARGET;
 
 // define a router
 var router = express.Router();
 
+/**
+ * @api {get} / : system dashboard
+ */
 router.get("/", function (req, res) {
   res.json({ message: "Server alive" });
 });
 
-// login api //
+/**
+ * @api {post} /login : login to system
+ * @apiGroup /
+ */
 router.post("/login", function (req, res) {
   logger.info(`Client request: login - ${JSON.stringify(req.body)}`);
 
@@ -69,7 +75,11 @@ router.post("/login", function (req, res) {
 });
 
 
-// registration
+
+/**
+ * @api {post} /register : registration new user to system
+ * @apiGroup /
+ */
 router.post('/register', upload.single('image'), async function (req, res){
   logger.info(`Client request: registration - ${JSON.stringify(req.body)}`);
 
@@ -174,7 +184,10 @@ router.post('/register', upload.single('image'), async function (req, res){
 })
 
 
-// logout //
+/**
+ * @api {post} /register : logout
+ * @apiGroup /
+ */
 router.post("/logout", function (req, res) {
   logger.info(`Client request: logout - ${JSON.stringify(req.body)}`);
 
@@ -199,7 +212,10 @@ router.post("/logout", function (req, res) {
 });
 
 
-// api check app-device connection status and set session  //
+/**
+ * @api {post} /pingConnectA2D : check app-device connection status and set new session
+ * @apiGroup /
+ */
 router.post("/pingConnectA2D", function (req, res) {
   logger.info(`Client request - pingConnectA2D= ${ JSON.stringify(req.body) }`);
 
@@ -251,7 +267,10 @@ router.post("/pingConnectA2D", function (req, res) {
   console.log("===========");
 });
 
-// api upload map 2d image //
+/**
+ * @api {post} /pingConnectA2D : upload map 2d image and save link to room in current session
+ * @apiGroup /
+ */
 router.post('/uploadMapImage', async function (req, res) {
   logger.info(`Client request: uploadImage - ${JSON.stringify(req.body)}`)
 

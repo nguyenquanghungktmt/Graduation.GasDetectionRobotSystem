@@ -11,7 +11,10 @@ const Resize = require('../common/resize');
 // define a router
 var router = express.Router();
 
-
+/**
+ * @api {post} /upload/uploadMapImage : test upload image to server
+ * @apiGroup /upload
+ */
 router.post('/uploadMapImage', async function (req, res) {
     logger.info(`Client request: uploadImage - ${JSON.stringify(req.body)}`)
 

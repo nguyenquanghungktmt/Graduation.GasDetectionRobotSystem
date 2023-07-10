@@ -8,6 +8,10 @@ const target_enum = require('../enum').TARGET;
 // define a router
 var router = express.Router();
 
+/**
+ * @api {post} /firebase/pushNotification : push test notification using token throw firebase
+ * @apiGroup /firebase
+ */
 router.post('/pushNotification', (req, res)=>{
     logger.info(`Client request: push_notification - ${JSON.stringify(req.body)}`);
 
@@ -38,6 +42,10 @@ router.post('/pushNotification', (req, res)=>{
 })
 
 
+/**
+ * @api {get} /firebase/pingFirebase : test firebase push notification
+ * @apiGroup /firebase
+ */
 router.get('/pingFirebase', (req, res)=>{
     logger.info(`Client request: ping_firebase - ${JSON.stringify(req.body)}`);
 

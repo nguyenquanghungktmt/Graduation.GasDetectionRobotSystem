@@ -12,7 +12,11 @@ var router = express.Router();
  * API Room
  */
 
-// api get list room //
+
+/**
+ * @api {post} /room/getListRoom : get list room of user account
+ * @apiGroup /room
+ */
 router.post("/getListRoom", function (req, res) {
   logger.info(`Client request: getListRoom - ${JSON.stringify(req.body)}`);
 
@@ -37,7 +41,11 @@ router.post("/getListRoom", function (req, res) {
   console.log("===========");
 });
 
-// API delete room //
+
+/**
+ * @api {post} /room/deleteRoom : delete room
+ * @apiGroup /room
+ */
 router.post("/deleteRoom", function (req, res) {
   logger.info(`Client request: deleteRoom - ${JSON.stringify(req.body)}`);
 
@@ -63,7 +71,11 @@ router.post("/deleteRoom", function (req, res) {
   console.log("===========");
 });
 
-// API create room //
+
+/**
+ * @api {post} /room/createRoom : create new room with default name "New Room"
+ * @apiGroup /room
+ */
 router.post("/createRoom", function (req, res) {
   logger.info(`Client request: createRoom - ${JSON.stringify(req.body)}`);
 
@@ -124,7 +136,11 @@ router.post("/createRoom", function (req, res) {
   console.log("===========");
 });
 
-// API update room: update room_name, is_gas_detect, room_status, modified_time//
+
+/**
+ * @api {post} /room/updateRoom : update room information with room_name, is_gas_detect, room_status, modified_time
+ * @apiGroup /room
+ */
 router.post("/updateRoom", function (req, res) {
   logger.info(`Client request: updateRoom - ${JSON.stringify(req.body)}`);
 
@@ -161,7 +177,11 @@ router.post("/updateRoom", function (req, res) {
   console.log("===========");
 });
 
-// api get list room connection session//
+
+/**
+ * @api {post} /room/getListSession : get list connection session of room
+ * @apiGroup /room
+ */
 router.post("/getListSession", function (req, res) {
   logger.info(`Client request: getListSession - ${JSON.stringify(req.body)}`);
 
