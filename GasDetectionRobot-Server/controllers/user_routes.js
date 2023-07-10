@@ -20,6 +20,7 @@ router.get("/", function (req, res) {
   res.json({ message: "Server alive" });
 });
 
+
 /**
  * @api {post} /login : login to system
  * @apiGroup /
@@ -73,7 +74,6 @@ router.post("/login", function (req, res) {
 
   console.log("===========");
 });
-
 
 
 /**
@@ -266,6 +266,7 @@ router.post("/pingConnectA2D", function (req, res) {
   });
   console.log("===========");
 });
+
 
 /**
  * @api {post} /pingConnectA2D : upload map 2d image and save link to room in current session

@@ -5,6 +5,10 @@ const logger = require("../common/log.js");
 
 // define mysql connection
 module.exports = {
+  /**
+   * function createConnection create a mysql connection
+   * @returns connection
+   */
   createConnection: function (){
     const connection = mysql.createConnection({
       host: config.get("mysql.host"),

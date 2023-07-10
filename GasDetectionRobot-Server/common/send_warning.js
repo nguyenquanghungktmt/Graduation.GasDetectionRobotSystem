@@ -5,6 +5,10 @@ const logger = require("./log.js");
 const target_enum = require('../enum').TARGET;
 
 module.exports = {
+    /**
+     * func send: save gas value, status to database, push firebase notification
+     * @param {Number} gas_index gas index that gas sensor collect
+     */
     send: function (gas_index){
         logger.info(`Server detects gas leak. Send notify.`);
 
