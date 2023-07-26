@@ -1,7 +1,15 @@
+// ignore_for_file: use_build_context_synchronously
+
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:gallery_saver/gallery_saver.dart';
 import 'package:gas_detek/common/alert_helper.dart';
 import 'package:gas_detek/model/user_model.dart';
+import 'package:gas_detek/screens/login_screen.dart';
+import 'package:gas_detek/services/database_helper.dart';
+import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../constant.dart';
 
@@ -45,6 +53,79 @@ class _UserProfileState extends State<UserProfile> {
     }
   }
 
+  Future<void> _requestDeleteAccount(User user) async {
+    // request delete account user
+    try {
+      String apiUrl = "$domain/deleteAccount";
+      final response = await http.post(
+        Uri.parse(apiUrl),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(<String, String>{
+          "user_uuid": user.uuid,
+        }),
+      );
+
+      print(response.statusCode);
+
+      if (response.statusCode == 200) {
+        // If the server did return a 200 CREATED response, then parse the JSON.
+        final body = json.decode(response.body);
+
+        final status = body['status'] as int;
+        final code = body['code'] as int;
+        final message = body['message'] as String;
+
+        if (status == 1 && code == 200) {
+          // delete account success, back to login screen
+
+          // Delete local Sqflite Database, pref
+          SharedPreferences prefs = await SharedPreferences.getInstance();
+          for(String key in prefs.getKeys()) {
+            if (key != 'firebase_token') prefs.remove(key);
+          }
+          DatabaseHelper.deleteDB();
+
+          Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(builder: (context) => const LoginScreen()),
+              (route) => false);
+
+          Alert.toastSuccess(message);
+          Alert.closeToast(
+              durationBeforeClose: const Duration(milliseconds: 1500));
+        } else {
+          // delete faild
+          Alert.toastError(message);
+          Alert.closeToast(
+              durationBeforeClose: const Duration(milliseconds: 1500));
+        }
+      } else {
+        // If the server did not return a 201 CREATED response,
+        // then throw an exception.
+
+        Alert.toastError('Delete account failed');
+        Alert.closeToast(
+            durationBeforeClose: const Duration(milliseconds: 1500));
+      }
+    } on Exception {
+      // catch exception
+
+      Alert.toastError('Server error!');
+      Alert.closeToast(durationBeforeClose: const Duration(milliseconds: 1500));
+    }
+  }
+
+  Future<void> _deleteAccount(User user) async {
+    bool? isYes = await Alert.dialogConfirmation(
+      context,
+      'Delete cccount?',
+      'Are you sure delete this account?',
+    );
+    if (isYes ?? false) {
+      _requestDeleteAccount(user);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -115,7 +196,7 @@ class _UserProfileState extends State<UserProfile> {
                     _saveImage(avatarUrl);
                     break;
                   case 1:
-                    print("Delete Account selected.");
+                    _deleteAccount(_user);
                     break;
                 }
               }),
