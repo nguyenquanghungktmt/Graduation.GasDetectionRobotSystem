@@ -14,6 +14,7 @@ create table user (
     firebase_token varchar(200),
     avatar_url varchar(50),
     device_serial_number varchar(15),
+    status varchar(15),
     created_time datetime,
     modified_time datetime
 );

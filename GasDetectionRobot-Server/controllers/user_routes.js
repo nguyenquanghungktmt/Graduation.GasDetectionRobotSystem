@@ -48,9 +48,13 @@ router.post("/login", function (req, res) {
     }
     
     if (!result.length) {
-      res.status(200).json(response.createResponse(1, 400, "Username or Password wrong!"));
+      res.status(200).json(response.createResponse(1, 400, "Username or password wrong"));
       conn.end();
     } 
+    else if (result[0].status == enums.USER_STATUS.DELETED) {
+      res.status(200).json(response.createResponse(1, 400, "Account is deleted"));
+      conn.end();
+    }
     else {
       let updateQuery = `UPDATE user SET firebase_token=?, modified_time=? WHERE username=? and password=?;`;
       let values = [
@@ -65,7 +69,18 @@ router.post("/login", function (req, res) {
           res.status(404).json(response.createResponse(0, 404, "Server Error !"))
           throw err
         }
-        res.status(200).json(response.createResponse(1, 200, "Login Success", result[0]));
+
+        let data = {
+          "uuid": result[0].uuid,
+          "first_name": result[0].first_name,
+          "last_name": result[0].last_name,
+          "username": result[0].username,
+          "email": result[0].email,
+          "avatar_url": result[0].avatar_url,
+          "device_serial_number": result[0].device_serial_number
+        }
+
+        res.status(200).json(response.createResponse(1, 200, "Login Success", data));
         conn.end()
       })
     
@@ -204,6 +219,36 @@ router.post("/logout", function (req, res) {
         res.status(200).json(response.createResponse(1, 400, "Logout wrong! Please check your internet."));
       } 
       else res.status(200).json(response.createResponse(1, 200, "Logout Success"));
+    }
+    conn.end();
+  });
+
+  console.log("===========");
+});
+
+
+/**
+ * @api {post} /deleteAccount : delete user account
+ * @apiGroup /
+ */
+router.post("/deleteAccount", function (req, res) {
+  logger.info(`Client request: deleteAccount - ${JSON.stringify(req.body)}`);
+
+  let user_uuid = req.body.user_uuid ?? '';
+  const deleteQuery = `UPDATE user SET status=? WHERE uuid=?;`;
+  const values = ['deleted', user_uuid];
+
+
+  const conn = database.createConnection();
+  conn.query(deleteQuery, values, function (err, result) {
+    if (err) {
+      res.status(404).json(response.createResponse(0, 404, "Server Error !"));
+    } else {
+      if(result.affectedRows){
+        res.status(200).json(response.createResponse(1, 200, "Delete Success"));
+      } else {
+        res.status(200).json(response.createResponse(1, 400, "Delete Failed"));
+      }
     }
     conn.end();
   });

@@ -5,6 +5,13 @@ const DEVICE_STATUS = {
     UNDEFINED: 'undefined'
 }
 
+const USER_STATUS = {
+    ACTIVE: 'active',
+    INACTIVE: 'inactive',
+    DELETED: 'deleted',
+    UNDEFINED: 'undefined'
+}
+
 const TARGET = {
     GENERAL: 'general',
     ROOM: 'room',
@@ -13,5 +20,6 @@ const TARGET = {
 
 module.exports = {
     DEVICE_STATUS: DEVICE_STATUS,
+    USER_STATUS: USER_STATUS,
     TARGET: TARGET
 };
