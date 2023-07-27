@@ -131,6 +131,7 @@ class _RoomDetailState extends State<RoomDetail> {
     setState(() {
       _isEnableControlDevice = false;
     });
+    bool isSuccess = false;
     try {
       String apiUrl = "$domain/device/controlDevice";
       final response = await http.post(
@@ -155,6 +156,7 @@ class _RoomDetailState extends State<RoomDetail> {
         final message = body['message'] as String;
 
         if (status == 1 && code == 200) {
+          isSuccess = true;
           Alert.toastSuccess(message);
           Alert.closeToast(
               durationBeforeClose: const Duration(milliseconds: 1500));
@@ -177,9 +179,16 @@ class _RoomDetailState extends State<RoomDetail> {
       Alert.closeDialog(context,
           durationBeforeClose: const Duration(milliseconds: 1500));
     } finally {
-      setState(() {
-        _isEnableControlDevice = true;
-      });
+      if (isSuccess && command == 'finish') {
+        setState(() {
+          _isConnectA2D = false;
+        });
+      }
+      else {
+        setState(() {
+          _isEnableControlDevice = true;
+        });
+      }
     }
   }
 
@@ -636,7 +645,8 @@ class _RoomDetailState extends State<RoomDetail> {
                   ),
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(14.0),
-                    child: Image.network(_map2dUrl,
+                    child: _map2dUrl.isEmpty ? const Text("No Image") :
+                    Image.network(_map2dUrl,
                         fit: BoxFit.cover, key: const ValueKey(123),
                         errorBuilder: (context, error, stackTrace) {
                       return Image.asset(
@@ -712,7 +722,7 @@ class _RoomDetailState extends State<RoomDetail> {
                                       _invokeControlDevice(command: 'finish')
                                   : null,
                               style: ElevatedButton.styleFrom(
-                                backgroundColor: kDarkBlue,
+                                backgroundColor: kRed,
                                 fixedSize: const Size(50, 50),
                                 shape: const CircleBorder(),
                               ),

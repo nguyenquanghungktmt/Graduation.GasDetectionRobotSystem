@@ -1,5 +1,5 @@
 from azure.iot.device import IoTHubDeviceClient, MethodResponse
-from command_enum import Command
+from helper.command_enum import Command
 
 
 CONNECTION_STRING = "HostName=gas-detekt-hub.azure-devices.net;DeviceId=RB23GD1708;ModuleId=raspberry-pi3;SharedAccessKey=mXyfwmNJaVkjhbGg3LZ7y+syYb5oEiEn53WeoNIF2mk="
