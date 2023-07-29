@@ -7,8 +7,8 @@ from azure.iot.hub import IoTHubRegistryManager
 from datetime import datetime
 
 
-CONNECTION_STRING_SERVER = "HostName=gas-detekt-hub.azure-devices.net;SharedAccessKeyName=iothubowner;SharedAccessKey=9qwm+d1a2tA9z6NNniEiQv25EnCkQ5O/QBMPdDP1vJ4="
-DEVICE_ID = "RB23GD1708"
+# CONNECTION_STRING_SERVER = "HostName=gas-detekt-hub.azure-devices.net;SharedAccessKeyName=iothubowner;SharedAccessKey=9qwm+d1a2tA9z6NNniEiQv25EnCkQ5O/QBMPdDP1vJ4="
+# DEVICE_ID = "RB23GD1708"
 FILE_PATH = "./config.json"
 MESSAGE_TIMEOUT = 10000
 INTERVAL = 1
@@ -21,13 +21,15 @@ MSG_TXT = "{\"temperature\": %.2f,\"humidity\": %.2f}"
 
 class AzureIoTHubUtils(object):
     def __init__(self):
-        self.connectionServerString = CONNECTION_STRING_SERVER
-        self.deviceId = DEVICE_ID
+        f = open(FILE_PATH)
+        data = json.load(f)
+        self.ServerConnectionString =  data['service_connection_string']
+        self.deviceId =  data['device_id']
 
     def connectHub(self):
         for i in range(NUM_RETRIES):
             try:
-                self.client = IoTHubRegistryManager(self.connectionServerString)
+                self.client = IoTHubRegistryManager(self.ServerConnectionString)
                 return True
             except:
                 # Clean up in the event of failure
@@ -42,7 +44,7 @@ class AzureIoTHubUtils(object):
         data = {
             "timestamp": datetime.now().strftime("%H:%M:%S"),
             "gas": gas_index,
-            "device_id": DEVICE_ID,
+            "device_id": self.deviceId,
         }
 
         # Add standard message properties
