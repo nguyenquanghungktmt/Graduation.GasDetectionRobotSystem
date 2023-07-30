@@ -11,15 +11,30 @@
     "password": "HuyenAnh@123",
     "path_ssl_cert": "./DigiCertGlobalRootCA.crt.pem"
   },
-  "devices_info": {
-    "RB23GD1708": {
+  "devices_info": [
+    {
       "host_name"         : "gas-detekt-hub.azure-devices.net",
       "device_name"       : "Gas Detection Robot",
       "device_id"         : "RB23GD1708",
-      "module_id"         : "raspberry-pi3",
+      "module_id"         : "direct-command",
       "share_access_key"  : "LdPfpJaBE2nZNUqiEB5PbCLBZRKqHLbv6gvetdzvOrA="
+    },
+    {
+      "host_name"         : "gas-detekt-hub.azure-devices.net",
+      "device_name"       : "Gas Detection Robot",
+      "device_id"         : "RB23GD0001",
+      "module_id"         : "direct-command",
+      "share_access_key"  : "goYT7IMQf5UyZEf/r+BbQIFtjdMyP52NzNFHbAsDIAI="
+    },
+    {
+      "host_name"         : "gas-detekt-hub.azure-devices.net",
+      "device_name"       : "Gas Detekt Bot",
+      "device_id"         : "RB23GD0002",
+      "module_id"         : "direct-command",
+      "share_access_key"  : "40QI2Wf2zSbJ0JYl7nL6ljEtpnO1rPAdPXS/tMSyuS0="
     }
-  },
+  ]
+  ,
   "azure": {
     "service_connection_string": "HostName=gas-detekt-hub.azure-devices.net;SharedAccessKeyName=service;SharedAccessKey=Td965se6zlTDK+ERMqR+4LbDFjR5E9O5BTeqfhwQyDA="
   },

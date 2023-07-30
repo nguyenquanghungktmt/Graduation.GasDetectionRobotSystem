@@ -43,8 +43,8 @@ class AzureIoTHubUtils(object):
         # Build the message with simulated telemetry values.
         data = {
             "timestamp": datetime.now().strftime("%H:%M:%S"),
-            "gas": gas_index,
             "device_id": self.deviceId,
+            "gas": gas_index,
         }
 
         # Add standard message properties
