@@ -177,21 +177,21 @@ class _LoginScreenState extends State<LoginScreen> {
                                       'Password', 'Enter your password'),
                                 ),
                               ),
-                              const SizedBox(height: 15.0),
-                              Container(
-                                margin:
-                                    const EdgeInsets.fromLTRB(10, 0, 10, 20),
-                                alignment: Alignment.topRight,
-                                child: GestureDetector(
-                                  onTap: () {},
-                                  child: const Text(
-                                    "Forgot your password?",
-                                    style: TextStyle(
-                                      color: Colors.grey,
-                                    ),
-                                  ),
-                                ),
-                              ),
+                              const SizedBox(height: 30.0),
+                              // Container(
+                              //   margin:
+                              //       const EdgeInsets.fromLTRB(10, 0, 10, 20),
+                              //   alignment: Alignment.topRight,
+                              //   child: GestureDetector(
+                              //     onTap: () {},
+                              //     child: const Text(
+                              //       "Forgot your password?",
+                              //       style: TextStyle(
+                              //         color: Colors.grey,
+                              //       ),
+                              //     ),
+                              //   ),
+                              // ),
                               Container(
                                 decoration:
                                     ThemeHelper().buttonBoxDecoration(context),
