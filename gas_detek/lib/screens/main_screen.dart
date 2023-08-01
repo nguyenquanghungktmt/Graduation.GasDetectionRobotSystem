@@ -553,7 +553,7 @@ class _MainScreenState extends State<MainScreen> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         title: const Text(
-          "Gas Detection",
+          "Gas Detekt",
           textAlign: TextAlign.center,
           style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),

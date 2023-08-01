@@ -183,8 +183,7 @@ class _RoomDetailState extends State<RoomDetail> {
         setState(() {
           _isConnectA2D = false;
         });
-      }
-      else {
+      } else {
         setState(() {
           _isEnableControlDevice = true;
         });
@@ -313,6 +312,7 @@ class _RoomDetailState extends State<RoomDetail> {
   Widget build(BuildContext context) {
     double maxWidth = MediaQuery.of(context).size.width;
     // String map2dUrl = 'https://raspberrypi.vn/wp-content/uploads/2016/10/raspberry_pi_3.jpg';
+    // print(_map2dUrl);
 
     return WillPopScope(
       onWillPop: () async {
@@ -645,21 +645,18 @@ class _RoomDetailState extends State<RoomDetail> {
                   ),
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(14.0),
-                    child: _map2dUrl.isEmpty ? const Text("No Image") :
-                    Image.network(_map2dUrl,
-                        fit: BoxFit.cover, key: const ValueKey(123),
-                        errorBuilder: (context, error, stackTrace) {
-                      return Image.asset(
-                        'assets/images/icon_404_not_found.png',
-                        fit: BoxFit.contain,
-                      );
-                      // return const Center(
-                      //   child: Text(
-                      //     "Loading image map ...",
-                      //     style: TextStyle(fontSize: 24.0),
-                      //   ),
-                      // );
-                    }),
+                    child: _room.map2dUrl == null
+                        ? const Center(
+                            child: Text("Not have image yet", style: TextStyle(fontSize: 24.0))
+                          )
+                        : Image.network(_map2dUrl,
+                            fit: BoxFit.cover, key: const ValueKey(123),
+                            errorBuilder: (context, error, stackTrace) {
+                            return Image.asset(
+                              'assets/images/icon_404_not_found.png',
+                              fit: BoxFit.contain,
+                            );
+                          }),
                   ),
                 ),
                 const SizedBox(height: 10.0),

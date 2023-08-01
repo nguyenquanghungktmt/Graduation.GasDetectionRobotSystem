@@ -1,7 +1,7 @@
 import requests
 import json
 
-DOMAIN = "https://gas-detekt-system.azurewebsites.net"
+DOMAIN = "https://gas-detection-system.azurewebsites.net"
 FILE_PATH = "./config.json"
 NUM_RETRIES = 3
 IMAGE_PATH = "./map2d-{deviceId}.png"

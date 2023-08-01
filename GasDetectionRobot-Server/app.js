@@ -30,25 +30,29 @@ app.use('/images', express.static('./public/images'));
 
 // create connect client to azure iot hub
 const listDevices = config.get("devices_info");
-const device = listDevices["RB23GD1708"];
-const client = mqttUtils.getMQTTClient(device);
 
-client.on('message', function (msg) {
-  // Receive data from Azure Hub
-  const message = msg.data.toString()
+const listClients = listDevices.map(device => {
+  return mqttUtils.getMQTTClient(device);
+})
 
-  console.log('----');
-  console.log(message);
-  console.log('----');
-
-  let jsonParse = JSON.parse(message);
-  let gas = jsonParse.gas ?? 0;
-  let device_id = jsonParse.device_id ?? '';
-
-
-  if (gas > 0) {
-    send_warning.send(gas);
-  }
+listClients.forEach(client => {
+  client.on('message', function (msg) {
+    // Receive data from Azure Hub
+    const message = msg.data.toString()
+  
+    console.log('----');
+    console.log(message);
+    console.log('----');
+  
+    let jsonParse = JSON.parse(message);
+    let device_id = jsonParse.device_id ?? '';
+    let gas = jsonParse.gas ?? 0;
+  
+  
+    if (gas > 0) {
+      send_warning.send(gas);
+    }
+  });
 });
 
 // start server

@@ -1,23 +1,29 @@
 from azure.iot.device import IoTHubDeviceClient, MethodResponse
 from helper.command_enum import Command
+import json
 
 
-CONNECTION_STRING = "HostName=gas-detekt-hub.azure-devices.net;DeviceId=RB23GD1708;ModuleId=raspberry-pi3;SharedAccessKey=mXyfwmNJaVkjhbGg3LZ7y+syYb5oEiEn53WeoNIF2mk="
-METHOD_NAME = "device_control"
+# CONNECTION_STRING = "HostName=gas-detekt-hub.azure-devices.net;DeviceId=RB23GD1708;ModuleId=direct-command;SharedAccessKey=0y4ho/I/6jFX9L0bROZ5mdFojE29OprvxAdRZc2x8yQ="
+# METHOD_NAME = "device_control"
+
+FILE_PATH = "./config.json"
 
 class CommandDirectUtils:
     def __init__(self):
-        self.connectionModuleString = CONNECTION_STRING
-        self.methodName = METHOD_NAME
+        f = open(FILE_PATH)
+        data = json.load(f)
+
+        self.moduleConnectionString = data['module_connection_string']
+        self.methodName = data['direct_method_name']
         self.command = Command.PAUSE
-        self.client = IoTHubDeviceClient.create_from_connection_string(self.connectionModuleString)
+        self.client = IoTHubDeviceClient.create_from_connection_string(self.moduleConnectionString)
 
     def create_command_listener(self):
         # Define the handler for method requests
         def method_request_handler(method_request):
             if method_request.name == self.methodName:
                 # Act on the method by rebooting the device
-                print("- Incomming direct command:", METHOD_NAME)
+                print("- Incomming direct command:", self.methodName)
                 payload = method_request.payload
                 timestamp = payload["timestamp"]
                 cmd = Command.parse(payload["command"])

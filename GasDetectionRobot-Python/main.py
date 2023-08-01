@@ -61,10 +61,11 @@ def main():
     while True:
         if command_utils.command == Command.START:
             # run the algorithm and send status to server
-            # if gas_sensor_controller.isGasDetected() :
-            #     gas_index = random.randint(50, 250)
-            #     asyncio.run(azure_hub_utils.sendMessage(gas_index))
-            asyncio.run(azure_hub_utils.sendMessage())
+            if gas_sensor_controller.isGasDetected() :
+                gas_index = random.randint(50, 250)
+                asyncio.run(azure_hub_utils.sendMessage(gas_index))
+            else:
+                asyncio.run(azure_hub_utils.sendMessage())
 
 
             distance_front = 0
