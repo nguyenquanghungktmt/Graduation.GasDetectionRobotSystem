@@ -98,6 +98,8 @@ SELECT * FROM user WHERE username = "hungnq";
 SELECT * FROM user WHERE email = "hungnq@cdc.com";
 SELECT * FROM device WHERE serial_number = "RB23GT1708";
 
+select * from session where room_id = "ddefc7e0-3050-11ee-9df5-0f3967ff9b50";
+
 
 select count(*) from user, device
 where user.device_serial_number!='RB23GT1807' and device.serial_number='RB23GD1807';

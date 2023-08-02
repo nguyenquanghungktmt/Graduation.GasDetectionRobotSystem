@@ -2,7 +2,6 @@
 
 import 'dart:async';
 import 'dart:convert';
-import 'package:flutter/services.dart';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -14,6 +13,7 @@ import 'package:gas_detek/model/device_model.dart';
 import 'package:gas_detek/model/room_model.dart';
 import 'package:gas_detek/screens/device_info_screen.dart';
 import 'package:gas_detek/services/device_db_helper.dart';
+import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
@@ -41,6 +41,8 @@ class _RoomDetailState extends State<RoomDetail> {
   bool _isConnectA2D = false;
   bool _isEnableControlDevice = false;
 
+  var _listSession = [];
+
   final TextEditingController _roomNameController = TextEditingController();
 
   late StreamSubscription? _fcmListener;
@@ -56,6 +58,68 @@ class _RoomDetailState extends State<RoomDetail> {
               _robotSN = device.serialNumber;
             }
           }));
+    }
+
+    // get list session of room
+    LoadingScreen().show(
+      context: context,
+      text: 'Loading...',
+    );
+
+    try {
+      String apiUrl = "$domain/room/getListSession";
+      final response = await http.post(
+        Uri.parse(apiUrl),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(<String, String?>{"room_id": _room.roomId}),
+      );
+
+      print(response.statusCode);
+      LoadingScreen().hide();
+
+      if (response.statusCode == 200) {
+        // If the server did return a 200 CREATED response, then parse the JSON.
+        final body = json.decode(response.body);
+
+        final status = body['status'] as int;
+        final code = body['code'] as int;
+        final message = body['message'] as String;
+        final data = body['data'];
+
+        if (status == 1 && (code == 200 || code == 201)) {
+          final items = data['items'];
+          final listSessionTmp = List.generate(items.length,
+              (index) => DateTime.parse(items[index]['created_time']));
+
+          setState(() {
+            _listSession = listSessionTmp;
+          });
+
+          // Alert.toastSuccess(message);
+          // Alert.closeToast(
+          //     durationBeforeClose: const Duration(milliseconds: 1500));
+        } else {
+          Alert.dialogError(context, message);
+          Alert.closeDialog(context,
+              durationBeforeClose: const Duration(seconds: 1));
+        }
+      } else {
+        // If the server did not return a 201 CREATED response,
+        // then throw an exception.
+
+        Alert.dialogError(context, 'Get scan histoty fail');
+        Alert.closeDialog(context,
+            durationBeforeClose: const Duration(seconds: 1));
+      }
+    } on Exception {
+      // catch exception
+      LoadingScreen().hide();
+
+      Alert.dialogError(context, 'Error');
+      Alert.closeDialog(context,
+          durationBeforeClose: const Duration(milliseconds: 1500));
     }
   }
 
@@ -100,6 +164,7 @@ class _RoomDetailState extends State<RoomDetail> {
           setState(() {
             _isConnectA2D = true;
             _isEnableControlDevice = true;
+            _listSession.add(DateTime.now());
           });
           Alert.dialogSuccess(context, message);
           Alert.closeDialog(context,
@@ -633,7 +698,6 @@ class _RoomDetailState extends State<RoomDetail> {
                   decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(16.0),
-                    border: Border.all(color: kDarkBlue, width: 2.0),
                     boxShadow: [
                       BoxShadow(
                         color: Colors.grey.withOpacity(0.3),
@@ -645,18 +709,46 @@ class _RoomDetailState extends State<RoomDetail> {
                   ),
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(14.0),
-                    child: _room.map2dUrl == null
+                    child: _listSession.isEmpty
                         ? const Center(
-                            child: Text("Not have image yet", style: TextStyle(fontSize: 24.0))
-                          )
-                        : Image.network(_map2dUrl,
-                            fit: BoxFit.cover, key: const ValueKey(123),
-                            errorBuilder: (context, error, stackTrace) {
-                            return Image.asset(
-                              'assets/images/icon_404_not_found.png',
-                              fit: BoxFit.contain,
-                            );
-                          }),
+                            child: Text("Scan History Empty",
+                                style: TextStyle(fontSize: 22.0)))
+                        // : Image.network(_map2dUrl,
+                        //     fit: BoxFit.cover, key: const ValueKey(123),
+                        //     errorBuilder: (context, error, stackTrace) {
+                        //     return Image.asset(
+                        //       'assets/images/icon_404_not_found.png',
+                        //       fit: BoxFit.contain,
+                        //     );
+                        //   }),
+                        : ListView.builder(
+                            itemCount: _listSession.length + 1,
+                            itemBuilder: (context, position) {
+                              return Card(
+                                elevation: 0,
+                                color: Colors.transparent,
+                                child: Padding(
+                                  padding: const EdgeInsets.fromLTRB(
+                                      12.0, 12.0, 12.0, 6.0),
+                                  child: position == 0
+                                      ? const Text(
+                                          'Scan History: ',
+                                          style: TextStyle(
+                                              fontSize: 22.0,
+                                              fontWeight: FontWeight.w600,
+                                              color: Colors.black),
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                        )
+                                      : Text(
+                                          '$position. ${DateFormat('HH:mm EEEE, d MMM yyyy').format(_listSession.reversed.toList()[position - 1])}',
+                                          style:
+                                              const TextStyle(fontSize: 20.0),
+                                        ),
+                                ),
+                              );
+                            },
+                          ),
                   ),
                 ),
                 const SizedBox(height: 10.0),
