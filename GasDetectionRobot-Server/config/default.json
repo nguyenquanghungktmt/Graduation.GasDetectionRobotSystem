@@ -22,6 +22,13 @@
     {
       "host_name"         : "gas-detekt-hub.azure-devices.net",
       "device_name"       : "Gas Detection Robot",
+      "device_id"         : "RB23GD1807",
+      "module_id"         : "direct-command",
+      "share_access_key"  : "HAKdBCecdY/P46HArAHSsIrH4oPMM1dyzWNxNMwm2wU="
+    },
+    {
+      "host_name"         : "gas-detekt-hub.azure-devices.net",
+      "device_name"       : "Gas Detection Robot",
       "device_id"         : "RB23GD0001",
       "module_id"         : "direct-command",
       "share_access_key"  : "goYT7IMQf5UyZEf/r+BbQIFtjdMyP52NzNFHbAsDIAI="
@@ -32,6 +39,13 @@
       "device_id"         : "RB23GD0002",
       "module_id"         : "direct-command",
       "share_access_key"  : "40QI2Wf2zSbJ0JYl7nL6ljEtpnO1rPAdPXS/tMSyuS0="
+    },
+    {
+      "host_name"         : "gas-detekt-hub.azure-devices.net",
+      "device_name"       : "Gas Detekt Bot",
+      "device_id"         : "RB23GD0003",
+      "module_id"         : "direct-command",
+      "share_access_key"  : "31l8FCjIcVGMZJFK2VDKIvhBrlaJFzSWnLM71PH71Gk="
     }
   ]
   ,
