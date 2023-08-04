@@ -82,7 +82,7 @@ class DrawMapHelper:
         No return 
         """
 
-        # TODO: Code here uplaod image using NetworkUtils
+        # TODO: Code here upload image using NetworkUtils
         pass
 
 

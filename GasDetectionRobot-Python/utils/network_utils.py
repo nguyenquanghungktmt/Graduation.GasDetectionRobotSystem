@@ -4,7 +4,7 @@ import json
 DOMAIN = "https://gas-detection-system.azurewebsites.net"
 FILE_PATH = "./config.json"
 NUM_RETRIES = 3
-IMAGE_PATH = "./map2d-{deviceId}.png"
+IMAGE_PATH = "./helper/map2d-{deviceId}.png"
 
 class NetworkUtils(object):
 

@@ -95,7 +95,7 @@ router.post("/login", function (req, res) {
  * @api {post} /register : registration new user to system
  * @apiGroup /
  */
-router.post('/register', upload.single('image'), async function (req, res){
+router.post('/register', async function (req, res){
   logger.info(`Client request: registration - ${JSON.stringify(req.body)}`);
 
   let first_name = req.body.first_name ?? '';
@@ -168,7 +168,8 @@ router.post('/register', upload.single('image'), async function (req, res){
         avatarUrl,
         serialNumber,
         currentTime,
-        currentTime
+        currentTime,
+        firebaseToken
       ]
       let querryInsertAcc = `INSERT INTO user (uuid, username, first_name, last_name, email, password, avatar_url, device_serial_number, created_time, modified_time, firebase_token) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
       
