@@ -155,7 +155,8 @@ router.post('/register', async function (req, res){
       const imagePath = './public/images';
       const fileUpload = new Resize(imagePath);
       var avatarUrl = null;
-      if (req.file) avatarUrl = await fileUpload.saveAvatar(req.file.buffer);
+
+      if (req.files?.image) avatarUrl = await fileUpload.saveAvatar(req.files.image.data);
 
 
       let values = [
@@ -171,7 +172,7 @@ router.post('/register', async function (req, res){
         currentTime,
         firebaseToken
       ]
-      let querryInsertAcc = `INSERT INTO user (uuid, username, first_name, last_name, email, password, avatar_url, device_serial_number, created_time, modified_time, firebase_token) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+      let querryInsertAcc = `INSERT INTO user (uuid, username, first_name, last_name, email, password, avatar_url, device_serial_number, created_time, modified_time, firebase_token) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);`;
       
       
       // console.log(querryInsertAcc);
@@ -355,7 +356,7 @@ router.post('/uploadMapImage', async function (req, res) {
     const imagePath = './public/images';
     const fileUpload = new Resize(imagePath);
 
-    if (!req.files.image) {
+    if (!req.files?.image) {
       conn.end();
       res.status(200).json(response.createResponse(1, 400, "No image attach"));
     }
