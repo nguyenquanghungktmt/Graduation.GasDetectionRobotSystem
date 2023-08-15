@@ -130,3 +130,6 @@ ALTER TABLE device ADD modified_time datetime;
     
 SELECT * FROM session ORDER BY created_time DESC LIMIT 1;
 
+SELECT * FROM session WHERE room_id='86e59660-3a72-11ee-9f1f-a90996e9d966' ORDER BY created_time DESC;
+
+UPDATE session SET is_gas_detect='0' WHERE session_id='06e62ac0-3a7b-11ee-9ab9-b3299942d59e';

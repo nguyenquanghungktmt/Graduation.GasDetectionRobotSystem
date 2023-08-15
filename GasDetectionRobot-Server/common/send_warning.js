@@ -44,18 +44,49 @@ module.exports = {
                 datetime.getDatetimeNow(),
                 room_id
             ]
+
+            
             conn.query(updateQuery, values, function (err, res) {
                 if (err) {
                     console.log("Update Warning Failed. Server error!");
                 } else {
                     if (res.affectedRows){
                         console.log("Update Warning Success");
+
+                        
+                        const query = `SELECT * FROM session WHERE room_id='${room_id}' ORDER BY created_time DESC LIMIT 1;`;
+                        conn.query(query, function (err, result) {
+                        if (err) {
+                            console.log("Server Error !");
+                        } 
+                        else if (!result.length) {
+                            console.log("No session found");
+                            conn.end();
+                        } else {
+                            console.log(result[0])
+                            let session_id = result[0].session_id ?? '';
+                            let updateSession = `UPDATE session SET is_gas_detect='1' WHERE session_id='${session_id}';`;
+
+                            console.log(updateSession)
+
+                            // update to session
+                            conn.query(updateSession, function (err, results) {
+                                if (err) {
+                                    console.log("Server Error !");
+                                } 
+                                else console.log("Success");
+
+                            });
+                            conn.end();
+                        }
+                        });
                     } else {
                         console.log("Update Warning Failed");
                     }
-                    conn.end();
                 }
             });
+
+            // update session
 
             // Push notification throw firebase
             let message = {

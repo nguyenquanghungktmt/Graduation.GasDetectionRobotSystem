@@ -11,9 +11,9 @@ import 'package:gas_detek/common/enum_helper.dart';
 import 'package:gas_detek/common/loading/loading_screen.dart';
 import 'package:gas_detek/model/device_model.dart';
 import 'package:gas_detek/model/room_model.dart';
+import 'package:gas_detek/model/session_model.dart';
 import 'package:gas_detek/screens/device_info_screen.dart';
 import 'package:gas_detek/services/device_db_helper.dart';
-import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
@@ -90,8 +90,11 @@ class _RoomDetailState extends State<RoomDetail> {
 
         if (status == 1 && (code == 200 || code == 201)) {
           final items = data['items'];
-          final listSessionTmp = List.generate(items.length,
-              (index) => DateTime.parse(items[index]['created_time']));
+          final listSessionTmp = List.generate(
+              items.length,
+              (index) => Session(
+                  datetime: DateTime.parse(items[index]['created_time']),
+                  isGasDetect: items[index]['is_gas_detect'].toString()));
 
           setState(() {
             _listSession = listSessionTmp;
@@ -164,7 +167,8 @@ class _RoomDetailState extends State<RoomDetail> {
           setState(() {
             _isConnectA2D = true;
             _isEnableControlDevice = true;
-            _listSession.add(DateTime.now());
+            _listSession
+                .add(Session(datetime: DateTime.now(), isGasDetect: '0'));
           });
           Alert.dialogSuccess(context, message);
           Alert.closeDialog(context,
@@ -327,6 +331,7 @@ class _RoomDetailState extends State<RoomDetail> {
             setState(() {
               _room.isGasDetect = int.parse(isGasDetect);
               _room.roomStatus = roomStatus;
+              _listSession.last.updateStatus('1');
             });
           }
           break;
@@ -740,10 +745,25 @@ class _RoomDetailState extends State<RoomDetail> {
                                           maxLines: 1,
                                           overflow: TextOverflow.ellipsis,
                                         )
-                                      : Text(
-                                          '$position. ${DateFormat('HH:mm EEEE, d MMM yyyy').format(_listSession.reversed.toList()[position - 1])}',
-                                          style:
-                                              const TextStyle(fontSize: 20.0),
+                                      : InkWell(
+                                          onTap: () {
+                                            _listSession.reversed.toList()[position - 1].isGasDetect == '0' ?
+                                            Alert.dialogNotification(
+                                              context,
+                                              'Status',
+                                              'Normal. No Danger. \n\n',
+                                            )
+                                            : Alert.dialogNotification(
+                                              context,
+                                              'Status',
+                                              'Detect Gas. Very Dangerous. \n\n',
+                                            );
+                                          },
+                                          child: Text(
+                                            '$position. ${_listSession.reversed.toList()[position - 1].getFullDatetime()}',
+                                            style:
+                                                const TextStyle(fontSize: 20.0),
+                                          ),
                                         ),
                                 ),
                               );
