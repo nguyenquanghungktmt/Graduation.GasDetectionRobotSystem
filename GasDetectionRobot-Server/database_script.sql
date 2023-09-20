@@ -2,6 +2,8 @@ create database gas_detekt_db;
 
 use gas_detekt_db;
 
+SELECT version();
+
 show tables;
 
 create table user (
@@ -14,7 +16,6 @@ create table user (
     firebase_token varchar(200),
     avatar_url varchar(50),
     device_serial_number varchar(15),
-    status varchar(15),
     created_time datetime,
     modified_time datetime
 );
@@ -97,8 +98,6 @@ select * from user where username='hungnq' and password='123';
 SELECT * FROM user WHERE username = "hungnq";
 SELECT * FROM user WHERE email = "hungnq@cdc.com";
 SELECT * FROM device WHERE serial_number = "RB23GT1708";
-
-select * from session where room_id = "ddefc7e0-3050-11ee-9df5-0f3967ff9b50";
 
 
 select count(*) from user, device
